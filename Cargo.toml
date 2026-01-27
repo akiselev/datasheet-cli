@@ -1,0 +1,36 @@
+[package]
+name = "datasheet-cli"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.85"
+
+
+description = "Extract footprint/land-pattern drawings from PDF datasheets."
+license = "GPL-3.0-only"
+repository = "https://github.com/akiselev/datasheet-cli"
+homepage = "https://github.com/akiselev/datasheet-cli"
+documentation = "https://docs.rs/datasheet-cli"
+readme = "README.md"
+authors = ["Alexander Kiselev <alex@akiselev.com>"]
+keywords = ["datasheet", "pdf", "footprint", "pcb"]
+categories = ["command-line-utilities"]
+
+[[bin]]
+name = "datasheet"
+path = "src/main.rs"
+
+[dependencies]
+anyhow = "1.0.100"
+base64 = "0.22.1"
+clap = { version = "4.5.54", features = ["derive", "env"] }
+reqwest = { version = "0.12.23", default-features = false, features = [
+    "blocking",
+    "json",
+    "rustls-tls",
+] }
+serde = { version = "1.0.228", features = ["derive"] }
+serde_json = "1.0.149"
+sha2 = "0.10"
+dirs = "5.0"
+ureq = { version = "2.10", features = ["json"] }
+urlencoding = "2.1"
