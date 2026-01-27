@@ -9,7 +9,6 @@ description = "Extract footprint/land-pattern drawings from PDF datasheets."
 license = "GPL-3.0-only"
 repository = "https://github.com/akiselev/datasheet-cli"
 homepage = "https://github.com/akiselev/datasheet-cli"
-documentation = "https://docs.rs/datasheet-cli"
 readme = "README.md"
 authors = ["Alexander Kiselev <alex@akiselev.com>"]
 keywords = ["datasheet", "pdf", "footprint", "pcb"]
