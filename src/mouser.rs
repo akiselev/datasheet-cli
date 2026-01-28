@@ -335,19 +335,36 @@ fn cmd_download(
     println!("  URL: {}", datasheet_url);
     println!("  Output: {}", output_path.display());
 
-    // Download the datasheet
+    // Download the datasheet with proper headers (Mouser CDN requires User-Agent)
     let response = ureq::get(datasheet_url)
+        .set("User-Agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36")
+        .set("Accept", "application/pdf,*/*")
+        .set("Referer", "https://www.mouser.com/")
         .call()
         .map_err(|e| format!("Failed to download datasheet: {}", e))?;
+
+    // Verify we got a PDF, not an HTML error/redirect page
+    let content_type = response.content_type().to_string();
 
     let mut file =
         File::create(&output_path).map_err(|e| format!("Failed to create output file: {}", e))?;
 
     let mut reader = response.into_reader();
-    std::io::copy(&mut reader, &mut file)
+    let bytes_written = std::io::copy(&mut reader, &mut file)
         .map_err(|e| format!("Failed to write datasheet: {}", e))?;
 
-    println!("Datasheet downloaded successfully!");
+    // Check if we got HTML instead of PDF (bot protection / redirect)
+    if content_type.contains("text/html") || bytes_written < 1024 {
+        // Remove the invalid file
+        let _ = std::fs::remove_file(&output_path);
+        return Err(format!(
+            "Download returned HTML instead of PDF (content-type: {}). \
+             Mouser may be blocking automated downloads for this URL.",
+            content_type
+        ));
+    }
+
+    println!("Datasheet downloaded successfully! ({:.1} KB)", bytes_written as f64 / 1024.0);
 
     Ok(())
 }
