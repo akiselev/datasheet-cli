@@ -11,6 +11,9 @@ datasheet extract footprint TPS62840.pdf --out footprint.json
 
 # Search Mouser for a part and download its datasheet
 datasheet mouser download LM5164
+
+# Search JLCPCB parts library (no API key needed)
+datasheet jlcpcb search "100nF 0402" --json
 ```
 
 ## Why?
@@ -226,6 +229,20 @@ datasheet digikey download LM5164DDAR
 ```
 
 Requires: `DIGIKEY_CLIENT_ID` and `DIGIKEY_CLIENT_SECRET` ([Register here](https://developer.digikey.com/))
+
+### JLCPCB / LCSC
+
+Search the JLCPCB SMT parts library. No API key required.
+
+```bash
+# Search for parts
+datasheet jlcpcb search "STM32G0B1" --limit 5
+
+# Get detailed part info (includes JLCPCB assembly category, pricing, attributes)
+datasheet jlcpcb part C2829190 --json
+```
+
+Part details include the JLCPCB assembly category (`basic`, `preferred`, or `extended`) which determines feeder loading fees during assembly.
 
 ## Pipeline Examples
 
