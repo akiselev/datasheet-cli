@@ -11,6 +11,7 @@ use clap::{Parser, Subcommand};
 mod digikey;
 mod extract;
 mod file_cache;
+mod jlcpcb;
 mod llm;
 mod mouser;
 mod prompts;
@@ -32,6 +33,9 @@ enum Command {
     /// DigiKey Electronics API for searching parts and downloading datasheets
     #[command(subcommand)]
     Digikey(digikey::DigikeySubcommand),
+    /// JLCPCB/LCSC component search (no API key required)
+    #[command(subcommand)]
+    Jlcpcb(jlcpcb::JlcpcbSubcommand),
 }
 
 fn main() -> Result<()> {
@@ -44,6 +48,9 @@ fn main() -> Result<()> {
         }
         Command::Digikey(subcommand) => {
             digikey::execute(subcommand).map_err(|e| anyhow!(e))
+        }
+        Command::Jlcpcb(subcommand) => {
+            jlcpcb::execute(subcommand).map_err(|e| anyhow!(e))
         }
     }
 }
