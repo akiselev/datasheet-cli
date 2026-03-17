@@ -218,8 +218,26 @@ fn cmd_search(query: &str, limit: usize, json_output: bool) -> Result<(), String
     Ok(())
 }
 
-fn cmd_part(lcsc_part_number: &str, json_output: bool) -> Result<(), String> {
-    let part = jlcpcb_part_detail(lcsc_part_number)?;
+fn cmd_part(part_number: &str, json_output: bool) -> Result<(), String> {
+    // If it looks like an LCSC part number (C followed by digits), use the detail endpoint directly.
+    // Otherwise, search by MPN and use the first result.
+    let lcsc_pn = if is_lcsc_part_number(part_number) {
+        part_number.to_string()
+    } else {
+        let results = jlcpcb_search(part_number, 5)?;
+        let first = results.into_iter().next().ok_or_else(|| {
+            format!("No JLCPCB/LCSC part found for: {}", part_number)
+        })?;
+        eprintln!(
+            "Resolved {} -> {} ({})",
+            part_number,
+            first.lcsc_part_number,
+            first.manufacturer_part_number.as_deref().unwrap_or("?")
+        );
+        first.lcsc_part_number
+    };
+
+    let part = jlcpcb_part_detail(&lcsc_pn)?;
 
     if json_output {
         let json = serde_json::to_string_pretty(&part)
@@ -230,6 +248,10 @@ fn cmd_part(lcsc_part_number: &str, json_output: bool) -> Result<(), String> {
     }
 
     Ok(())
+}
+
+fn is_lcsc_part_number(s: &str) -> bool {
+    s.starts_with('C') && s.len() > 1 && s[1..].chars().all(|c| c.is_ascii_digit())
 }
 
 // --- API helpers ---
