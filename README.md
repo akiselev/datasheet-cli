@@ -244,6 +244,50 @@ datasheet jlcpcb part C2829190 --json
 
 Part details include the JLCPCB assembly category (`basic`, `preferred`, or `extended`) which determines feeder loading fees during assembly.
 
+### SnapEDA
+
+Search parts and retrieve exact CAD data (symbols, footprints, pin-to-pad mappings) from SnapEDA. No API key required.
+
+```bash
+# Search for parts
+datasheet snapeda search "ADS1115" --limit 5
+
+# Get complete symbol + footprint + pin-to-pad mapping
+datasheet snapeda part ADS1115IDGST --json -f
+
+# Get only footprint data
+datasheet snapeda footprint ADS1115IDGST --json -f
+
+# Get only symbol / pinout data
+datasheet snapeda symbol ADS1115IDGST --json -f
+```
+
+The `<part>` argument is flexible — it auto-detects the input format:
+
+- **Numeric ID** — treated as a SnapEDA `unipart_id` directly (e.g., `datasheet snapeda part 123456`)
+- **Part number** — searches SnapEDA and uses the first match (e.g., `ADS1115IDGST`)
+- **SnapEDA URL** — extracts the part name from the URL and searches (e.g., `"https://www.snapeda.com/parts/TP4056-42-ESOP8/toppower/view-part/"`)
+
+Example workflow:
+
+```bash
+# Search for a part
+datasheet snapeda search "ADS1115"
+
+# Get footprint data by part number
+datasheet snapeda footprint ADS1115IDGST --json -f
+
+# Get full data by SnapEDA URL
+datasheet snapeda part "https://www.snapeda.com/parts/TP4056-42-ESOP8/toppower/view-part/" --json -f
+
+# Save extraction to file
+datasheet snapeda part ESP32-C6-WROOM-1-N8 --json -f --out extractions/snapeda/ESP32-C6.json
+```
+
+SnapEDA data is derived from Eagle XML CAD models, so coordinates and dimensions are exact rather than LLM-interpreted. All coordinates include units (e.g., `"-2.475mm"`). The `part` subcommand returns a combined object with `pinout`, `footprint`, and `pin_to_pad_map` sections; the `symbol` and `footprint` subcommands return only their respective section.
+
+This makes SnapEDA a useful complement to PDF extraction: use SnapEDA for precise pad geometry and pin-to-pad mappings, and PDF extraction for electrical characteristics, timing specs, and other parametric data not present in CAD models.
+
 ## Pipeline Examples
 
 ### Generate KiCad symbols

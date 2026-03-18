@@ -15,6 +15,7 @@ mod jlcpcb;
 mod llm;
 mod mouser;
 mod prompts;
+mod snapeda;
 
 #[derive(Parser, Debug)]
 #[command(author, version, about)]
@@ -36,6 +37,9 @@ enum Command {
     /// JLCPCB/LCSC component search (no API key required)
     #[command(subcommand)]
     Jlcpcb(jlcpcb::JlcpcbSubcommand),
+    /// SnapEDA/SnapMagic CAD library — symbols, footprints, pin mappings (no API key required)
+    #[command(subcommand)]
+    Snapeda(snapeda::SnapedaSubcommand),
 }
 
 fn main() -> Result<()> {
@@ -51,6 +55,9 @@ fn main() -> Result<()> {
         }
         Command::Jlcpcb(subcommand) => {
             jlcpcb::execute(subcommand).map_err(|e| anyhow!(e))
+        }
+        Command::Snapeda(subcommand) => {
+            snapeda::execute(subcommand).map_err(|e| anyhow!(e))
         }
     }
 }

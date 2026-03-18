@@ -1,6 +1,6 @@
 [package]
 name = "datasheet-cli"
-version = "0.1.3"
+version = "0.1.4"
 edition = "2024"
 rust-version = "1.85"
 
@@ -31,5 +31,6 @@ serde = { version = "1.0.228", features = ["derive"] }
 serde_json = "1.0.149"
 sha2 = "0.10"
 dirs = "5.0"
+roxmltree = "0.20"
 ureq = { version = "2.10", features = ["json"] }
 urlencoding = "2.1"
