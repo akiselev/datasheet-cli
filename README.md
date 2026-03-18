@@ -180,6 +180,14 @@ datasheet extract custom datasheet.pdf \
   --schema schema.json
 ```
 
+### `application-circuit` - Typical Application Circuit
+
+Extracts the full circuit topology from "Typical Application Circuit" diagrams as a structured netlist. Output includes typed components (ic, resistor, capacitor, diode, etc.), typed nets (power_input, power_output, ground, signal, internal), and pin-level connections. Useful as a starting point for schematic capture. Tested on TPS5430, TP4056, DRV8871.
+
+```bash
+datasheet extract application-circuit TPS5430.pdf -f --out extractions/application-circuits/TPS5430.json
+```
+
 ### All Tasks
 
 | Task | Description |
@@ -194,6 +202,7 @@ datasheet extract custom datasheet.pdf \
 | `layout-constraints` | Component placement rules |
 | `reference-design` | Reference schematic BOM |
 | `feature-matrix` | Part variant comparison |
+| `application-circuit` | Typical application circuit as structured netlist |
 | `custom` | User-defined extraction |
 
 ## Distributor Integration
@@ -211,6 +220,9 @@ datasheet mouser part 511-STM32F407VGT6
 
 # Download datasheet
 datasheet mouser download 511-STM32F407VGT6 --dir ./datasheets
+
+# Quick stock and pricing check
+datasheet mouser stock 511-STM32F407VGT6 [--json]
 ```
 
 Requires: `MOUSER_API_KEY` ([Get one here](https://www.mouser.com/apihub/))
@@ -226,6 +238,9 @@ datasheet digikey part LM5164DDAR
 
 # Download datasheet
 datasheet digikey download LM5164DDAR
+
+# Quick stock and pricing check
+datasheet digikey stock LM5164DDAR [--json]
 ```
 
 Requires: `DIGIKEY_CLIENT_ID` and `DIGIKEY_CLIENT_SECRET` ([Register here](https://developer.digikey.com/))
@@ -240,6 +255,9 @@ datasheet jlcpcb search "STM32G0B1" --limit 5
 
 # Get detailed part info (includes JLCPCB assembly category, pricing, attributes)
 datasheet jlcpcb part C2829190 --json
+
+# Quick stock and pricing check
+datasheet jlcpcb stock C2829190 [--json]
 ```
 
 Part details include the JLCPCB assembly category (`basic`, `preferred`, or `extended`) which determines feeder loading fees during assembly.
@@ -303,6 +321,35 @@ datasheet snapeda part ESP32-C6-WROOM-1-N8 --json -f --out extractions/snapeda/E
 SnapEDA data is derived from CAD models, so coordinates and dimensions are exact rather than LLM-interpreted. All coordinates include units (e.g., `"-2.475mm"`). The `part` subcommand returns a combined object with `pinout`, `footprint`, and `pin_to_pad_map` sections; the `symbol` and `footprint` subcommands return only their respective section.
 
 This makes SnapEDA a useful complement to PDF extraction: use SnapEDA for precise pad geometry and pin-to-pad mappings, and PDF extraction for electrical characteristics, timing specs, and other parametric data not present in CAD models.
+
+### Stock & Pricing
+
+All three distributors support a `stock` subcommand for a quick availability and pricing check without downloading a full datasheet. Returns stock level, pricing breaks, lead time, lifecycle status, and MOQ. Uses existing API data — no additional API calls beyond the standard part lookup.
+
+```bash
+datasheet mouser stock <part-number> [--json]
+datasheet digikey stock <part-number> [--json]
+datasheet jlcpcb stock <part-number> [--json]
+```
+
+When `--json` is used, each outputs a normalized `StockInfo` object suitable for scripting and automated availability checks.
+
+### SVD Register Maps
+
+Search and download SVD (System View Description) register map files from the cmsis-svd-data collection (872 files, 25 vendors). No API key required. The index is cached locally for 24 hours.
+
+```bash
+# Search for SVD files for a chip
+datasheet svd search <chip> [--vendor <vendor>] [--json]
+
+# Download an SVD file
+datasheet svd download <chip> [--vendor <vendor>] [--out <file>]
+
+# List all supported vendors
+datasheet svd vendors [--json]
+```
+
+SVD files describe the complete peripheral register map for a microcontroller and are used by debuggers (OpenOCD, probe-rs), IDEs, and firmware tools to provide register-level insight. They are the input format for tools like `svd2rust` (Rust PAC generation) and `svdtools`.
 
 ## Pipeline Examples
 

@@ -17,6 +17,7 @@ mod mouser;
 mod pdf_split;
 mod prompts;
 mod snapeda;
+mod svd;
 
 #[derive(Parser, Debug)]
 #[command(author, version, about)]
@@ -41,6 +42,9 @@ enum Command {
     /// SnapEDA/SnapMagic CAD library — symbols, footprints, pin mappings (no API key required)
     #[command(subcommand)]
     Snapeda(snapeda::SnapedaSubcommand),
+    /// Download SVD (System View Description) register map files for microcontrollers
+    #[command(subcommand)]
+    Svd(svd::SvdSubcommand),
 }
 
 fn main() -> Result<()> {
@@ -59,6 +63,9 @@ fn main() -> Result<()> {
         }
         Command::Snapeda(subcommand) => {
             snapeda::execute(subcommand).map_err(|e| anyhow!(e))
+        }
+        Command::Svd(subcommand) => {
+            svd::execute(subcommand).map_err(|e| anyhow!(e))
         }
     }
 }
