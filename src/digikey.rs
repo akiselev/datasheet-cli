@@ -89,6 +89,48 @@ pub enum DigikeySubcommand {
         #[arg(long)]
         sandbox: bool,
     },
+
+    /// Quick stock and pricing check for a part
+    Stock {
+        /// Part number to check
+        part_number: String,
+
+        #[arg(long, env = "DIGIKEY_CLIENT_ID")]
+        client_id: Option<String>,
+
+        #[arg(long, env = "DIGIKEY_CLIENT_SECRET")]
+        client_secret: Option<String>,
+
+        /// Output as JSON
+        #[arg(long)]
+        json: bool,
+
+        #[arg(long)]
+        sandbox: bool,
+    },
+}
+
+// Normalized stock/pricing output type
+
+#[derive(Serialize)]
+struct StockInfo {
+    mpn: String,
+    manufacturer: Option<String>,
+    distributor: &'static str,
+    distributor_pn: Option<String>,
+    lifecycle_status: Option<String>,
+    stock: Option<i64>,
+    lead_time: Option<String>,
+    moq: Option<i32>,
+    order_multiple: Option<i32>,
+    currency: String,
+    price_breaks: Vec<StockPriceBreak>,
+}
+
+#[derive(Serialize)]
+struct StockPriceBreak {
+    quantity: i32,
+    unit_price: f64,
 }
 
 // DigiKey API OAuth token types
@@ -206,6 +248,13 @@ pub fn execute(command: DigikeySubcommand) -> Result<(), String> {
             json,
             sandbox,
         } => cmd_part(&part_number, client_id.as_deref(), client_secret.as_deref(), json, sandbox),
+        DigikeySubcommand::Stock {
+            part_number,
+            client_id,
+            client_secret,
+            json,
+            sandbox,
+        } => cmd_stock(&part_number, client_id.as_deref(), client_secret.as_deref(), json, sandbox),
     }
 }
 
@@ -405,6 +454,117 @@ fn cmd_part(
     }
 
     Ok(())
+}
+
+fn cmd_stock(
+    part_number: &str,
+    client_id: Option<&str>,
+    client_secret: Option<&str>,
+    json_output: bool,
+    sandbox: bool,
+) -> Result<(), String> {
+    let (client_id, client_secret) = get_credentials(client_id, client_secret)?;
+    let access_token = get_access_token(&client_id, &client_secret, sandbox)?;
+
+    let product = get_part_by_number(&client_id, &access_token, part_number, sandbox)?;
+
+    let mpn = product
+        .manufacturer_part_number
+        .clone()
+        .or_else(|| product.digi_key_part_number.clone())
+        .unwrap_or_else(|| part_number.to_string());
+
+    let price_breaks: Vec<StockPriceBreak> = product
+        .standard_pricing
+        .as_deref()
+        .unwrap_or_default()
+        .iter()
+        .filter_map(|pb| {
+            Some(StockPriceBreak {
+                quantity: pb.break_quantity?,
+                unit_price: pb.unit_price?,
+            })
+        })
+        .collect();
+
+    let info = StockInfo {
+        mpn,
+        manufacturer: product.manufacturer.as_ref().and_then(|m| m.name.clone()),
+        distributor: "digikey",
+        distributor_pn: product.digi_key_part_number.clone(),
+        lifecycle_status: product.part_status.clone(),
+        stock: product.quantity_available.map(|q| q as i64),
+        lead_time: None,
+        moq: product.minimum_order_quantity,
+        order_multiple: None,
+        currency: "USD".to_string(),
+        price_breaks,
+    };
+
+    if json_output {
+        let json = serde_json::to_string_pretty(&info)
+            .map_err(|e| format!("Failed to serialize stock info: {}", e))?;
+        println!("{}", json);
+    } else {
+        let mfr_display = info
+            .manufacturer
+            .as_deref()
+            .map(|m| format!(" ({})", m))
+            .unwrap_or_default();
+        println!("{}{}", info.mpn, mfr_display);
+
+        let dist_pn = info
+            .distributor_pn
+            .as_deref()
+            .map(|p| format!(" ({})", p))
+            .unwrap_or_default();
+        println!("  Distributor: DigiKey{}", dist_pn);
+
+        if let Some(ref status) = info.lifecycle_status {
+            println!("  Status: {}", status);
+        }
+
+        match info.stock {
+            Some(s) => println!("  Stock: {}", format_number(s)),
+            None => println!("  Stock: Unknown"),
+        }
+
+        let moq_str = info.moq.map(|v| v.to_string()).unwrap_or_else(|| "?".to_string());
+        println!("  MOQ: {}", moq_str);
+
+        if !info.price_breaks.is_empty() {
+            println!("  Pricing:");
+            let max_qty_width = info
+                .price_breaks
+                .iter()
+                .map(|pb| format!("{}+", pb.quantity).len())
+                .max()
+                .unwrap_or(3);
+            for pb in &info.price_breaks {
+                let qty_label = format!("{}+", pb.quantity);
+                println!(
+                    "    {:>width$} : ${:.2}",
+                    qty_label,
+                    pb.unit_price,
+                    width = max_qty_width
+                );
+            }
+        }
+    }
+
+    Ok(())
+}
+
+fn format_number(n: i64) -> String {
+    let s = n.to_string();
+    let mut result = String::new();
+    for (i, c) in s.chars().rev().enumerate() {
+        if i > 0 && i % 3 == 0 {
+            result.push(',');
+        }
+        result.push(c);
+    }
+    result.chars().rev().collect()
 }
 
 fn search_by_keyword(

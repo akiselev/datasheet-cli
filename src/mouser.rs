@@ -75,6 +75,44 @@ pub enum MouserSubcommand {
         #[arg(long)]
         json: bool,
     },
+
+    /// Quick stock and pricing check for a part
+    Stock {
+        /// Part number to check
+        part_number: String,
+
+        #[arg(long, env = "MOUSER_API_KEY")]
+        api_key: Option<String>,
+
+        /// Output as JSON
+        #[arg(long)]
+        json: bool,
+    },
+}
+
+// Normalized stock/pricing output type
+
+#[derive(Serialize)]
+struct StockInfo {
+    mpn: String,
+    manufacturer: Option<String>,
+    distributor: &'static str,
+    distributor_pn: Option<String>,
+    lifecycle_status: Option<String>,
+    stock: Option<i64>,
+    lead_time: Option<String>,
+    moq: Option<i32>,
+    order_multiple: Option<i32>,
+    currency: String,
+    price_breaks: Vec<StockPriceBreak>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    suggested_replacement: Option<String>,
+}
+
+#[derive(Serialize)]
+struct StockPriceBreak {
+    quantity: i32,
+    unit_price: f64,
 }
 
 // Mouser API request/response types
@@ -222,6 +260,11 @@ pub fn execute(command: MouserSubcommand) -> Result<(), String> {
             api_key,
             json,
         } => cmd_part(&part_number, api_key.as_deref(), json),
+        MouserSubcommand::Stock {
+            part_number,
+            api_key,
+            json,
+        } => cmd_stock(&part_number, api_key.as_deref(), json),
     }
 }
 
@@ -389,6 +432,149 @@ fn cmd_part(part_number: &str, api_key: Option<&str>, json_output: bool) -> Resu
     }
 
     Ok(())
+}
+
+fn cmd_stock(part_number: &str, api_key: Option<&str>, json_output: bool) -> Result<(), String> {
+    let api_key = get_api_key(api_key)?;
+
+    let parts = search_by_part_number(&api_key, part_number)?;
+
+    if parts.is_empty() {
+        return Err(format!("Part not found: {}", part_number));
+    }
+
+    let part = &parts[0];
+
+    let mpn = part
+        .manufacturer_part_number
+        .clone()
+        .or_else(|| part.mouser_part_number.clone())
+        .unwrap_or_else(|| part_number.to_string());
+
+    let moq = part.min.as_deref().and_then(|s| s.parse::<i32>().ok());
+    let order_multiple = part.mult.as_deref().and_then(|s| s.parse::<i32>().ok());
+
+    let stock = part.availability_in_stock.as_deref().and_then(|s| {
+        // "4,137 In Stock" → extract leading number, strip commas
+        let num_part: String = s.chars().take_while(|c| c.is_ascii_digit() || *c == ',').collect();
+        num_part.replace(',', "").parse::<i64>().ok()
+    });
+
+    let price_breaks: Vec<StockPriceBreak> = part
+        .price_breaks
+        .as_deref()
+        .unwrap_or_default()
+        .iter()
+        .filter_map(|pb| {
+            let qty = pb.quantity?;
+            let price_str = pb.price.as_deref()?;
+            // Price may be "$10.13" or "1,234.56" — strip currency symbols and commas
+            let price: f64 = price_str.replace(['$', ',', '€', '£'], "").trim().parse().ok()?;
+            Some(StockPriceBreak {
+                quantity: qty,
+                unit_price: price,
+            })
+        })
+        .collect();
+
+    let currency = part
+        .price_breaks
+        .as_deref()
+        .unwrap_or_default()
+        .first()
+        .and_then(|pb| pb.currency.clone())
+        .unwrap_or_else(|| "USD".to_string());
+
+    let info = StockInfo {
+        mpn,
+        manufacturer: part.manufacturer.clone(),
+        distributor: "mouser",
+        distributor_pn: part.mouser_part_number.clone(),
+        lifecycle_status: part.lifecycle_status.clone(),
+        stock,
+        lead_time: part.lead_time.clone(),
+        moq,
+        order_multiple,
+        currency,
+        price_breaks,
+        suggested_replacement: part.suggested_replacement.clone(),
+    };
+
+    if json_output {
+        let json = serde_json::to_string_pretty(&info)
+            .map_err(|e| format!("Failed to serialize stock info: {}", e))?;
+        println!("{}", json);
+    } else {
+        let mfr_display = info
+            .manufacturer
+            .as_deref()
+            .map(|m| format!(" ({})", m))
+            .unwrap_or_default();
+        println!("{}{}", info.mpn, mfr_display);
+
+        let dist_pn = info
+            .distributor_pn
+            .as_deref()
+            .map(|p| format!(" ({})", p))
+            .unwrap_or_default();
+        println!("  Distributor: Mouser{}", dist_pn);
+
+        if let Some(ref status) = info.lifecycle_status {
+            println!("  Status: {}", status);
+        }
+
+        match info.stock {
+            Some(s) => println!("  Stock: {}", format_number(s)),
+            None => println!("  Stock: Unknown"),
+        }
+
+        if let Some(ref lt) = info.lead_time {
+            println!("  Lead Time: {}", lt);
+        }
+
+        let moq_str = info.moq.map(|v| v.to_string()).unwrap_or_else(|| "?".to_string());
+        let mult_str = info.order_multiple.map(|v| v.to_string()).unwrap_or_else(|| "?".to_string());
+        println!("  MOQ: {} | Multiple: {}", moq_str, mult_str);
+
+        if !info.price_breaks.is_empty() {
+            println!("  Pricing:");
+            let max_qty_width = info
+                .price_breaks
+                .iter()
+                .map(|pb| format!("{}+", pb.quantity).len())
+                .max()
+                .unwrap_or(3);
+            for pb in &info.price_breaks {
+                let qty_label = format!("{}+", pb.quantity);
+                println!(
+                    "    {:>width$} : ${:.2}",
+                    qty_label,
+                    pb.unit_price,
+                    width = max_qty_width
+                );
+            }
+        }
+
+        if let Some(ref replacement) = info.suggested_replacement {
+            if !replacement.is_empty() {
+                println!("  Suggested Replacement: {}", replacement);
+            }
+        }
+    }
+
+    Ok(())
+}
+
+fn format_number(n: i64) -> String {
+    let s = n.to_string();
+    let mut result = String::new();
+    for (i, c) in s.chars().rev().enumerate() {
+        if i > 0 && i % 3 == 0 {
+            result.push(',');
+        }
+        result.push(c);
+    }
+    result.chars().rev().collect()
 }
 
 fn search_by_keyword(api_key: &str, keyword: &str, limit: usize, starting_record: usize) -> Result<Vec<Part>, String> {

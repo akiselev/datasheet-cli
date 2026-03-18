@@ -38,6 +38,41 @@ pub enum JlcpcbSubcommand {
         #[arg(long)]
         json: bool,
     },
+
+    /// Quick stock and pricing check for a part
+    Stock {
+        /// LCSC part number or manufacturer part number
+        part_number: String,
+
+        /// Output as JSON
+        #[arg(long)]
+        json: bool,
+    },
+}
+
+// Normalized stock/pricing output type
+
+#[derive(Serialize)]
+struct StockInfo {
+    mpn: String,
+    manufacturer: Option<String>,
+    distributor: &'static str,
+    distributor_pn: Option<String>,
+    lifecycle_status: Option<String>,
+    stock: Option<i64>,
+    lead_time: Option<String>,
+    moq: Option<i32>,
+    order_multiple: Option<i32>,
+    currency: String,
+    price_breaks: Vec<StockPriceBreak>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    jlcpcb_category: Option<String>,
+}
+
+#[derive(Serialize)]
+struct StockPriceBreak {
+    quantity: i32,
+    unit_price: f64,
 }
 
 // --- Output types (what we serialize for --json) ---
@@ -190,6 +225,7 @@ pub fn execute(command: JlcpcbSubcommand) -> Result<(), String> {
             lcsc_part_number,
             json,
         } => cmd_part(&lcsc_part_number, json),
+        JlcpcbSubcommand::Stock { part_number, json } => cmd_stock(&part_number, json),
     }
 }
 
@@ -248,6 +284,138 @@ fn cmd_part(part_number: &str, json_output: bool) -> Result<(), String> {
     }
 
     Ok(())
+}
+
+fn cmd_stock(part_number: &str, json_output: bool) -> Result<(), String> {
+    let part = if is_lcsc_part_number(part_number) {
+        let detail = jlcpcb_part_detail(part_number)?;
+        let price_breaks: Vec<StockPriceBreak> = detail
+            .price_breaks
+            .iter()
+            .map(|pb| StockPriceBreak {
+                quantity: pb.quantity,
+                unit_price: pb.price_usd,
+            })
+            .collect();
+        StockInfo {
+            mpn: detail
+                .manufacturer_part_number
+                .clone()
+                .unwrap_or_else(|| detail.lcsc_part_number.clone()),
+            manufacturer: detail.manufacturer.clone(),
+            distributor: "jlcpcb",
+            distributor_pn: Some(detail.lcsc_part_number.clone()),
+            lifecycle_status: None,
+            stock: detail.stock,
+            lead_time: None,
+            moq: detail.minimum_order,
+            order_multiple: None,
+            currency: "USD".to_string(),
+            price_breaks,
+            jlcpcb_category: detail.category.clone(),
+        }
+    } else {
+        let results = jlcpcb_search(part_number, 5)?;
+        let first = results.into_iter().next().ok_or_else(|| {
+            format!("No JLCPCB/LCSC part found for: {}", part_number)
+        })?;
+        eprintln!(
+            "Resolved {} -> {} ({})",
+            part_number,
+            first.lcsc_part_number,
+            first.manufacturer_part_number.as_deref().unwrap_or("?")
+        );
+        let price_breaks: Vec<StockPriceBreak> = first
+            .price_breaks
+            .iter()
+            .map(|pb| StockPriceBreak {
+                quantity: pb.quantity,
+                unit_price: pb.price_usd,
+            })
+            .collect();
+        StockInfo {
+            mpn: first
+                .manufacturer_part_number
+                .clone()
+                .unwrap_or_else(|| first.lcsc_part_number.clone()),
+            manufacturer: first.manufacturer.clone(),
+            distributor: "jlcpcb",
+            distributor_pn: Some(first.lcsc_part_number.clone()),
+            lifecycle_status: None,
+            stock: first.stock,
+            lead_time: None,
+            moq: None,
+            order_multiple: None,
+            currency: "USD".to_string(),
+            price_breaks,
+            jlcpcb_category: first.category.clone(),
+        }
+    };
+
+    if json_output {
+        let json = serde_json::to_string_pretty(&part)
+            .map_err(|e| format!("Failed to serialize stock info: {}", e))?;
+        println!("{}", json);
+    } else {
+        let mfr_display = part
+            .manufacturer
+            .as_deref()
+            .map(|m| format!(" ({})", m))
+            .unwrap_or_default();
+        println!("{}{}", part.mpn, mfr_display);
+
+        let dist_pn = part
+            .distributor_pn
+            .as_deref()
+            .map(|p| format!(" ({})", p))
+            .unwrap_or_default();
+        println!("  Distributor: JLCPCB/LCSC{}", dist_pn);
+
+        if let Some(ref category) = part.jlcpcb_category {
+            println!("  JLCPCB Category: {}", category);
+        }
+
+        match part.stock {
+            Some(s) => println!("  Stock: {}", format_number(s)),
+            None => println!("  Stock: Unknown"),
+        }
+
+        let moq_str = part.moq.map(|v| v.to_string()).unwrap_or_else(|| "?".to_string());
+        println!("  MOQ: {}", moq_str);
+
+        if !part.price_breaks.is_empty() {
+            println!("  Pricing:");
+            let max_qty_width = part
+                .price_breaks
+                .iter()
+                .map(|pb| format!("{}+", pb.quantity).len())
+                .max()
+                .unwrap_or(3);
+            for pb in &part.price_breaks {
+                let qty_label = format!("{}+", pb.quantity);
+                println!(
+                    "    {:>width$} : ${:.4}",
+                    qty_label,
+                    pb.unit_price,
+                    width = max_qty_width
+                );
+            }
+        }
+    }
+
+    Ok(())
+}
+
+fn format_number(n: i64) -> String {
+    let s = n.to_string();
+    let mut result = String::new();
+    for (i, c) in s.chars().rev().enumerate() {
+        if i > 0 && i % 3 == 0 {
+            result.push(',');
+        }
+        result.push(c);
+    }
+    result.chars().rev().collect()
 }
 
 fn is_lcsc_part_number(s: &str) -> bool {
