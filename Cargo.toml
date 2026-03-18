@@ -31,6 +31,7 @@ serde = { version = "1.0.228", features = ["derive"] }
 serde_json = "1.0.149"
 sha2 = "0.10"
 dirs = "5.0"
+lopdf = { version = "0.39", default-features = false }
 roxmltree = "0.20"
 ureq = { version = "2.10", features = ["json"] }
 urlencoding = "2.1"

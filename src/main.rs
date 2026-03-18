@@ -14,6 +14,7 @@ mod file_cache;
 mod jlcpcb;
 mod llm;
 mod mouser;
+mod pdf_split;
 mod prompts;
 mod snapeda;
 

@@ -2,7 +2,11 @@
 // SPDX-FileCopyrightText: 2026 Alexander Kiselev <alex@akiselev.com>
 
 use crate::file_cache::FileCache;
-use crate::llm::{AttachmentSource, FileReference, LlmProvider, LlmRequest, build_client, resolve_api_key};
+use crate::llm::{
+    Attachment, AttachmentSource, FileReference, LlmProvider, LlmRequest, build_client,
+    resolve_api_key,
+};
+use crate::pdf_split;
 use crate::prompts;
 use anyhow::{Context, Result, anyhow};
 use clap::{Args, ValueEnum};
@@ -148,6 +152,13 @@ pub fn run_extract(args: &ExtractArgs) -> Result<()> {
     }
 
     let api_key = resolve_api_key(args.provider, args.api_key.clone())?;
+
+    // Check if PDF needs splitting before doing anything else
+    let split_result = pdf_split::split_if_needed(&args.pdf)?;
+    if let Some(ref split) = split_result {
+        return run_split_extract(args, split, &prompt_text, &prompt_spec, &api_key);
+    }
+
     let client = build_client(args.provider, api_key.clone(), args.base_url.clone())?;
 
     // Get attachment source - use file cache unless disabled
@@ -190,6 +201,126 @@ pub fn run_extract(args: &ExtractArgs) -> Result<()> {
         .with_context(|| format!("writing {task_label} output for {}", args.pdf.display()))?;
 
     Ok(())
+}
+
+fn run_split_extract(
+    args: &ExtractArgs,
+    split: &pdf_split::SplitResult,
+    prompt_text: &str,
+    prompt_spec: &crate::prompts::PromptSpec,
+    api_key: &str,
+) -> Result<()> {
+    let client = build_client(args.provider, api_key.to_string(), args.base_url.clone())?;
+    let model = if args.model == __DEFAULT__ {
+        args.task.default_model().to_string()
+    } else {
+        args.model.clone()
+    };
+
+    let mut results: Vec<Value> = Vec::new();
+
+    for (i, part) in split.parts.iter().enumerate() {
+        eprintln!(
+            "\n[SPLIT] Extracting from part {}/{} (pages {}-{})...",
+            i + 1,
+            split.parts.len(),
+            part.start_page,
+            part.end_page
+        );
+
+        let attachment = if args.no_cache {
+            let data = fs::read(&part.path)
+                .with_context(|| format!("reading split part {}", part.path.display()))?;
+            AttachmentSource::Inline(Attachment {
+                mime_type: "application/pdf".to_string(),
+                data,
+            })
+        } else {
+            let mut cache = FileCache::new(api_key.to_string(), args.base_url.clone())
+                .context("initializing file cache")?;
+            let cached = cache
+                .get_or_upload(&part.path)
+                .context("getting or uploading split part to Gemini")?;
+            AttachmentSource::FileUri(FileReference {
+                mime_type: "application/pdf".to_string(),
+                file_uri: cached.uri,
+            })
+        };
+
+        let response = client.generate_json(LlmRequest {
+            model: model.clone(),
+            prompt: prompt_text.to_string(),
+            schema: prompt_spec.schema.clone(),
+            attachment,
+            temperature: args.temperature,
+        })?;
+
+        results.push(response.json);
+    }
+
+    // Merge results from all parts
+    let merged = merge_extraction_results(&results);
+
+    write_output(&merged, args.out.as_deref(), args.formatted)
+        .with_context(|| format!("writing merged output for {}", args.pdf.display()))?;
+
+    Ok(())
+}
+
+/// Merge extraction results from multiple PDF parts.
+/// Strategy: deep merge JSON objects, concatenating arrays and taking
+/// first non-null values for scalar fields.
+fn merge_extraction_results(results: &[Value]) -> Value {
+    if results.is_empty() {
+        return Value::Object(serde_json::Map::new());
+    }
+
+    if results.len() == 1 {
+        return results[0].clone();
+    }
+
+    // Start with the first result as base
+    let mut merged = results[0].clone();
+
+    for result in &results[1..] {
+        deep_merge(&mut merged, result);
+    }
+
+    merged
+}
+
+/// Deep merge two JSON values.
+/// - Objects: merge recursively, preferring non-null values
+/// - Arrays: concatenate, deduplicating by JSON equality
+/// - Scalars: keep existing non-null value
+fn deep_merge(base: &mut Value, other: &Value) {
+    match (base, other) {
+        (Value::Object(base_map), Value::Object(other_map)) => {
+            for (key, other_val) in other_map {
+                if let Some(base_val) = base_map.get_mut(key) {
+                    if base_val.is_null() && !other_val.is_null() {
+                        *base_val = other_val.clone();
+                    } else {
+                        deep_merge(base_val, other_val);
+                    }
+                } else {
+                    base_map.insert(key.clone(), other_val.clone());
+                }
+            }
+        }
+        (Value::Array(base_arr), Value::Array(other_arr)) => {
+            for item in other_arr {
+                if !base_arr.contains(item) {
+                    base_arr.push(item.clone());
+                }
+            }
+        }
+        (base_val, other_val) => {
+            if base_val.is_null() && !other_val.is_null() {
+                *base_val = other_val.clone();
+            }
+        }
+    }
 }
 
 /// Load text from a string or file path.
