@@ -244,12 +244,12 @@ datasheet jlcpcb part C2829190 --json
 
 Part details include the JLCPCB assembly category (`basic`, `preferred`, or `extended`) which determines feeder loading fees during assembly.
 
-### SnapEDA
+### SnapEDA / SnapMagic
 
-Search parts and retrieve exact CAD data (symbols, footprints, pin-to-pad mappings) from SnapEDA. No API key required.
+Search parts and retrieve exact CAD data (symbols, footprints, pin-to-pad mappings) from SnapEDA. Basic search and data retrieval require no API key. Authenticated access unlocks direct CAD file downloads and improves success rate for parts whose data isn't available via the public API.
 
 ```bash
-# Search for parts
+# Search for parts (no login required)
 datasheet snapeda search "ADS1115" --limit 5
 
 # Get complete symbol + footprint + pin-to-pad mapping
@@ -260,6 +260,15 @@ datasheet snapeda footprint ADS1115IDGST --json -f
 
 # Get only symbol / pinout data
 datasheet snapeda symbol ADS1115IDGST --json -f
+
+# Log in to SnapEDA for authenticated downloads (session cached for 7 days)
+datasheet snapeda login
+datasheet snapeda login --username user@example.com --password '...'
+
+# Download CAD files directly (requires login)
+datasheet snapeda download ISO1541 --out ISO1541.IntLib                  # Altium (default)
+datasheet snapeda download ISO1541 --format kicad_mod --out iso.kicad_mod
+datasheet snapeda download ISO1541 --format eagle --out iso.lbr
 ```
 
 The `<part>` argument is flexible — it auto-detects the input format:
@@ -268,23 +277,30 @@ The `<part>` argument is flexible — it auto-detects the input format:
 - **Part number** — searches SnapEDA and uses the first match (e.g., `ADS1115IDGST`)
 - **SnapEDA URL** — extracts the part name from the URL and searches (e.g., `"https://www.snapeda.com/parts/TP4056-42-ESOP8/toppower/view-part/"`)
 
+**Authentication & fallback chain:** The `footprint`, `symbol`, and `part` subcommands first try the public Eagle XML API. If that returns empty (which happens for ~40% of parts), and you are logged in, they automatically fall back to downloading the Eagle format via the authenticated API, then to kicad_mod as a last resort. Logging in significantly improves part coverage.
+
+**Download formats:** `altium_native` (default — returns `.IntLib`), `eagle` (`.lbr`), `kicad` (`.kicad_sym`), `kicad_mod` (`.kicad_mod`), `kicad_modv6`.
+
 Example workflow:
 
 ```bash
+# One-time login (prompts for password securely if not provided)
+datasheet snapeda login --username user@example.com
+
 # Search for a part
 datasheet snapeda search "ADS1115"
 
-# Get footprint data by part number
+# Get footprint data by part number (auto-falls back to authenticated download if needed)
 datasheet snapeda footprint ADS1115IDGST --json -f
 
-# Get full data by SnapEDA URL
-datasheet snapeda part "https://www.snapeda.com/parts/TP4056-42-ESOP8/toppower/view-part/" --json -f
+# Download Altium library file directly
+datasheet snapeda download ADS1115IDGST --out libs/ADS1115.IntLib
 
 # Save extraction to file
 datasheet snapeda part ESP32-C6-WROOM-1-N8 --json -f --out extractions/snapeda/ESP32-C6.json
 ```
 
-SnapEDA data is derived from Eagle XML CAD models, so coordinates and dimensions are exact rather than LLM-interpreted. All coordinates include units (e.g., `"-2.475mm"`). The `part` subcommand returns a combined object with `pinout`, `footprint`, and `pin_to_pad_map` sections; the `symbol` and `footprint` subcommands return only their respective section.
+SnapEDA data is derived from CAD models, so coordinates and dimensions are exact rather than LLM-interpreted. All coordinates include units (e.g., `"-2.475mm"`). The `part` subcommand returns a combined object with `pinout`, `footprint`, and `pin_to_pad_map` sections; the `symbol` and `footprint` subcommands return only their respective section.
 
 This makes SnapEDA a useful complement to PDF extraction: use SnapEDA for precise pad geometry and pin-to-pad mappings, and PDF extraction for electrical characteristics, timing specs, and other parametric data not present in CAD models.
 
