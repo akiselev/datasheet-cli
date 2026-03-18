@@ -11,6 +11,7 @@ use clap::{Parser, Subcommand};
 mod digikey;
 mod extract;
 mod file_cache;
+mod footprint_image;
 mod jlcpcb;
 mod llm;
 mod mouser;
@@ -45,6 +46,8 @@ enum Command {
     /// Download SVD (System View Description) register map files for microcontrollers
     #[command(subcommand)]
     Svd(svd::SvdSubcommand),
+    /// Extract footprint drawings from a PDF datasheet as cropped images
+    FootprintImage(footprint_image::FootprintImageArgs),
 }
 
 fn main() -> Result<()> {
@@ -67,5 +70,6 @@ fn main() -> Result<()> {
         Command::Svd(subcommand) => {
             svd::execute(subcommand).map_err(|e| anyhow!(e))
         }
+        Command::FootprintImage(args) => footprint_image::run(&args),
     }
 }

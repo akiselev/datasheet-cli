@@ -1,6 +1,6 @@
 [package]
 name = "datasheet-cli"
-version = "0.1.7"
+version = "0.1.8"
 edition = "2024"
 rust-version = "1.85"
 
@@ -37,3 +37,5 @@ ureq = { version = "2.10", features = ["json"] }
 urlencoding = "2.1"
 zip = "2.0"
 rpassword = "5.0"
+mupdf = "0.4"
+image = "0.25"

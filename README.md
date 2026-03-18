@@ -351,6 +351,36 @@ datasheet svd vendors [--json]
 
 SVD files describe the complete peripheral register map for a microcontroller and are used by debuggers (OpenOCD, probe-rs), IDEs, and firmware tools to provide register-level insight. They are the input format for tools like `svd2rust` (Rust PAC generation) and `svdtools`.
 
+## Footprint Image Extraction
+
+Extract footprint and package outline drawings from a PDF as cropped PNG images. Uses Gemini to locate the drawings, then renders and crops the relevant pages via MuPDF.
+
+```bash
+# Extract cropped footprint drawings as PNGs
+datasheet footprint-image SHT40.pdf -o ./footprints/
+
+# Render whole pages instead of cropping to bounding boxes
+datasheet footprint-image SHT40.pdf -o ./footprints/ --whole-page
+
+# Higher DPI for print-quality output
+datasheet footprint-image SHT40.pdf -o ./footprints/ --dpi 600
+```
+
+```
+datasheet footprint-image <PDF> [OPTIONS]
+
+Options:
+  -o, --out-dir <DIR>   Output directory (default: .)
+  --dpi <DPI>           Render resolution (default: 300)
+  --padding <N>         Padding around bounding box in 0-1000 units (default: 20)
+  --whole-page          Save the full page instead of cropping to bounding box
+  --model <MODEL>       Gemini model override
+  --no-cache            Disable PDF caching
+  --api-key <KEY>       API key override
+```
+
+Large PDFs are automatically split the same way as `extract` tasks. Multiple footprints on the same page are each cropped individually; with `--whole-page`, duplicate pages are deduplicated to one PNG per page.
+
 ## Pipeline Examples
 
 ### Generate KiCad symbols
