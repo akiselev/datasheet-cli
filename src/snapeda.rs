@@ -638,20 +638,34 @@ fn fetch_part_output(resolved: &ResolvedPart) -> Result<SnapedaOutput, String> {
     let library = match eagle_result {
         Ok(ref xml_str) => parse_eagle_xml(xml_str)?,
         Err(ref eagle_err) => {
-            eprintln!("Eagle XML unavailable: {}", eagle_err);
+            eprintln!("Eagle XML API unavailable: {}", eagle_err);
 
             if let Some((session_id, csrf)) = get_session_cookies() {
-                eprintln!("Attempting authenticated kicad_mod download as fallback...");
-                match download_kicad_mod(resolved, &session_id, &csrf) {
-                    Ok(kicad_content) => {
-                        parse_kicad_mod(&kicad_content, &resolved.part_name)?
+                // Fallback 1: download Eagle format via authenticated API
+                // (returns full symbol + footprint + deviceset data)
+                eprintln!("Trying authenticated Eagle download...");
+                match authenticated_download_text(resolved, &session_id, &csrf, "eagle", ".lbr") {
+                    Ok(eagle_xml) => {
+                        eprintln!("Got Eagle XML via authenticated download");
+                        parse_eagle_xml(&eagle_xml)?
                     }
-                    Err(dl_err) => {
-                        eprintln!("kicad_mod fallback also failed: {}", dl_err);
-                        return Err(format!(
-                            "{}\nAuthenticated download also failed: {}",
-                            eagle_err, dl_err
-                        ));
+                    Err(eagle_dl_err) => {
+                        eprintln!("Eagle download failed: {}", eagle_dl_err);
+                        // Fallback 2: kicad_mod (footprint-only, no symbol data)
+                        eprintln!("Trying kicad_mod download as last resort...");
+                        match authenticated_download_text(
+                            resolved, &session_id, &csrf, "kicad_mod", ".kicad_mod"
+                        ) {
+                            Ok(kicad_content) => {
+                                parse_kicad_mod(&kicad_content, &resolved.part_name)?
+                            }
+                            Err(kicad_err) => {
+                                return Err(format!(
+                                    "{}\nEagle download: {}\nkicad_mod download: {}",
+                                    eagle_err, eagle_dl_err, kicad_err
+                                ));
+                            }
+                        }
                     }
                 }
             } else {
@@ -1148,13 +1162,21 @@ fn cmd_download(part: &str, format: &str, out: Option<PathBuf>) -> Result<(), St
     Ok(())
 }
 
-fn download_kicad_mod(resolved: &ResolvedPart, session_id: &str, csrf: &str) -> Result<String, String> {
+/// Authenticated download of a specific format, returning the raw bytes of the first
+/// file in the zip/archive that matches `target_ext`.
+fn authenticated_download_text(
+    resolved: &ResolvedPart,
+    session_id: &str,
+    csrf: &str,
+    format: &str,
+    target_ext: &str,
+) -> Result<String, String> {
     let url = format!(
-        "{}/parts/snapapi/download-component/{}/{}/kicad_mod",
-        BASE_URL, resolved.model_id, resolved.unipart_id
+        "{}/parts/snapapi/download-component/{}/{}/{}",
+        BASE_URL, resolved.model_id, resolved.unipart_id, format
     );
 
-    eprintln!("Requesting kicad_mod download: {}", url);
+    eprintln!("Requesting {} download: {}", format, url);
 
     let response = ureq::get(&url)
         .set("User-Agent", USER_AGENT)
@@ -1170,42 +1192,51 @@ fn download_kicad_mod(resolved: &ResolvedPart, session_id: &str, csrf: &str) -> 
         .map_err(|e| format!("Failed to parse download response: {}", e))?;
 
     if let Some(error) = json.get("error").and_then(|v| v.as_str()) {
-        return Err(format!("SnapEDA download error: {}", error));
+        return Err(format!("SnapEDA {} download error: {}", format, error));
     }
 
     let download_url = json.get("url")
         .and_then(|v| v.as_str())
         .ok_or_else(|| format!("No download URL in response: {}", &body[..body.len().min(500)]))?;
 
-    let zip_response = ureq::get(download_url)
+    let dl_response = ureq::get(download_url)
         .set("User-Agent", USER_AGENT)
         .call()
-        .map_err(|e| format!("Failed to download zip: {}", e))?;
+        .map_err(|e| format!("Failed to download {}: {}", format, e))?;
 
-    let mut zip_bytes = Vec::new();
-    zip_response.into_reader().read_to_end(&mut zip_bytes)
-        .map_err(|e| format!("Failed to read zip data: {}", e))?;
+    let mut raw_bytes = Vec::new();
+    dl_response.into_reader().read_to_end(&mut raw_bytes)
+        .map_err(|e| format!("Failed to read {} data: {}", format, e))?;
 
-    let cursor = Cursor::new(&zip_bytes);
-    let mut archive = zip::ZipArchive::new(cursor)
-        .map_err(|e| format!("Failed to open zip: {}", e))?;
+    // Check if it's a zip
+    let is_zip = raw_bytes.len() >= 4 && raw_bytes[0] == b'P' && raw_bytes[1] == b'K';
 
-    for i in 0..archive.len() {
-        let mut file = archive.by_index(i)
-            .map_err(|e| format!("Failed to read zip entry: {}", e))?;
-        if file.name().ends_with(".kicad_mod") {
-            let mut content = String::new();
-            file.read_to_string(&mut content)
-                .map_err(|e| format!("Failed to read kicad_mod: {}", e))?;
-            eprintln!("Extracted kicad_mod from zip: {}", file.name());
-            return Ok(content);
+    if is_zip {
+        let cursor = Cursor::new(&raw_bytes);
+        let mut archive = zip::ZipArchive::new(cursor)
+            .map_err(|e| format!("Failed to open {} zip: {}", format, e))?;
+
+        for i in 0..archive.len() {
+            let mut file = archive.by_index(i)
+                .map_err(|e| format!("Failed to read zip entry: {}", e))?;
+            if file.name().ends_with(target_ext) {
+                let mut content = String::new();
+                file.read_to_string(&mut content)
+                    .map_err(|e| format!("Failed to read {} from zip: {}", file.name(), e))?;
+                eprintln!("Extracted {} from zip: {}", format, file.name());
+                return Ok(content);
+            }
         }
-    }
 
-    let names: Vec<String> = (0..archive.len())
-        .filter_map(|i| archive.by_index(i).ok().map(|f| f.name().to_string()))
-        .collect();
-    Err(format!("No .kicad_mod file found in archive. Contents: {:?}", names))
+        let names: Vec<String> = (0..archive.len())
+            .filter_map(|i| archive.by_index(i).ok().map(|f| f.name().to_string()))
+            .collect();
+        Err(format!("No {} file found in {} archive. Contents: {:?}", target_ext, format, names))
+    } else {
+        // Raw text file (not zipped)
+        String::from_utf8(raw_bytes)
+            .map_err(|_| format!("{} download is not valid UTF-8 text", format))
+    }
 }
 
 fn parse_kicad_mod(content: &str, part_name: &str) -> Result<EagleLibrary, String> {
