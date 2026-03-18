@@ -10,6 +10,79 @@ use serde::{Deserialize, Serialize};
 const BASE_URL: &str = "https://www.snapeda.com";
 const USER_AGENT: &str = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36";
 
+// --- SnapEDA file-based cache ---
+
+mod cache {
+    use serde::{Deserialize, Serialize};
+    use std::fs;
+    use std::path::PathBuf;
+    use std::time::{SystemTime, UNIX_EPOCH};
+
+    #[derive(Serialize, Deserialize)]
+    struct CacheEntry {
+        timestamp: u64,
+        ttl_secs: u64,
+        data: String,
+    }
+
+    impl CacheEntry {
+        fn is_expired(&self) -> bool {
+            let now = SystemTime::now()
+                .duration_since(UNIX_EPOCH)
+                .unwrap_or_default()
+                .as_secs();
+            now >= self.timestamp + self.ttl_secs
+        }
+    }
+
+    fn cache_root() -> Option<PathBuf> {
+        dirs::cache_dir().map(|d| d.join("datasheet-cli").join("snapeda"))
+    }
+
+    fn sanitize_key(key: &str) -> String {
+        key.chars()
+            .map(|c| if c.is_alphanumeric() || c == '-' || c == '_' { c } else { '_' })
+            .collect()
+    }
+
+    pub fn cache_get(category: &str, key: &str) -> Option<String> {
+        let root = cache_root()?;
+        let path = root.join(category).join(format!("{}.json", sanitize_key(key)));
+        let content = fs::read_to_string(&path).ok()?;
+        let entry: CacheEntry = serde_json::from_str(&content).ok()?;
+        if entry.is_expired() {
+            return None;
+        }
+        Some(entry.data)
+    }
+
+    pub fn cache_set(category: &str, key: &str, value: &str, ttl_secs: u64) {
+        let root = match cache_root() {
+            Some(r) => r,
+            None => return,
+        };
+        let dir = root.join(category);
+        if fs::create_dir_all(&dir).is_err() {
+            return;
+        }
+        let timestamp = SystemTime::now()
+            .duration_since(UNIX_EPOCH)
+            .unwrap_or_default()
+            .as_secs();
+        let entry = CacheEntry {
+            timestamp,
+            ttl_secs,
+            data: value.to_string(),
+        };
+        if let Ok(json) = serde_json::to_string(&entry) {
+            let path = dir.join(format!("{}.json", sanitize_key(key)));
+            let _ = fs::write(path, json);
+        }
+    }
+}
+
+use cache::{cache_get, cache_set};
+
 // --- Subcommands ---
 
 /// SnapEDA subcommands.
@@ -602,20 +675,39 @@ fn is_truthy(v: &serde_json::Value) -> bool {
 // --- API helpers ---
 
 fn fetch_unipart_info(unipart_id: &str) -> Result<UnipartInfo, String> {
+    if let Some(cached) = cache_get("unipart", unipart_id) {
+        eprintln!("[CACHE] Using cached unipart info for: {}", unipart_id);
+        let info: UnipartInfo = serde_json::from_str(&cached)
+            .map_err(|e| format!("Failed to parse cached unipart info: {}", e))?;
+        return Ok(info);
+    }
+
     let url = format!("{}/api/get_part_for_unipart/{}", BASE_URL, unipart_id);
 
-    let info: UnipartInfo = ureq::get(&url)
+    let raw = ureq::get(&url)
         .set("User-Agent", USER_AGENT)
         .set("Accept", "application/json")
         .call()
         .map_err(|e| format!("Failed to fetch unipart info: {}", e))?
-        .into_json()
+        .into_string()
+        .map_err(|e| format!("Failed to read unipart info response: {}", e))?;
+
+    let info: UnipartInfo = serde_json::from_str(&raw)
         .map_err(|e| format!("Failed to parse unipart info response: {}", e))?;
+
+    cache_set("unipart", unipart_id, &raw, 604800);
 
     Ok(info)
 }
 
 fn fetch_eagle_xml(model_id: u64) -> Result<String, String> {
+    let key = model_id.to_string();
+
+    if let Some(cached) = cache_get("eagle_xml", &key) {
+        eprintln!("[CACHE] Using cached Eagle XML for model_id: {}", model_id);
+        return Ok(cached);
+    }
+
     let url = format!("{}/api/get_html_5/{}", BASE_URL, model_id);
 
     // Retry up to 3 times — this endpoint can return empty intermittently
@@ -628,6 +720,7 @@ fn fetch_eagle_xml(model_id: u64) -> Result<String, String> {
             .map_err(|e| format!("Failed to read Eagle XML response: {}", e))?;
 
         if !xml.trim().is_empty() {
+            cache_set("eagle_xml", &key, &xml, 604800);
             return Ok(xml);
         }
 
@@ -663,6 +756,11 @@ fn fetch_footprint_info(unipart_id: &str, model_id: u64) -> Result<FootprintInfo
 }
 
 fn acquire_csrf_token() -> Result<String, String> {
+    if let Some(token) = cache_get("csrf", "token") {
+        eprintln!("[CACHE] Using cached SnapEDA CSRF token");
+        return Ok(token);
+    }
+
     let response = ureq::get(&format!("{}/account/login/", BASE_URL))
         .set("User-Agent", USER_AGENT)
         .call()
@@ -674,6 +772,7 @@ fn acquire_csrf_token() -> Result<String, String> {
         let after = &cookie_header[start + 10..];
         let token: String = after.chars().take_while(|c| *c != ';' && *c != ' ').collect();
         if !token.is_empty() {
+            cache_set("csrf", "token", &token, 1800);
             return Ok(token);
         }
     }
@@ -683,6 +782,13 @@ fn acquire_csrf_token() -> Result<String, String> {
 }
 
 fn snapeda_search(query: &str) -> Result<Vec<SearchResult>, String> {
+    if let Some(cached) = cache_get("search", query) {
+        eprintln!("[CACHE] Using cached SnapEDA search results for: {}", query);
+        let results: Vec<SearchResult> = serde_json::from_str(&cached)
+            .map_err(|e| format!("Failed to parse cached search results: {}", e))?;
+        return Ok(results);
+    }
+
     let csrf = acquire_csrf_token()?;
 
     thread::sleep(Duration::from_secs(1));
@@ -702,6 +808,10 @@ fn snapeda_search(query: &str) -> Result<Vec<SearchResult>, String> {
     let search_resp: SearchResponse = response
         .into_json()
         .map_err(|e| format!("Failed to parse SnapEDA search response: {}", e))?;
+
+    if let Ok(serialized) = serde_json::to_string(&search_resp.results) {
+        cache_set("search", query, &serialized, 86400);
+    }
 
     Ok(search_resp.results)
 }
