@@ -30,7 +30,7 @@ pub struct ExtractArgs {
     pub provider: LlmProvider,
 
     /// Model name (default: task-specific model, see each task's default_model())
-    /// Examples: gemini-2.0-flash-exp, gemini-2.5-flash, gemini-1.5-pro
+    /// Examples: gemini-3.1-pro-preview, gemini-2.5-flash, gemini-3.1-flash-lite-preview
     #[arg(long, default_value = __DEFAULT__)]
     pub model: String,
 
@@ -105,7 +105,7 @@ impl ExtractTask {
     }
 
     pub fn default_model(self) -> &'static str {
-        "gemini-3-pro-preview"
+        "gemini-3.1-pro-preview"
     }
 }
 
