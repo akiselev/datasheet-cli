@@ -27,6 +27,22 @@ pub enum JlcpcbSubcommand {
         /// Output results as JSON
         #[arg(long)]
         json: bool,
+
+        /// Filter by manufacturer name
+        #[arg(long, short)]
+        manufacturer: Option<String>,
+
+        /// Filter by package/footprint (e.g. 0402, SOT-23)
+        #[arg(long, short)]
+        package: Option<String>,
+
+        /// Show only basic library parts
+        #[arg(long)]
+        basic_only: bool,
+
+        /// Show only in-stock parts
+        #[arg(long)]
+        in_stock: bool,
     },
 
     /// Get detailed information about a specific LCSC part
@@ -220,7 +236,15 @@ struct ApiAttribute {
 
 pub fn execute(command: JlcpcbSubcommand) -> Result<(), String> {
     match command {
-        JlcpcbSubcommand::Search { query, limit, json } => cmd_search(&query, limit, json),
+        JlcpcbSubcommand::Search {
+            query,
+            limit,
+            json,
+            manufacturer,
+            package,
+            basic_only,
+            in_stock,
+        } => cmd_search(&query, limit, json, manufacturer.as_deref(), package.as_deref(), basic_only, in_stock),
         JlcpcbSubcommand::Part {
             lcsc_part_number,
             json,
@@ -229,9 +253,17 @@ pub fn execute(command: JlcpcbSubcommand) -> Result<(), String> {
     }
 }
 
-fn cmd_search(query: &str, limit: usize, json_output: bool) -> Result<(), String> {
+fn cmd_search(
+    query: &str,
+    limit: usize,
+    json_output: bool,
+    manufacturer: Option<&str>,
+    package: Option<&str>,
+    basic_only: bool,
+    in_stock: bool,
+) -> Result<(), String> {
     let limit = limit.min(100);
-    let parts = jlcpcb_search(query, limit)?;
+    let parts = jlcpcb_search(query, limit, manufacturer, package, basic_only, in_stock)?;
 
     if json_output {
         let json = serde_json::to_string_pretty(&parts)
@@ -260,7 +292,7 @@ fn cmd_part(part_number: &str, json_output: bool) -> Result<(), String> {
     let lcsc_pn = if is_lcsc_part_number(part_number) {
         part_number.to_string()
     } else {
-        let results = jlcpcb_search(part_number, 5)?;
+        let results = jlcpcb_search(part_number, 5, None, None, false, false)?;
         let first = results.into_iter().next().ok_or_else(|| {
             format!("No JLCPCB/LCSC part found for: {}", part_number)
         })?;
@@ -315,7 +347,7 @@ fn cmd_stock(part_number: &str, json_output: bool) -> Result<(), String> {
             jlcpcb_category: detail.category.clone(),
         }
     } else {
-        let results = jlcpcb_search(part_number, 5)?;
+        let results = jlcpcb_search(part_number, 5, None, None, false, false)?;
         let first = results.into_iter().next().ok_or_else(|| {
             format!("No JLCPCB/LCSC part found for: {}", part_number)
         })?;
@@ -424,14 +456,35 @@ fn is_lcsc_part_number(s: &str) -> bool {
 
 // --- API helpers ---
 
-fn jlcpcb_search(keyword: &str, limit: usize) -> Result<Vec<JlcpcbPart>, String> {
-    let body = serde_json::json!({
+fn jlcpcb_search(
+    keyword: &str,
+    limit: usize,
+    manufacturer: Option<&str>,
+    package: Option<&str>,
+    basic_only: bool,
+    in_stock: bool,
+) -> Result<Vec<JlcpcbPart>, String> {
+    let mut body = serde_json::json!({
         "currentPage": 1,
         "pageSize": limit,
         "keyword": keyword,
         "searchSource": "search",
         "componentAttributes": []
     });
+
+    let obj = body.as_object_mut().unwrap();
+    if let Some(m) = manufacturer {
+        obj.insert("componentBrand".to_string(), serde_json::json!(m));
+    }
+    if let Some(p) = package {
+        obj.insert("componentSpecification".to_string(), serde_json::json!(p));
+    }
+    if basic_only {
+        obj.insert("componentLibraryType".to_string(), serde_json::json!("base"));
+    }
+    if in_stock {
+        obj.insert("stockFlag".to_string(), serde_json::json!(true));
+    }
 
     let response: ApiResponse<SearchData> = ureq::post(SEARCH_URL)
         .set("Content-Type", "application/json")

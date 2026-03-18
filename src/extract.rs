@@ -72,6 +72,7 @@ pub struct ExtractArgs {
 
 #[derive(ValueEnum, Debug, Clone, Copy)]
 pub enum ExtractTask {
+    ApplicationCircuit,
     BootConfig,
     Characteristics,
     Custom,
@@ -88,6 +89,7 @@ pub enum ExtractTask {
 impl ExtractTask {
     pub fn prompt(self) -> prompts::PromptSpec {
         match self {
+            ExtractTask::ApplicationCircuit => prompts::application_circuit(),
             ExtractTask::BootConfig => prompts::boot_config(),
             ExtractTask::Characteristics => prompts::characteristics(),
             ExtractTask::Custom => prompts::custom(),

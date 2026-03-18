@@ -24,6 +24,7 @@ impl PromptSpec {
     }
 }
 
+const PROMPT_APPLICATION_CIRCUIT: &str = include_str!("../prompts/extract-application-circuit.md");
 const PROMPT_BOOT_CONFIG: &str = include_str!("../prompts/extract-boot-config.md");
 const PROMPT_CHARACTERISTICS: &str = include_str!("../prompts/extract-characteristics.md");
 const PROMPT_CUSTOM: &str = include_str!("../prompts/extract-custom.md");
@@ -35,6 +36,95 @@ const PROMPT_LAYOUT_CONSTRAINTS: &str = include_str!("../prompts/extract-layout-
 const PROMPT_PINOUT: &str = include_str!("../prompts/extract-pinout.md");
 const PROMPT_POWER: &str = include_str!("../prompts/extract-power.md");
 const PROMPT_REFERENCE_DESIGN: &str = include_str!("../prompts/extract-reference-design.md");
+
+pub fn application_circuit() -> PromptSpec {
+    let mut spec = PromptSpec::new(
+        "application-circuit",
+        "Application circuit netlist extraction",
+        PROMPT_APPLICATION_CIRCUIT,
+    );
+    spec.schema = json!({
+        "type": "object",
+        "properties": {
+            "part_number": {"type": "string"},
+            "source_pages": {"type": "array", "items": {"type": "integer"}},
+            "circuits": {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "circuit_name": {"type": "string"},
+                        "circuit_type": {"type": "string", "enum": ["typical", "alternative", "evaluation"]},
+                        "source_page": {"type": "integer"},
+                        "description": {"type": "string"},
+                        "design_parameters": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "parameter": {"type": "string"},
+                                    "value": {"type": "string"}
+                                },
+                                "required": ["parameter", "value"]
+                            }
+                        },
+                        "components": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "designator": {"type": "string"},
+                                    "type": {"type": "string", "enum": [
+                                        "ic", "resistor", "capacitor", "capacitor_polarized",
+                                        "inductor", "diode", "diode_schottky", "diode_zener",
+                                        "led", "mosfet_n", "mosfet_p", "bjt_npn", "bjt_pnp",
+                                        "transformer", "fuse", "ferrite_bead", "crystal",
+                                        "connector", "test_point", "other"
+                                    ]},
+                                    "part_number": {"type": ["string", "null"]},
+                                    "value": {"type": ["string", "null"]},
+                                    "description": {"type": "string"},
+                                    "pins": {"type": "array", "items": {"type": "string"}}
+                                },
+                                "required": ["designator", "type", "pins"]
+                            }
+                        },
+                        "nets": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {"type": "string"},
+                                    "type": {"type": "string", "enum": [
+                                        "power_input", "power_output", "ground", "signal", "internal"
+                                    ]},
+                                    "voltage": {"type": ["string", "null"]},
+                                    "description": {"type": ["string", "null"]},
+                                    "connections": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "object",
+                                            "properties": {
+                                                "component": {"type": "string"},
+                                                "pin": {"type": "string"}
+                                            },
+                                            "required": ["component", "pin"]
+                                        }
+                                    }
+                                },
+                                "required": ["name", "type", "connections"]
+                            }
+                        },
+                        "notes": {"type": "array", "items": {"type": "string"}}
+                    },
+                    "required": ["circuit_name", "components", "nets"]
+                }
+            }
+        },
+        "required": ["part_number", "circuits"]
+    });
+    spec
+}
 
 pub fn boot_config() -> PromptSpec {
     let mut spec = PromptSpec::new(

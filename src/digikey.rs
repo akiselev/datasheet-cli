@@ -40,6 +40,42 @@ pub enum DigikeySubcommand {
         /// Use sandbox API for testing
         #[arg(long)]
         sandbox: bool,
+
+        /// Filter by category name (resolved via discovery)
+        #[arg(long, short)]
+        category: Option<String>,
+
+        /// Filter by parametric parameter, format "Name=Value" (repeatable)
+        #[arg(long)]
+        param: Vec<String>,
+
+        /// Filter by manufacturer name (resolved via discovery)
+        #[arg(long, short)]
+        manufacturer: Option<String>,
+
+        /// Only show in-stock parts
+        #[arg(long)]
+        in_stock: bool,
+
+        /// Sort results: price, stock, mpn, manufacturer
+        #[arg(long)]
+        sort: Option<String>,
+
+        /// Filter by category ID (direct, skips discovery)
+        #[arg(long)]
+        category_id: Option<i64>,
+
+        /// Filter by manufacturer ID (direct, repeatable)
+        #[arg(long)]
+        manufacturer_id: Vec<i64>,
+
+        /// Filter by parametric ID, format "ParameterId=ValueId" (repeatable)
+        #[arg(long)]
+        param_id: Vec<String>,
+
+        /// Output FilterOptions from API response as JSON instead of products
+        #[arg(long)]
+        show_filters: bool,
     },
 
     /// Download datasheet for a part
@@ -156,12 +192,58 @@ struct TokenResponse {
 struct KeywordSearchRequest {
     keywords: String,
     #[serde(skip_serializing_if = "Option::is_none")]
-    record_count: Option<usize>,
+    limit: Option<usize>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    record_start_position: Option<usize>,
+    offset: Option<usize>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    filter_options_request: Option<FilterOptionsRequest>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    sort_options: Option<SortOptions>,
 }
 
-#[derive(Deserialize, Debug)]
+#[derive(Serialize)]
+#[serde(rename_all = "PascalCase")]
+struct FilterOptionsRequest {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    manufacturer_filter: Option<Vec<FilterId>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    category_filter: Option<Vec<FilterId>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    minimum_quantity_available: Option<i32>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    parameter_filter_request: Option<ParameterFilterRequest>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    search_options: Option<Vec<String>>,
+}
+
+#[derive(Serialize)]
+#[serde(rename_all = "PascalCase")]
+struct ParameterFilterRequest {
+    category_filter: FilterId,
+    parameter_filters: Vec<ParametricFilter>,
+}
+
+#[derive(Serialize)]
+#[serde(rename_all = "PascalCase")]
+struct ParametricFilter {
+    parameter_id: i64,
+    filter_values: Vec<FilterId>,
+}
+
+#[derive(Serialize)]
+#[serde(rename_all = "PascalCase")]
+struct FilterId {
+    id: String,
+}
+
+#[derive(Serialize)]
+#[serde(rename_all = "PascalCase")]
+struct SortOptions {
+    field: String,
+    sort_order: String,
+}
+
+#[derive(Deserialize, Debug, Serialize)]
 #[serde(rename_all = "PascalCase")]
 struct SearchResponse {
     products: Vec<Product>,
@@ -169,6 +251,64 @@ struct SearchResponse {
     products_count: i32,
     #[serde(default)]
     exact_manufacturer_products_count: i32,
+    #[serde(default)]
+    filter_options: Option<FilterOptions>,
+}
+
+#[derive(Deserialize, Debug, Serialize)]
+#[serde(rename_all = "PascalCase")]
+struct FilterOptions {
+    #[serde(default)]
+    manufacturers: Vec<BaseFilter>,
+    #[serde(default)]
+    packaging: Vec<BaseFilter>,
+    #[serde(default)]
+    status: Vec<BaseFilter>,
+    #[serde(default)]
+    series: Vec<BaseFilter>,
+    #[serde(default)]
+    parametric_filters: Vec<ParametricFilterOption>,
+    #[serde(default)]
+    top_categories: Vec<TopCategory>,
+}
+
+#[derive(Deserialize, Debug, Serialize)]
+#[serde(rename_all = "PascalCase")]
+struct BaseFilter {
+    id: Option<i64>,
+    value: Option<String>,
+    product_count: Option<i64>,
+}
+
+#[derive(Deserialize, Debug, Serialize)]
+#[serde(rename_all = "PascalCase")]
+struct ParametricFilterOption {
+    parameter_id: Option<i64>,
+    parameter_name: Option<String>,
+    filter_values: Option<Vec<FilterValue>>,
+}
+
+#[derive(Deserialize, Debug, Serialize)]
+#[serde(rename_all = "PascalCase")]
+struct FilterValue {
+    value_id: Option<String>,
+    value_name: Option<String>,
+    product_count: Option<i64>,
+}
+
+#[derive(Deserialize, Debug, Serialize)]
+#[serde(rename_all = "PascalCase")]
+struct TopCategory {
+    root_category: Option<CategoryInfo>,
+    category: Option<CategoryInfo>,
+}
+
+#[derive(Deserialize, Debug, Serialize)]
+#[serde(rename_all = "PascalCase")]
+struct CategoryInfo {
+    id: Option<i64>,
+    name: Option<String>,
+    product_count: Option<i64>,
 }
 
 #[derive(Deserialize, Debug, Serialize)]
@@ -232,7 +372,32 @@ pub fn execute(command: DigikeySubcommand) -> Result<(), String> {
             limit,
             json,
             sandbox,
-        } => cmd_search(&query, client_id.as_deref(), client_secret.as_deref(), limit, json, sandbox),
+            category,
+            param,
+            manufacturer,
+            in_stock,
+            sort,
+            category_id,
+            manufacturer_id,
+            param_id,
+            show_filters,
+        } => cmd_search(
+            &query,
+            client_id.as_deref(),
+            client_secret.as_deref(),
+            limit,
+            json,
+            sandbox,
+            category,
+            param,
+            manufacturer,
+            in_stock,
+            sort,
+            category_id,
+            manufacturer_id,
+            param_id,
+            show_filters,
+        ),
         DigikeySubcommand::Download {
             part_number,
             client_id,
@@ -322,6 +487,31 @@ fn get_access_token(client_id: &str, client_secret: &str, sandbox: bool) -> Resu
     Ok(response.access_token)
 }
 
+fn map_sort_field(sort: &str) -> Result<SortOptions, String> {
+    let (field, order) = match sort {
+        "price" => ("Price", "Ascending"),
+        "stock" => ("QuantityAvailable", "Descending"),
+        "mpn" => ("ManufacturerProductNumber", "Ascending"),
+        "manufacturer" => ("Manufacturer", "Ascending"),
+        _ => {
+            return Err(format!(
+                "Unknown sort field: {}. Options: price, stock, mpn, manufacturer",
+                sort
+            ))
+        }
+    };
+    Ok(SortOptions { field: field.to_string(), sort_order: order.to_string() })
+}
+
+fn build_search_options(in_stock: bool) -> Option<Vec<String>> {
+    if in_stock {
+        Some(vec!["InStock".to_string()])
+    } else {
+        None
+    }
+}
+
+#[allow(clippy::too_many_arguments)]
 fn cmd_search(
     query: &str,
     client_id: Option<&str>,
@@ -329,14 +519,301 @@ fn cmd_search(
     limit: usize,
     json_output: bool,
     sandbox: bool,
+    category: Option<String>,
+    params: Vec<String>,
+    manufacturer: Option<String>,
+    in_stock: bool,
+    sort: Option<String>,
+    category_id: Option<i64>,
+    manufacturer_ids: Vec<i64>,
+    param_ids: Vec<String>,
+    show_filters: bool,
 ) -> Result<(), String> {
     let (client_id, client_secret) = get_credentials(client_id, client_secret)?;
     let access_token = get_access_token(&client_id, &client_secret, sandbox)?;
 
-    let products = search_by_keyword(&client_id, &access_token, query, limit, sandbox)?;
+    let sort_options = sort.as_deref().map(map_sort_field).transpose()?;
+
+    let has_name_filters = category.is_some() || !params.is_empty() || manufacturer.is_some();
+    let has_id_filters =
+        category_id.is_some() || !manufacturer_ids.is_empty() || !param_ids.is_empty();
+
+    let response = if has_name_filters && !has_id_filters {
+        // TWO-STEP: Discovery search to resolve names to IDs, then filtered search.
+
+        let discovery =
+            search_by_keyword(&client_id, &access_token, query, 1, sandbox, None, None)?;
+        let filter_opts = discovery
+            .filter_options
+            .ok_or("API did not return filter options for discovery search")?;
+
+        // Resolve category name → ID
+        let resolved_category_id: Option<i64> = if let Some(ref cat_name) = category {
+            let cat_lower = cat_name.to_lowercase();
+            let matched = filter_opts.top_categories.iter().find(|tc| {
+                tc.category
+                    .as_ref()
+                    .and_then(|c| c.name.as_ref())
+                    .map(|n| {
+                        n.eq_ignore_ascii_case(cat_name) || n.to_lowercase().contains(&cat_lower)
+                    })
+                    .unwrap_or(false)
+            });
+            match matched {
+                Some(tc) => tc.category.as_ref().and_then(|c| c.id),
+                None => {
+                    let available: Vec<String> = filter_opts
+                        .top_categories
+                        .iter()
+                        .filter_map(|tc| tc.category.as_ref().and_then(|c| c.name.clone()))
+                        .collect();
+                    return Err(format!(
+                        "Category '{}' not found. Available: {}",
+                        cat_name,
+                        available.join(", ")
+                    ));
+                }
+            }
+        } else {
+            None
+        };
+
+        // Resolve manufacturer name → ID
+        let resolved_mfr_ids: Option<Vec<FilterId>> = if let Some(ref mfr_name) = manufacturer {
+            let mfr_lower = mfr_name.to_lowercase();
+            let matched = filter_opts.manufacturers.iter().find(|m| {
+                m.value
+                    .as_ref()
+                    .map(|v| {
+                        v.eq_ignore_ascii_case(mfr_name) || v.to_lowercase().contains(&mfr_lower)
+                    })
+                    .unwrap_or(false)
+            });
+            match matched {
+                Some(m) => Some(vec![FilterId {
+                    id: m.id.map(|i| i.to_string()).unwrap_or_default(),
+                }]),
+                None => {
+                    let available: Vec<String> = filter_opts
+                        .manufacturers
+                        .iter()
+                        .filter_map(|m| m.value.clone())
+                        .take(20)
+                        .collect();
+                    return Err(format!(
+                        "Manufacturer '{}' not found. Top matches: {}",
+                        mfr_name,
+                        available.join(", ")
+                    ));
+                }
+            }
+        } else {
+            None
+        };
+
+        // Resolve --param "Name=Value" → ParameterId + ValueId
+        let mut resolved_params: Vec<ParametricFilter> = Vec::new();
+        for param_str in &params {
+            let (name_part, value_part) = param_str
+                .split_once('=')
+                .ok_or_else(|| format!("Invalid --param format '{}': expected 'Name=Value'", param_str))?;
+            let name_lower = name_part.trim().to_lowercase();
+            let value_lower = value_part.trim().to_lowercase();
+
+            let param_opt = filter_opts.parametric_filters.iter().find(|pf| {
+                pf.parameter_name
+                    .as_ref()
+                    .map(|n| {
+                        n.eq_ignore_ascii_case(name_part.trim())
+                            || n.to_lowercase().contains(&name_lower)
+                    })
+                    .unwrap_or(false)
+            });
+
+            let param_opt = match param_opt {
+                Some(p) => p,
+                None => {
+                    let available: Vec<String> = filter_opts
+                        .parametric_filters
+                        .iter()
+                        .filter_map(|pf| pf.parameter_name.clone())
+                        .collect();
+                    return Err(format!(
+                        "Parameter '{}' not found. Available: {}",
+                        name_part.trim(),
+                        available.join(", ")
+                    ));
+                }
+            };
+
+            let parameter_id = param_opt
+                .parameter_id
+                .ok_or_else(|| format!("Parameter '{}' has no ID", name_part.trim()))?;
+
+            let filter_vals = param_opt.filter_values.as_deref().unwrap_or(&[]);
+            let matched_val = filter_vals.iter().find(|fv| {
+                fv.value_name
+                    .as_ref()
+                    .map(|n| {
+                        n.eq_ignore_ascii_case(value_part.trim())
+                            || n.to_lowercase().contains(&value_lower)
+                    })
+                    .unwrap_or(false)
+            });
+
+            let matched_val = match matched_val {
+                Some(v) => v,
+                None => {
+                    let available: Vec<String> = filter_vals
+                        .iter()
+                        .filter_map(|fv| fv.value_name.clone())
+                        .collect();
+                    return Err(format!(
+                        "Value '{}' not found for parameter '{}'. Available: {}",
+                        value_part.trim(),
+                        name_part.trim(),
+                        available.join(", ")
+                    ));
+                }
+            };
+
+            let value_id = matched_val
+                .value_id
+                .clone()
+                .ok_or_else(|| format!("Value '{}' has no ID", value_part.trim()))?;
+
+            resolved_params.push(ParametricFilter {
+                parameter_id,
+                filter_values: vec![FilterId { id: value_id }],
+            });
+        }
+
+        // Build FilterOptionsRequest
+        let parameter_filter_request = if !resolved_params.is_empty() {
+            let cat_id = resolved_category_id.ok_or(
+                "--category is required when using --param (DigiKey requires a category for parametric filtering)",
+            )?;
+            Some(ParameterFilterRequest {
+                category_filter: FilterId { id: cat_id.to_string() },
+                parameter_filters: resolved_params,
+            })
+        } else {
+            None
+        };
+
+        let filter_request = FilterOptionsRequest {
+            manufacturer_filter: resolved_mfr_ids,
+            category_filter: resolved_category_id
+                .map(|id| vec![FilterId { id: id.to_string() }]),
+            minimum_quantity_available: None,
+            parameter_filter_request,
+            search_options: build_search_options(in_stock),
+        };
+
+        search_by_keyword(
+            &client_id,
+            &access_token,
+            query,
+            limit,
+            sandbox,
+            Some(filter_request),
+            sort_options,
+        )?
+    } else if has_id_filters {
+        // DIRECT: Use provided IDs without discovery.
+
+        let manufacturer_filter = if !manufacturer_ids.is_empty() {
+            Some(manufacturer_ids.iter().map(|id| FilterId { id: id.to_string() }).collect())
+        } else {
+            None
+        };
+
+        let category_filter = category_id
+            .map(|id| vec![FilterId { id: id.to_string() }]);
+
+        // Parse --param-id "ParameterId=ValueId"
+        let mut direct_params: Vec<ParametricFilter> = Vec::new();
+        for pid_str in &param_ids {
+            let (param_id_str, value_id_str) = pid_str.split_once('=').ok_or_else(|| {
+                format!(
+                    "Invalid --param-id format '{}': expected 'ParameterId=ValueId'",
+                    pid_str
+                )
+            })?;
+            let parameter_id: i64 = param_id_str.trim().parse().map_err(|_| {
+                format!("Invalid parameter ID '{}': must be an integer", param_id_str.trim())
+            })?;
+            direct_params.push(ParametricFilter {
+                parameter_id,
+                filter_values: vec![FilterId { id: value_id_str.trim().to_string() }],
+            });
+        }
+
+        let parameter_filter_request = if !direct_params.is_empty() {
+            let cat_id = category_id.ok_or(
+                "--category-id is required when using --param-id (DigiKey requires a category for parametric filtering)",
+            )?;
+            Some(ParameterFilterRequest {
+                category_filter: FilterId { id: cat_id.to_string() },
+                parameter_filters: direct_params,
+            })
+        } else {
+            None
+        };
+
+        let filter_request = FilterOptionsRequest {
+            manufacturer_filter,
+            category_filter,
+            minimum_quantity_available: None,
+            parameter_filter_request,
+            search_options: build_search_options(in_stock),
+        };
+
+        search_by_keyword(
+            &client_id,
+            &access_token,
+            query,
+            limit,
+            sandbox,
+            Some(filter_request),
+            sort_options,
+        )?
+    } else {
+        // SIMPLE: No filters, keyword search only.
+        let filter_request = if in_stock {
+            Some(FilterOptionsRequest {
+                manufacturer_filter: None,
+                category_filter: None,
+                minimum_quantity_available: None,
+                parameter_filter_request: None,
+                search_options: build_search_options(in_stock),
+            })
+        } else {
+            None
+        };
+
+        search_by_keyword(
+            &client_id,
+            &access_token,
+            query,
+            limit,
+            sandbox,
+            filter_request,
+            sort_options,
+        )?
+    };
+
+    if show_filters {
+        let json = serde_json::to_string_pretty(&response.filter_options)
+            .map_err(|e| format!("Failed to serialize filter options: {}", e))?;
+        println!("{}", json);
+        return Ok(());
+    }
+
+    let products = &response.products;
 
     if json_output {
-        let json = serde_json::to_string_pretty(&products)
+        let json = serde_json::to_string_pretty(products)
             .map_err(|e| format!("Failed to serialize results: {}", e))?;
         println!("{}", json);
     } else {
@@ -573,14 +1050,18 @@ fn search_by_keyword(
     keyword: &str,
     limit: usize,
     sandbox: bool,
-) -> Result<Vec<Product>, String> {
+    filter_options_request: Option<FilterOptionsRequest>,
+    sort_options: Option<SortOptions>,
+) -> Result<SearchResponse, String> {
     let base_url = if sandbox { DIGIKEY_API_BASE_SANDBOX } else { DIGIKEY_API_BASE };
     let url = format!("{}/products/v4/search/keyword", base_url);
 
     let request = KeywordSearchRequest {
         keywords: keyword.to_string(),
-        record_count: Some(limit),
-        record_start_position: Some(0),
+        limit: Some(limit),
+        offset: Some(0),
+        filter_options_request,
+        sort_options,
     };
 
     let response: SearchResponse = ureq::post(&url)
@@ -593,7 +1074,7 @@ fn search_by_keyword(
         .into_json()
         .map_err(|e| format!("Failed to parse API response: {}", e))?;
 
-    Ok(response.products)
+    Ok(response)
 }
 
 /// Get exact part details by part number using the ProductDetails endpoint.
