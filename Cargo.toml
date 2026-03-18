@@ -1,6 +1,6 @@
 [package]
 name = "datasheet-cli"
-version = "0.1.4"
+version = "0.1.6"
 edition = "2024"
 rust-version = "1.85"
 
@@ -35,3 +35,5 @@ lopdf = { version = "0.39", default-features = false }
 roxmltree = "0.20"
 ureq = { version = "2.10", features = ["json"] }
 urlencoding = "2.1"
+zip = "2.0"
+rpassword = "5.0"

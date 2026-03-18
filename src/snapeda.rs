@@ -1,5 +1,6 @@
 //! SnapEDA/SnapMagic CAD library integration.
 
+use std::io::{Cursor, Read as _, Write as _};
 use std::path::PathBuf;
 use std::thread;
 use std::time::Duration;
@@ -132,6 +133,26 @@ pub enum SnapedaSubcommand {
         json: bool,
         #[arg(long, short)]
         formatted: bool,
+        #[arg(long)]
+        out: Option<PathBuf>,
+    },
+    /// Log in to SnapEDA to enable authenticated downloads
+    Login {
+        /// SnapEDA account email/username
+        #[arg(long)]
+        username: Option<String>,
+        /// SnapEDA account password (will prompt if not provided)
+        #[arg(long)]
+        password: Option<String>,
+    },
+    /// Download CAD files from SnapEDA (requires login)
+    Download {
+        /// SnapEDA unipart ID, part number, or URL
+        part: String,
+        /// Download format: altium_native (default), eagle, kicad, kicad_mod, kicad_modv6
+        #[arg(long, default_value = "altium_native")]
+        format: String,
+        /// Write output to file
         #[arg(long)]
         out: Option<PathBuf>,
     },
@@ -412,6 +433,8 @@ pub fn execute(command: SnapedaSubcommand) -> Result<(), String> {
             formatted,
             out,
         } => cmd_footprint(&part, json, formatted, out),
+        SnapedaSubcommand::Login { username, password } => cmd_login(username, password),
+        SnapedaSubcommand::Download { part, format, out } => cmd_download(&part, &format, out),
     }
 }
 
@@ -459,6 +482,7 @@ fn cmd_search(query: &str, limit: usize, json_output: bool) -> Result<(), String
 struct ResolvedPart {
     unipart_id: String,
     model_id: u64,
+    alt_model_id: Option<u64>,
     part_name: String,
     manufacturer: Option<String>,
     description: Option<String>,
@@ -479,9 +503,13 @@ fn resolve_and_fetch(part: &str) -> Result<ResolvedPart, String> {
             if let Some(r) = results.iter().find(|r| r.unipart_id == uid) {
                 if let Some(mid) = extract_model_id_from_search(r) {
                     eprintln!("Resolved model_id {} from search for unipart_id {}", mid, uid);
+                    thread::sleep(Duration::from_secs(1));
+                    let info = fetch_unipart_info(&uid)?;
+                    let alt_model_id = if info.part_id != mid { Some(info.part_id) } else { None };
                     return Ok(ResolvedPart {
                         unipart_id: uid,
                         model_id: mid,
+                        alt_model_id,
                         part_name: r.part_number.clone(),
                         manufacturer: Some(r.manufacturer.clone()),
                         description: r.short_description.clone(),
@@ -495,6 +523,7 @@ fn resolve_and_fetch(part: &str) -> Result<ResolvedPart, String> {
         return Ok(ResolvedPart {
             unipart_id: uid,
             model_id: info.part_id,
+            alt_model_id: None,
             part_name: info.modelname.unwrap_or_default(),
             manufacturer: info.manufacturer.clone(),
             description: info.part_description.clone(),
@@ -532,18 +561,22 @@ fn resolve_and_fetch(part: &str) -> Result<ResolvedPart, String> {
     eprintln!("Resolved: {} by {} (unipart_id: {})", matched.part_number, matched.manufacturer, uid);
 
     // Get model_id from te_param (preferred) or fallback to get_part_for_unipart
-    let model_id = if let Some(mid) = extract_model_id_from_search(matched) {
+    let (model_id, alt_model_id) = if let Some(mid) = extract_model_id_from_search(matched) {
         eprintln!("Using Eagle model_id {} from search metadata", mid);
-        mid
+        thread::sleep(Duration::from_secs(1));
+        let info = fetch_unipart_info(&uid)?;
+        let alt = if info.part_id != mid { Some(info.part_id) } else { None };
+        (mid, alt)
     } else {
         thread::sleep(Duration::from_secs(1));
         let info = fetch_unipart_info(&uid)?;
-        info.part_id
+        (info.part_id, None)
     };
 
     Ok(ResolvedPart {
         unipart_id: uid,
         model_id,
+        alt_model_id,
         part_name: matched.part_number.clone(),
         manufacturer: Some(matched.manufacturer.clone()),
         description: matched.short_description.clone(),
@@ -584,15 +617,56 @@ fn parse_url_components(url: &str) -> Result<(String, Option<String>), String> {
 
 fn fetch_part_output(resolved: &ResolvedPart) -> Result<SnapedaOutput, String> {
     thread::sleep(Duration::from_secs(1));
-    let xml_str = fetch_eagle_xml(resolved.model_id)?;
+
+    let mut effective_model_id = resolved.model_id;
+    let eagle_result = fetch_eagle_xml(resolved.model_id);
+
+    let eagle_result = match (&eagle_result, resolved.alt_model_id) {
+        (Err(primary_err), Some(alt_id)) => {
+            eprintln!("Primary model_id {} failed: {}", resolved.model_id, primary_err);
+            eprintln!("Trying alternate model_id {}...", alt_id);
+            thread::sleep(Duration::from_secs(1));
+            let alt_result = fetch_eagle_xml(alt_id);
+            if alt_result.is_ok() {
+                effective_model_id = alt_id;
+            }
+            alt_result
+        }
+        _ => eagle_result,
+    };
+
+    let library = match eagle_result {
+        Ok(ref xml_str) => parse_eagle_xml(xml_str)?,
+        Err(ref eagle_err) => {
+            eprintln!("Eagle XML unavailable: {}", eagle_err);
+
+            if let Some((session_id, csrf)) = get_session_cookies() {
+                eprintln!("Attempting authenticated kicad_mod download as fallback...");
+                match download_kicad_mod(resolved, &session_id, &csrf) {
+                    Ok(kicad_content) => {
+                        parse_kicad_mod(&kicad_content, &resolved.part_name)?
+                    }
+                    Err(dl_err) => {
+                        eprintln!("kicad_mod fallback also failed: {}", dl_err);
+                        return Err(format!(
+                            "{}\nAuthenticated download also failed: {}",
+                            eagle_err, dl_err
+                        ));
+                    }
+                }
+            } else {
+                eprintln!("Not logged in — cannot try authenticated download fallback.");
+                eprintln!("Run 'datasheet snapeda login' to enable fallback downloads.");
+                return Err(eagle_err.clone());
+            }
+        }
+    };
 
     thread::sleep(Duration::from_secs(1));
-    let fp_info = fetch_footprint_info(&resolved.unipart_id, resolved.model_id)?;
-
-    let library = parse_eagle_xml(&xml_str)?;
+    let fp_info = fetch_footprint_info(&resolved.unipart_id, effective_model_id)?;
 
     let info = UnipartInfo {
-        part_id: resolved.model_id,
+        part_id: effective_model_id,
         modelname: Some(resolved.part_name.clone()),
         manufacturer: resolved.manufacturer.clone(),
         part_description: resolved.description.clone(),
@@ -600,7 +674,7 @@ fn fetch_part_output(resolved: &ResolvedPart) -> Result<SnapedaOutput, String> {
 
     build_output(
         &resolved.unipart_id,
-        &resolved.model_id.to_string(),
+        &effective_model_id.to_string(),
         &info,
         &fp_info,
         &library,
@@ -779,6 +853,557 @@ fn acquire_csrf_token() -> Result<String, String> {
 
     // ureq might have consumed the body already; try reading all headers
     Err("Could not extract CSRF token from SnapEDA login page.".to_string())
+}
+
+/// Extract a named cookie value from a list of Set-Cookie header values.
+fn extract_cookie_value(cookies: &[&str], name: &str) -> Option<String> {
+    let prefix = format!("{}=", name);
+    for cookie_str in cookies {
+        if let Some(start) = cookie_str.find(&prefix) {
+            let after = &cookie_str[start + prefix.len()..];
+            let value: String = after.chars().take_while(|c| *c != ';' && *c != ' ').collect();
+            if !value.is_empty() {
+                return Some(value);
+            }
+        }
+    }
+    None
+}
+
+fn get_session_cookies() -> Option<(String, String)> {
+    let session_id = cache_get("session", "sessionid")?;
+    let csrf = cache_get("session", "csrftoken")?;
+    Some((session_id, csrf))
+}
+
+fn cmd_login(username: Option<String>, password: Option<String>) -> Result<(), String> {
+    let username = match username {
+        Some(u) => u,
+        None => {
+            eprint!("SnapEDA username/email: ");
+            std::io::stderr().flush().ok();
+            let mut input = String::new();
+            std::io::stdin().read_line(&mut input)
+                .map_err(|e| format!("Failed to read username: {}", e))?;
+            input.trim().to_string()
+        }
+    };
+
+    let password = match password {
+        Some(p) => p,
+        None => {
+            eprint!("SnapEDA password: ");
+            std::io::stderr().flush().ok();
+            rpassword::read_password()
+                .map_err(|e| format!("Failed to read password: {}", e))?
+        }
+    };
+
+    // Use ureq (not reqwest) — ureq's TLS fingerprint passes Cloudflare challenges
+    // that reqwest gets blocked by.
+
+    // Step 1: Get a fresh CSRF token from the login page
+    eprintln!("Fetching login page for CSRF token...");
+    let login_url = format!("{}/account/login/", BASE_URL);
+
+    let get_resp = ureq::get(&login_url)
+        .set("User-Agent", USER_AGENT)
+        .call()
+        .map_err(|e| format!("Failed to fetch login page: {}", e))?;
+
+    // Use the final URL after redirects (e.g. www.snapeda.com → snapeda.com)
+    let resolved_login_url = get_resp.get_url().to_string();
+    eprintln!("Login URL resolved to: {}", resolved_login_url);
+
+    let get_cookies = get_resp.all("set-cookie");
+    let csrf = extract_cookie_value(&get_cookies, "csrftoken")
+        .ok_or_else(|| "Could not extract CSRF token from login page".to_string())?;
+    // Django also sets an anonymous sessionid on GET — must send it back with the POST
+    let anon_session = extract_cookie_value(&get_cookies, "sessionid")
+        .unwrap_or_default();
+
+    eprintln!("Got fresh CSRF token, posting login...");
+
+    // Step 2: POST login to the resolved URL (not the original, which may 301).
+    // ureq returns Err(Status(code, resp)) for non-2xx, including redirects.
+    let body = format!(
+        "csrfmiddlewaretoken={}&username={}&password={}",
+        urlencoding::encode(&csrf),
+        urlencoding::encode(&username),
+        urlencoding::encode(&password),
+    );
+
+    let cookie_header = if anon_session.is_empty() {
+        format!("csrftoken={}", csrf)
+    } else {
+        format!("csrftoken={}; sessionid={}", csrf, anon_session)
+    };
+
+    // Disable redirects so we can capture Set-Cookie from the login response
+    let agent = ureq::AgentBuilder::new()
+        .redirects(0)
+        .build();
+
+    let response = agent
+        .post(&resolved_login_url)
+        .set("User-Agent", USER_AGENT)
+        .set("Content-Type", "application/x-www-form-urlencoded")
+        .set("Referer", &resolved_login_url)
+        .set("Cookie", &cookie_header)
+        .send_string(&body);
+
+    // With redirects(0), ureq returns all responses (including 3xx) as Ok.
+    // Django returns 301 (to /home/) on successful login with Set-Cookie: sessionid=...
+    // On failure it returns 200 (the login page again).
+    let resp = match response {
+        Ok(resp) if resp.status() == 301 || resp.status() == 302 => {
+            eprintln!("Login response: {} redirect", resp.status());
+            resp
+        }
+        Ok(resp) => {
+            return Err(format!(
+                "Login failed: got HTTP {} — check your credentials.",
+                resp.status()
+            ));
+        }
+        Err(ureq::Error::Status(code, _)) => {
+            return Err(format!("Login failed with HTTP status: {}", code));
+        }
+        Err(e) => {
+            return Err(format!("Login request failed: {}", e));
+        }
+    };
+
+    // Extract session cookies from the 302 response
+    let cookies = resp.all("set-cookie");
+    let session_id = extract_cookie_value(&cookies, "sessionid")
+        .ok_or_else(|| {
+            "Login redirected but no session cookie received. Credentials may be wrong.".to_string()
+        })?;
+    let csrf_token = extract_cookie_value(&cookies, "csrftoken")
+        .unwrap_or(csrf);
+
+    cache_set("session", "sessionid", &session_id, 604800);
+    cache_set("session", "csrftoken", &csrf_token, 604800);
+
+    eprintln!("Successfully logged in as: {}", username);
+    Ok(())
+}
+
+fn cmd_download(part: &str, format: &str, out: Option<PathBuf>) -> Result<(), String> {
+    let resolved = resolve_and_fetch(part)?;
+
+    let (session_id, csrf) = get_session_cookies()
+        .ok_or_else(|| "Not logged in. Run 'datasheet snapeda login' first.".to_string())?;
+
+    let url = format!(
+        "{}/parts/snapapi/download-component/{}/{}/{}",
+        BASE_URL, resolved.model_id, resolved.unipart_id, format
+    );
+
+    eprintln!("Requesting download: {}", url);
+
+    let response = ureq::get(&url)
+        .set("User-Agent", USER_AGENT)
+        .set("Cookie", &format!("sessionid={}; csrftoken={}", session_id, csrf))
+        .set("Referer", &format!("{}/", BASE_URL))
+        .call()
+        .map_err(|e| format!("Download request failed: {}", e))?;
+
+    let body = response.into_string()
+        .map_err(|e| format!("Failed to read download response: {}", e))?;
+
+    let json: serde_json::Value = serde_json::from_str(&body)
+        .map_err(|e| format!("Failed to parse download response: {} (body: {})", e, &body[..body.len().min(200)]))?;
+
+    if let Some(error) = json.get("error").and_then(|v| v.as_str()) {
+        return Err(format!("SnapEDA download error: {}", error));
+    }
+
+    let download_url = json.get("url")
+        .and_then(|v| v.as_str())
+        .ok_or_else(|| format!("No download URL in response: {}", &body[..body.len().min(500)]))?;
+
+    // Infer output filename from the S3 URL
+    let url_filename = download_url
+        .split('/')
+        .last()
+        .and_then(|s| s.split('?').next())
+        .unwrap_or("download")
+        .to_string();
+
+    eprintln!("Downloading: {}", url_filename);
+
+    let dl_response = ureq::get(download_url)
+        .set("User-Agent", USER_AGENT)
+        .call()
+        .map_err(|e| format!("Failed to download file: {}", e))?;
+
+    let mut raw_bytes = Vec::new();
+    dl_response.into_reader().read_to_end(&mut raw_bytes)
+        .map_err(|e| format!("Failed to read download data: {}", e))?;
+
+    eprintln!("Downloaded {} bytes", raw_bytes.len());
+
+    // Check if it's a zip (PK magic) or a raw file (OLE2/other)
+    let is_zip = raw_bytes.len() >= 4 && raw_bytes[0] == b'P' && raw_bytes[1] == b'K';
+
+    if is_zip {
+        // Extract from zip archive
+        let cursor = Cursor::new(&raw_bytes);
+        let mut archive = zip::ZipArchive::new(cursor)
+            .map_err(|e| format!("Failed to open zip archive: {}", e))?;
+
+        let target_exts: &[&str] = match format {
+            "kicad_mod" | "kicad_modv6" => &[".kicad_mod"],
+            "kicad" => &[".kicad_sym"],
+            "eagle" => &[".lbr"],
+            "altium_native" => &[".PcbLib", ".SchLib", ".IntLib"],
+            _ => &[],
+        };
+
+        let mut all_names = Vec::new();
+        for i in 0..archive.len() {
+            if let Ok(file) = archive.by_index(i) {
+                if !file.is_dir() {
+                    all_names.push(file.name().to_string());
+                    eprintln!("  zip entry: {}", file.name());
+                }
+            }
+        }
+
+        let archive_len = archive.len();
+        let mut extracted_any = false;
+        for i in 0..archive_len {
+            let mut file = archive.by_index(i)
+                .map_err(|e| format!("Failed to read zip entry: {}", e))?;
+            let name = file.name().to_string();
+
+            let matches = target_exts.is_empty()
+                || target_exts.iter().any(|ext| name.ends_with(ext));
+            if file.is_dir() || !matches {
+                continue;
+            }
+
+            let mut bytes = Vec::new();
+            file.read_to_end(&mut bytes)
+                .map_err(|e| format!("Failed to read {} from zip: {}", name, e))?;
+
+            let file_basename = std::path::Path::new(&name)
+                .file_name()
+                .map(|f| f.to_string_lossy().to_string())
+                .unwrap_or(name.clone());
+
+            if let Some(ref out_path) = out {
+                let target = if out_path.extension().is_some() && archive_len <= 2 {
+                    out_path.clone()
+                } else {
+                    if !out_path.exists() {
+                        std::fs::create_dir_all(out_path)
+                            .map_err(|e| format!("Failed to create output directory: {}", e))?;
+                    }
+                    out_path.join(&file_basename)
+                };
+                std::fs::write(&target, &bytes)
+                    .map_err(|e| format!("Failed to write {}: {}", target.display(), e))?;
+                eprintln!("Wrote: {}", target.display());
+            } else {
+                // Try to print text, or report binary size
+                match String::from_utf8(bytes) {
+                    Ok(text) => println!("{}", text),
+                    Err(e) => eprintln!("{}: binary file ({} bytes) — use --out to save",
+                        file_basename, e.into_bytes().len()),
+                }
+            }
+            extracted_any = true;
+        }
+
+        if !extracted_any {
+            return Err(format!(
+                "Could not find matching file in archive. Contents: {:?}", all_names
+            ));
+        }
+    } else {
+        // Raw file (not zipped) — e.g. Altium .IntLib (OLE2 compound document)
+        if let Some(ref out_path) = out {
+            let target = if out_path.is_dir() {
+                out_path.join(&url_filename)
+            } else {
+                out_path.clone()
+            };
+            if let Some(parent) = target.parent() {
+                if !parent.exists() {
+                    std::fs::create_dir_all(parent)
+                        .map_err(|e| format!("Failed to create output directory: {}", e))?;
+                }
+            }
+            std::fs::write(&target, &raw_bytes)
+                .map_err(|e| format!("Failed to write {}: {}", target.display(), e))?;
+            eprintln!("Wrote: {} ({} bytes)", target.display(), raw_bytes.len());
+        } else {
+            eprintln!("{}: binary file ({} bytes) — use --out to save", url_filename, raw_bytes.len());
+        }
+    }
+
+    Ok(())
+}
+
+fn download_kicad_mod(resolved: &ResolvedPart, session_id: &str, csrf: &str) -> Result<String, String> {
+    let url = format!(
+        "{}/parts/snapapi/download-component/{}/{}/kicad_mod",
+        BASE_URL, resolved.model_id, resolved.unipart_id
+    );
+
+    eprintln!("Requesting kicad_mod download: {}", url);
+
+    let response = ureq::get(&url)
+        .set("User-Agent", USER_AGENT)
+        .set("Cookie", &format!("sessionid={}; csrftoken={}", session_id, csrf))
+        .set("Referer", &format!("{}/", BASE_URL))
+        .call()
+        .map_err(|e| format!("Download request failed: {}", e))?;
+
+    let body = response.into_string()
+        .map_err(|e| format!("Failed to read download response: {}", e))?;
+
+    let json: serde_json::Value = serde_json::from_str(&body)
+        .map_err(|e| format!("Failed to parse download response: {}", e))?;
+
+    if let Some(error) = json.get("error").and_then(|v| v.as_str()) {
+        return Err(format!("SnapEDA download error: {}", error));
+    }
+
+    let download_url = json.get("url")
+        .and_then(|v| v.as_str())
+        .ok_or_else(|| format!("No download URL in response: {}", &body[..body.len().min(500)]))?;
+
+    let zip_response = ureq::get(download_url)
+        .set("User-Agent", USER_AGENT)
+        .call()
+        .map_err(|e| format!("Failed to download zip: {}", e))?;
+
+    let mut zip_bytes = Vec::new();
+    zip_response.into_reader().read_to_end(&mut zip_bytes)
+        .map_err(|e| format!("Failed to read zip data: {}", e))?;
+
+    let cursor = Cursor::new(&zip_bytes);
+    let mut archive = zip::ZipArchive::new(cursor)
+        .map_err(|e| format!("Failed to open zip: {}", e))?;
+
+    for i in 0..archive.len() {
+        let mut file = archive.by_index(i)
+            .map_err(|e| format!("Failed to read zip entry: {}", e))?;
+        if file.name().ends_with(".kicad_mod") {
+            let mut content = String::new();
+            file.read_to_string(&mut content)
+                .map_err(|e| format!("Failed to read kicad_mod: {}", e))?;
+            eprintln!("Extracted kicad_mod from zip: {}", file.name());
+            return Ok(content);
+        }
+    }
+
+    let names: Vec<String> = (0..archive.len())
+        .filter_map(|i| archive.by_index(i).ok().map(|f| f.name().to_string()))
+        .collect();
+    Err(format!("No .kicad_mod file found in archive. Contents: {:?}", names))
+}
+
+fn parse_kicad_mod(content: &str, part_name: &str) -> Result<EagleLibrary, String> {
+    let mut pads: Vec<EaglePad> = Vec::new();
+    let mut wires: Vec<EagleWire> = Vec::new();
+
+    let mut search_from = 0;
+    while let Some(pad_start) = content[search_from..].find("(pad ") {
+        let abs_start = search_from + pad_start;
+        let pad_content = &content[abs_start..];
+        if let Some(pad_block) = extract_sexp_block(pad_content) {
+            let tokens = tokenize_sexp_flat(pad_block);
+
+            if tokens.len() >= 4 {
+                let pad_number = tokens[1].trim_matches('"').to_string();
+                let pad_type = tokens[2].as_str();
+                let pad_shape = tokens[3].as_str();
+
+                let (x, y) = extract_sexp_xy(pad_block, "at").unwrap_or((0.0, 0.0));
+                let (w, h) = extract_sexp_xy(pad_block, "size").unwrap_or((0.0, 0.0));
+
+                match pad_type {
+                    "smd" | "connect" => {
+                        let has_paste = pad_block.contains("F.Paste");
+                        pads.push(EaglePad::Smd(EagleSmd {
+                            name: pad_number,
+                            x,
+                            y,
+                            dx: w,
+                            dy: h,
+                            layer: 1,
+                            cream: has_paste,
+                        }));
+                    }
+                    "thru_hole" => {
+                        let drill = extract_sexp_single_value(pad_block, "drill").unwrap_or(0.0);
+                        pads.push(EaglePad::ThroughHole(EagleThroughHolePad {
+                            name: pad_number,
+                            x,
+                            y,
+                            drill,
+                            diameter: Some(w.max(h)),
+                            shape: Some(pad_shape.to_string()),
+                        }));
+                    }
+                    _ => {}
+                }
+            }
+
+            search_from = abs_start + pad_block.len();
+        } else {
+            search_from = abs_start + 5;
+        }
+    }
+
+    let mut cy_search = 0;
+    while let Some(line_start) = content[cy_search..].find("(fp_line ") {
+        let abs_start = cy_search + line_start;
+        let line_content = &content[abs_start..];
+        if let Some(block) = extract_sexp_block(line_content) {
+            if block.contains("F.CrtYd") || block.contains("CrtYd") {
+                let (x1, y1) = extract_sexp_xy(block, "start").unwrap_or((0.0, 0.0));
+                let (x2, y2) = extract_sexp_xy(block, "end").unwrap_or((0.0, 0.0));
+                let width = extract_sexp_single_value(block, "width")
+                    .or_else(|| extract_sexp_single_value(block, "stroke"))
+                    .unwrap_or(0.05);
+                wires.push(EagleWire { x1, y1, x2, y2, width, layer: 39 });
+            }
+            cy_search = abs_start + block.len();
+        } else {
+            cy_search = abs_start + 9;
+        }
+    }
+
+    let mut rect_search = 0;
+    while let Some(rect_start) = content[rect_search..].find("(fp_rect ") {
+        let abs_start = rect_search + rect_start;
+        let rect_content = &content[abs_start..];
+        if let Some(block) = extract_sexp_block(rect_content) {
+            if block.contains("F.CrtYd") || block.contains("CrtYd") {
+                let (x1, y1) = extract_sexp_xy(block, "start").unwrap_or((0.0, 0.0));
+                let (x2, y2) = extract_sexp_xy(block, "end").unwrap_or((0.0, 0.0));
+                let width = extract_sexp_single_value(block, "width")
+                    .or_else(|| extract_sexp_single_value(block, "stroke"))
+                    .unwrap_or(0.05);
+                wires.push(EagleWire { x1, y1, x2: x2, y2: y1, width, layer: 39 });
+                wires.push(EagleWire { x1: x2, y1, x2: x2, y2, width, layer: 39 });
+                wires.push(EagleWire { x1: x2, y1: y2, x2: x1, y2, width, layer: 39 });
+                wires.push(EagleWire { x1, y1: y2, x2: x1, y2: y1, width, layer: 39 });
+            }
+            rect_search = abs_start + block.len();
+        } else {
+            rect_search = abs_start + 9;
+        }
+    }
+
+    Ok(EagleLibrary {
+        packages: vec![EaglePackage {
+            name: part_name.to_string(),
+            pads,
+            wires,
+        }],
+        symbols: vec![],
+        devicesets: vec![],
+    })
+}
+
+fn extract_sexp_block(s: &str) -> Option<&str> {
+    if !s.starts_with('(') {
+        return None;
+    }
+    let mut depth = 0i32;
+    let mut in_quotes = false;
+    for (i, c) in s.char_indices() {
+        match c {
+            '"' => in_quotes = !in_quotes,
+            '(' if !in_quotes => depth += 1,
+            ')' if !in_quotes => {
+                depth -= 1;
+                if depth == 0 {
+                    return Some(&s[..=i]);
+                }
+            }
+            _ => {}
+        }
+    }
+    None
+}
+
+fn tokenize_sexp_flat(s: &str) -> Vec<String> {
+    let inner = s.trim();
+    let inner = if inner.starts_with('(') && inner.ends_with(')') {
+        &inner[1..inner.len() - 1]
+    } else {
+        inner
+    };
+
+    let mut tokens = Vec::new();
+    let mut current = String::new();
+    let mut in_quotes = false;
+    let mut depth = 0i32;
+
+    for c in inner.chars() {
+        match c {
+            '"' if depth == 0 => {
+                in_quotes = !in_quotes;
+                current.push(c);
+            }
+            '(' if !in_quotes => {
+                if depth == 0 && !current.trim().is_empty() {
+                    tokens.push(current.trim().to_string());
+                    current.clear();
+                }
+                depth += 1;
+            }
+            ')' if !in_quotes => {
+                depth -= 1;
+            }
+            ' ' | '\t' | '\n' | '\r' if !in_quotes && depth == 0 => {
+                if !current.trim().is_empty() {
+                    tokens.push(current.trim().to_string());
+                    current.clear();
+                }
+            }
+            _ if depth == 0 => {
+                current.push(c);
+            }
+            _ => {}
+        }
+    }
+    if !current.trim().is_empty() {
+        tokens.push(current.trim().to_string());
+    }
+    tokens
+}
+
+fn extract_sexp_xy(block: &str, keyword: &str) -> Option<(f64, f64)> {
+    let pattern = format!("({} ", keyword);
+    let start = block.find(&pattern)?;
+    let after = &block[start + pattern.len()..];
+    let end = after.find(')')?;
+    let coords = &after[..end];
+    let parts: Vec<&str> = coords.split_whitespace().collect();
+    if parts.len() >= 2 {
+        let x = parts[0].parse::<f64>().ok()?;
+        let y = parts[1].parse::<f64>().ok()?;
+        Some((x, y))
+    } else {
+        None
+    }
+}
+
+fn extract_sexp_single_value(block: &str, keyword: &str) -> Option<f64> {
+    let pattern = format!("({} ", keyword);
+    let start = block.find(&pattern)?;
+    let after = &block[start + pattern.len()..];
+    let end = after.find(|c: char| c == ')' || c == ' ')?;
+    after[..end].trim().parse::<f64>().ok()
 }
 
 fn snapeda_search(query: &str) -> Result<Vec<SearchResult>, String> {
