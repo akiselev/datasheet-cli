@@ -27,4 +27,4 @@ For each footprint drawing found, return:
 - Return a **tight** bounding box that fully encloses the drawing **and** all of its dimension annotations / leader lines.
 - If multiple distinct footprint drawings appear on the **same page**, return each as a **separate** entry.
 - If a single drawing spans most of a page, the bbox should cover just the drawing area, not the full page.
-- If **no** footprint drawings are found, return an empty `footprints` array.
+- If **no** footprint drawings are found, return an empty `results` array.

@@ -10,11 +10,13 @@ use clap::{Parser, Subcommand};
 
 mod digikey;
 mod extract;
+mod extract_pages;
 mod file_cache;
 mod footprint_image;
 mod jlcpcb;
 mod llm;
 mod mouser;
+mod page_render;
 mod pdf_split;
 mod prompts;
 mod snapeda;
@@ -48,6 +50,8 @@ enum Command {
     Svd(svd::SvdSubcommand),
     /// Extract footprint drawings from a PDF datasheet as cropped images
     FootprintImage(footprint_image::FootprintImageArgs),
+    /// Extract specific pages/regions from a PDF using LLM-guided detection
+    ExtractPages(extract_pages::ExtractPagesArgs),
 }
 
 fn main() -> Result<()> {
@@ -71,5 +75,6 @@ fn main() -> Result<()> {
             svd::execute(subcommand).map_err(|e| anyhow!(e))
         }
         Command::FootprintImage(args) => footprint_image::run(&args),
+        Command::ExtractPages(args) => extract_pages::run(&args),
     }
 }
