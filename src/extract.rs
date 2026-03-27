@@ -84,6 +84,7 @@ pub enum ExtractTask {
     Pinout,
     Power,
     ReferenceDesign,
+    Registers,
 }
 
 impl ExtractTask {
@@ -101,6 +102,7 @@ impl ExtractTask {
             ExtractTask::Pinout => prompts::pinout(),
             ExtractTask::Power => prompts::power(),
             ExtractTask::ReferenceDesign => prompts::reference_design(),
+            ExtractTask::Registers => prompts::registers(),
         }
     }
 
