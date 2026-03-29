@@ -36,6 +36,7 @@ const PROMPT_LAYOUT_CONSTRAINTS: &str = include_str!("../prompts/extract-layout-
 const PROMPT_PINOUT: &str = include_str!("../prompts/extract-pinout.md");
 const PROMPT_POWER: &str = include_str!("../prompts/extract-power.md");
 const PROMPT_REFERENCE_DESIGN: &str = include_str!("../prompts/extract-reference-design.md");
+const PROMPT_REGISTERS: &str = include_str!("../prompts/extract-registers.md");
 
 pub fn application_circuit() -> PromptSpec {
     let mut spec = PromptSpec::new(
@@ -326,6 +327,85 @@ pub fn power() -> PromptSpec {
         "required": ["power_rails"],
         "additionalProperties": true
     });
+    spec
+}
+
+pub fn registers() -> PromptSpec {
+    let mut spec = PromptSpec::new(
+        "registers",
+        "Peripheral register map extraction for PAC generation",
+        PROMPT_REGISTERS,
+    );
+    spec.schema = serde_json::from_str(r#"{
+        "type": "object",
+        "required": ["part_details", "peripherals"],
+        "properties": {
+            "part_details": {
+                "type": "object",
+                "required": ["part_number"],
+                "properties": {
+                    "part_number": {"type": "string"},
+                    "datasheet_revision": {"type": ["string", "null"]},
+                    "description": {"type": "string"}
+                }
+            },
+            "peripherals": {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "required": ["name", "base_address", "registers"],
+                    "properties": {
+                        "name": {"type": "string"},
+                        "description": {"type": "string"},
+                        "base_address": {"type": "string"},
+                        "source_page": {"type": "integer"},
+                        "incomplete": {"type": "boolean"},
+                        "registers": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "required": ["name", "offset", "fields"],
+                                "properties": {
+                                    "name": {"type": "string"},
+                                    "description": {"type": "string"},
+                                    "offset": {"type": "string"},
+                                    "size": {"type": "integer"},
+                                    "reset_value": {"type": ["string", "null"]},
+                                    "access": {"type": "string", "enum": ["read-write", "read-only", "write-only", "read-writeOnce"]},
+                                    "fields": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "object",
+                                            "required": ["name", "bit_offset", "bit_width"],
+                                            "properties": {
+                                                "name": {"type": "string"},
+                                                "description": {"type": "string"},
+                                                "bit_offset": {"type": "integer"},
+                                                "bit_width": {"type": "integer"},
+                                                "access": {"type": "string"},
+                                                "enumerated_values": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "object",
+                                                        "required": ["name", "value"],
+                                                        "properties": {
+                                                            "name": {"type": "string"},
+                                                            "value": {"type": "integer"},
+                                                            "description": {"type": "string"}
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }"#).expect("registers schema is valid JSON");
     spec
 }
 
