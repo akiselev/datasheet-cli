@@ -642,8 +642,8 @@ impl CalibrationSnapshot {
             {
                 return Err(SupervisionContractError::Invalid("calibration entry"));
             }
-            let measured_precision = u64::from(entry.reviewed_correct) * 1_000_000
-                / u64::from(entry.reviewed_total);
+            let measured_precision =
+                u64::from(entry.reviewed_correct) * 1_000_000 / u64::from(entry.reviewed_total);
             if u64::from(entry.precision_millionths) != measured_precision {
                 return Err(SupervisionContractError::Invalid(
                     "calibration precision does not match review counts",

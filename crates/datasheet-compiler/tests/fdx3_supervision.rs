@@ -1,7 +1,7 @@
 use datasheet_compiler::supervision::{
     CombinationAbstentionReason, CombinationResult, LABELER_CATALOG, LabelVoteInput,
-    SourceVocabularyMapInput, build_label_vote, combine_votes, derive_source_vocabulary_map,
-    calibration_snapshot_digest, freeze_calibration_snapshot, freeze_reviewed_development_set,
+    SourceVocabularyMapInput, build_label_vote, calibration_snapshot_digest, combine_votes,
+    derive_source_vocabulary_map, freeze_calibration_snapshot, freeze_reviewed_development_set,
     frozen_labeler_catalog, validate_source_vocabulary_map, validate_training_label,
 };
 use datasheet_core::supervision::{
@@ -450,7 +450,12 @@ fn real_nasa_bundle_retains_every_vote_abstention_label_and_source_identity() {
     }
     for vote in &votes {
         datasheet_compiler::supervision::validate_label_vote(vote).unwrap();
-        assert!(!vote.reason_codes.iter().any(|reason| reason == "exact_reviewed_source_field"));
+        assert!(
+            !vote
+                .reason_codes
+                .iter()
+                .any(|reason| reason == "exact_reviewed_source_field")
+        );
         assert!(vote.observations.iter().all(|observation| {
             observation
                 .rights_snapshots

@@ -296,23 +296,26 @@ fn main() {
         development.digest.clone(),
         development.ontology_snapshot_digest.clone(),
         measured_labelers
-        .into_iter()
-        .map(|id| {
-            let measurement = measurements.get(id).expect("named labeler measurement");
-            let correct = u32::try_from(measurement["correct"].as_u64().expect("correct count"))
-                .expect("correct count fits u32");
-            let total = u32::try_from(measurement["total"].as_u64().expect("total count"))
-                .expect("total count fits u32");
-            LabelerCalibration {
-            labeler: labeler(id),
-            reviewed_correct: correct,
-            reviewed_total: total,
-            precision_millionths: u32::try_from(u64::from(correct) * 1_000_000 / u64::from(total))
-                .expect("precision fits u32"),
-            weight_millionths: 1_000_000,
-            }
-        })
-        .collect(),
+            .into_iter()
+            .map(|id| {
+                let measurement = measurements.get(id).expect("named labeler measurement");
+                let correct =
+                    u32::try_from(measurement["correct"].as_u64().expect("correct count"))
+                        .expect("correct count fits u32");
+                let total = u32::try_from(measurement["total"].as_u64().expect("total count"))
+                    .expect("total count fits u32");
+                LabelerCalibration {
+                    labeler: labeler(id),
+                    reviewed_correct: correct,
+                    reviewed_total: total,
+                    precision_millionths: u32::try_from(
+                        u64::from(correct) * 1_000_000 / u64::from(total),
+                    )
+                    .expect("precision fits u32"),
+                    weight_millionths: 1_000_000,
+                }
+            })
+            .collect(),
         1_000_000,
         1,
         producer(),

@@ -988,10 +988,10 @@ fn compile_table_rows(
             explanations.push(format!(
                 "value selected from table r={row_index},c={column} as {value_role:?}"
             ));
-            if unit.is_some() && cell.text.trim().parse::<f64>().is_ok() {
+            if let Some(unit) = unit.filter(|_| cell.text.trim().parse::<f64>().is_ok()) {
                 explanations.push(format!(
                     "unit `{}` inherited from explicit unit column",
-                    unit.expect("checked")
+                    unit
                 ));
             }
             let predicates = retrieve_predicates(

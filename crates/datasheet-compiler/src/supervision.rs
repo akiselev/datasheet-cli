@@ -4,11 +4,11 @@
 use std::collections::{BTreeMap, BTreeSet};
 
 use datasheet_core::supervision::{
-    CalibrationSnapshot, LabelVote, LabelerCalibration, LabelerRef, ReviewedDevelopmentExample,
-    ReviewedDevelopmentSet, SourceVocabularyMap, SupervisionClass, SupervisionContractError,
-    SupervisionObservation, SupervisionProducer, SupervisionUncertainty, TrainingLabel,
-    VoteOutcome, CALIBRATION_SCHEMA, REVIEWED_DEVELOPMENT_SET_SCHEMA, SOURCE_VOCABULARY_MAP_SCHEMA,
-    TRAINING_LABEL_SCHEMA,
+    CALIBRATION_SCHEMA, CalibrationSnapshot, LabelVote, LabelerCalibration, LabelerRef,
+    REVIEWED_DEVELOPMENT_SET_SCHEMA, ReviewedDevelopmentExample, ReviewedDevelopmentSet,
+    SOURCE_VOCABULARY_MAP_SCHEMA, SourceVocabularyMap, SupervisionClass, SupervisionContractError,
+    SupervisionObservation, SupervisionProducer, SupervisionUncertainty, TRAINING_LABEL_SCHEMA,
+    TrainingLabel, VoteOutcome,
 };
 use datasheet_core::{CandidateId, PredicateVocabularySnapshot, Sha256Digest};
 use schemars::JsonSchema;

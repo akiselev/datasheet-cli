@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: MIT OR Apache-2.0
 //! Durable, provider-independent contracts for evidence-grounded datasheet extraction.
 
-pub mod supervision;
 pub mod corpus;
+pub mod supervision;
 
 use std::collections::{BTreeMap, BTreeSet};
 use std::fmt::Write as _;

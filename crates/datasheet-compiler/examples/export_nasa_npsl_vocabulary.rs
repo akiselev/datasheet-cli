@@ -3,7 +3,7 @@
 use std::fs;
 use std::path::{Path, PathBuf};
 
-use datasheet_compiler::supervision::{derive_source_vocabulary_map, SourceVocabularyMapInput};
+use datasheet_compiler::supervision::{SourceVocabularyMapInput, derive_source_vocabulary_map};
 use datasheet_core::supervision::{SourceVocabularyMap, SupervisionProducer};
 use datasheet_core::{
     ParsedQuantityShape, PredicateTerm, PredicateVocabularySnapshot, Sha256Digest,

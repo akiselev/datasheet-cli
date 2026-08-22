@@ -2,11 +2,11 @@
 //! Deterministic candidate indexing and fail-closed claim assembly.
 
 pub mod baseline;
+pub mod corpus;
 pub mod evaluation;
 pub mod ferrodoc;
 pub mod quantity;
 pub mod supervision;
-pub mod corpus;
 
 use std::collections::{BTreeMap, BTreeSet};
 
