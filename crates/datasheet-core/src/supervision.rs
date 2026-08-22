@@ -106,6 +106,8 @@ pub struct ProductionReadinessManifest {
     pub reviewed_development_set_digest: Option<Sha256Digest>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub calibration_digest: Option<Sha256Digest>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub documented_second_family_blocker: Option<ProductionArtifactBinding>,
     pub eligible_family_count: u32,
     pub production_acceptance: bool,
 }
@@ -290,10 +292,14 @@ pub struct TrainingExample {
     pub schema_version: String,
     pub example_id: Sha256Digest,
     pub task: String,
-    pub document_state_id: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub document_state_id: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub document_ir_logical_sha256: Option<Sha256Digest>,
-    pub datasheet_sketch_digest: Sha256Digest,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub datasheet_sketch_digest: Option<Sha256Digest>,
+    pub observation_ids: Vec<Sha256Digest>,
+    pub source_record_ids: Vec<Sha256Digest>,
     pub candidate_ids: Vec<CandidateId>,
     pub training_label_record_id: Sha256Digest,
     pub document_family_id: String,
@@ -684,7 +690,6 @@ impl TrainingExample {
         ];
         if self.schema_version != TRAINING_EXAMPLE_SCHEMA
             || self.task.trim().is_empty()
-            || self.document_state_id.trim().is_empty()
             || self.candidate_ids.is_empty()
             || self.document_family_id.trim().is_empty()
             || !SPLITS.contains(&self.assigned_split.as_str())
@@ -692,6 +697,21 @@ impl TrainingExample {
         {
             return Err(SupervisionContractError::Missing(
                 "training example state, family, split, candidates, or rights",
+            ));
+        }
+        let document_backed = self
+            .document_state_id
+            .as_deref()
+            .is_some_and(|state| !state.trim().is_empty());
+        let source_backed = !self.observation_ids.is_empty() && !self.source_record_ids.is_empty();
+        if document_backed == source_backed
+            || (document_backed && self.datasheet_sketch_digest.is_none())
+            || (!document_backed
+                && (self.document_ir_logical_sha256.is_some()
+                    || self.datasheet_sketch_digest.is_some()))
+        {
+            return Err(SupervisionContractError::Invalid(
+                "training example must have exactly one document or source-native identity",
             ));
         }
         if (self.assigned_split == "template-held-out"
@@ -710,7 +730,7 @@ impl TrainingExample {
         for digest in [
             Some(&self.example_id),
             self.document_ir_logical_sha256.as_ref(),
-            Some(&self.datasheet_sketch_digest),
+            self.datasheet_sketch_digest.as_ref(),
             Some(&self.training_label_record_id),
             Some(&self.ontology_snapshot_digest),
         ]
@@ -723,6 +743,8 @@ impl TrainingExample {
         }
         self.producer.validate()?;
         unique(self.candidate_ids.iter(), "training candidate")?;
+        unique(self.observation_ids.iter(), "training observation")?;
+        unique(self.source_record_ids.iter(), "training source record")?;
         unique(self.rights_snapshot_ids.iter(), "training rights snapshot")
     }
 }
@@ -852,6 +874,7 @@ impl ProductionReadinessManifest {
             families: &'a [ProductionSupervisionFamilyAudit],
             reviewed_development_set_digest: &'a Option<Sha256Digest>,
             calibration_digest: &'a Option<Sha256Digest>,
+            documented_second_family_blocker: &'a Option<ProductionArtifactBinding>,
             eligible_family_count: u32,
             production_acceptance: bool,
         }
@@ -881,6 +904,7 @@ impl ProductionReadinessManifest {
                 families: &families,
                 reviewed_development_set_digest: &self.reviewed_development_set_digest,
                 calibration_digest: &self.calibration_digest,
+                documented_second_family_blocker: &self.documented_second_family_blocker,
                 eligible_family_count: self.eligible_family_count,
                 production_acceptance: self.production_acceptance,
             })
@@ -929,6 +953,14 @@ impl ProductionReadinessManifest {
                 "calibration requires a reviewed development set",
             ));
         }
+        if let Some(blocker) = &self.documented_second_family_blocker {
+            blocker.validate()?;
+            if blocker.role != "documented_second_family_access_or_rights_blocker" {
+                return Err(SupervisionContractError::Invalid(
+                    "second-family blocker role",
+                ));
+            }
+        }
         let eligible = u32::try_from(
             self.families
                 .iter()
@@ -939,8 +971,10 @@ impl ProductionReadinessManifest {
         if eligible != self.eligible_family_count {
             return Err(SupervisionContractError::Invalid("eligible family count"));
         }
+        let family_requirement =
+            eligible >= 2 || (eligible == 1 && self.documented_second_family_blocker.is_some());
         let acceptance = self.fls5_committed
-            && eligible >= 2
+            && family_requirement
             && self.reviewed_development_set_digest.is_some()
             && self.calibration_digest.is_some()
             && self

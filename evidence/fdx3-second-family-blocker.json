@@ -1,0 +1,39 @@
+{
+  "schema_version": "fdx3-documented-second-family-blocker/1",
+  "audited_at_utc": "2026-08-22",
+  "required_domain": "analog_power_electrical_supervision",
+  "eligible_family": "government.nasa.nepp.npsl.lp_npt",
+  "candidates": [
+    {
+      "family": "government.dla.publog.characteristics",
+      "decision": "blocked",
+      "reasons": [
+        "lossy_characteristic_token_bag_has_no_value_association",
+        "lossless_current_characteristics_csv_returned_http_403",
+        "retained_dvd_characteristics_are_encrypted"
+      ]
+    },
+    {
+      "family": "manufacturer.microchip.samd21.cmsis",
+      "decision": "ineligible",
+      "reasons": ["part_identity_only", "no_analog_power_electrical_facts"]
+    },
+    {
+      "family": "manufacturer.microchip.samd21.datasheet",
+      "decision": "blocked",
+      "reasons": ["training_permission_not_explicit", "policy_fail_closed"]
+    },
+    {
+      "family": "manufacturer.raspberrypi.rp2040.datasheet",
+      "decision": "blocked",
+      "reasons": ["training_permission_not_explicit", "retained_fls5_table_is_pin_description_not_electrical"]
+    },
+    {
+      "family": "government.nasa.ntrs.nepp",
+      "decision": "blocked",
+      "reasons": ["no_committed_source_profile", "no_committed_evidence_bearing_fls5_cells"]
+    }
+  ],
+  "acceptance_branch": "one_eligible_family_plus_documented_access_or_rights_blocker",
+  "does_not_authorize": ["restricted_training", "invented_regime", "invented_manufacturer_authority"]
+}

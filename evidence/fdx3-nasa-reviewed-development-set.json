@@ -1,0 +1,811 @@
+{
+  "schema_version": "reviewed-development-set/1",
+  "digest": "f9cf81db5cf356748a8b535a4a05ec6d910a0e9b4d81fa252424968e42823576",
+  "ontology_snapshot_digest": "942c84a70c2ae0c45aa5665ecb85e03abbefdbf8fdd20760dedc99594d27511e",
+  "examples": [
+    {
+      "example_id": "023d85b3c0a63b6dda137f4ea28cec17574cda25d52697d1f80f0032c92fbdd9",
+      "task": "structured_fact_semantics",
+      "training_candidate_id": "nasa-npsl:7493f78d189d7a0fbfa7b17fdd7d359f65949357e779654f571dfa08522243ad",
+      "expected_target_json": {
+        "external_field_key": "h_FE_min_max",
+        "predicate_term_id": "discrete.bjt.forward_current_gain",
+        "quantity_kind": "datasheet:Ratio",
+        "raw_unit": null,
+        "raw_value": "40/120",
+        "regime": null,
+        "source_part_number": "JAN#@2N4150S",
+        "value_shape": "range"
+      },
+      "observation_ids": [
+        "60e03b8644e7c5f10398c47b943bf66ac0e6978e3577eb18d522a0d48161efdb"
+      ],
+      "reviewer_record_id": "7967b54b63b162eb57c14e297bf1ebcda5bd20372f14d9bb279ab88438cc63f9"
+    },
+    {
+      "example_id": "06098be4bd9fda72da673817502cd0358cc67e72d349a1832fafc1245b9899a6",
+      "task": "structured_fact_semantics",
+      "training_candidate_id": "nasa-npsl:79b97439d84e2c1c8b39dc7fdc4d3d61d368d6410e642dc7dc339c1eec111d79",
+      "expected_target_json": {
+        "external_field_key": "I_C",
+        "predicate_term_id": "discrete.bjt.collector_current",
+        "quantity_kind": "si:ElectricCurrent",
+        "raw_unit": "A",
+        "raw_value": "0.2",
+        "regime": null,
+        "source_part_number": "JAN#@2N2369A",
+        "value_shape": "scalar"
+      },
+      "observation_ids": [
+        "1491d7f41ab30e01211dba3ef01caa5512eb2c740d094daa41cf6713479aef39"
+      ],
+      "reviewer_record_id": "7351821252c817f78a98c3c5dce9a9d25a4251da22e357bd7c06ab2d52103849"
+    },
+    {
+      "example_id": "0884fcd32048d8dc7878404ccc07115354b58d61380ebe146cf5b2403a1e1ce5",
+      "task": "structured_fact_semantics",
+      "training_candidate_id": "nasa-npsl:82cc2fcb668f83e1a973d2ff0bb3b8a8772781071743b18ed16a6b28ecb3e5fd",
+      "expected_target_json": {
+        "external_field_key": "h_FE_min_max",
+        "predicate_term_id": "discrete.bjt.forward_current_gain",
+        "quantity_kind": "datasheet:Ratio",
+        "raw_unit": null,
+        "raw_value": "30/150",
+        "regime": null,
+        "source_part_number": "JAN#@2N3507",
+        "value_shape": "range"
+      },
+      "observation_ids": [
+        "4545267a87b72ab0ba1a59da03ec5fcfaba1e9c3f67d110956c889f0e044fa57"
+      ],
+      "reviewer_record_id": "fb6337ffb112741403313b4bc145a2270ed24554ad576225adfd16ad645cf849"
+    },
+    {
+      "example_id": "0952bc82d1d3783fa5c0f961bace3c800179f17e47d7b43a867d0efcfeca4e9d",
+      "task": "structured_fact_semantics",
+      "training_candidate_id": "nasa-npsl:39e0b41e5dae5d2067875f6d30328f61acb798ee99cca87ef9168b7b8d16e4ef",
+      "expected_target_json": {
+        "external_field_key": "V_CEO",
+        "predicate_term_id": "discrete.bjt.collector_emitter_voltage.open_base",
+        "quantity_kind": "electronics:ElectricPotential",
+        "raw_unit": "V",
+        "raw_value": "125",
+        "regime": null,
+        "source_part_number": "JAN#@2N3419",
+        "value_shape": "scalar"
+      },
+      "observation_ids": [
+        "e649357e2cc6e4fd41b4fabc65be608f655524ff966f14361f65007b8c2a9094"
+      ],
+      "reviewer_record_id": "6c9440e120fa27e87b24d412bc53d18ceb4ac3b710ca4d9b78b801d627696dd1"
+    },
+    {
+      "example_id": "0f3542eee7b4d840c04233bf39e9089ee9bdf3209ccf065415c44577c5b0a101",
+      "task": "structured_fact_semantics",
+      "training_candidate_id": "nasa-npsl:2aba825899060b46b63060af6be47a476c5f78bf819d422167414f1889deea26",
+      "expected_target_json": {
+        "external_field_key": "I_C",
+        "predicate_term_id": "discrete.bjt.collector_current",
+        "quantity_kind": "si:ElectricCurrent",
+        "raw_unit": "A",
+        "raw_value": "3.0",
+        "regime": null,
+        "source_part_number": "JAN#@2N3419",
+        "value_shape": "scalar"
+      },
+      "observation_ids": [
+        "7f20d6b2da49a1c353f54939b86d5c78423216a4bd7f0a763d12fec39f70e34e"
+      ],
+      "reviewer_record_id": "a11eac89cdc60664efd9c68441774aad984ed7f92316e1e601ab2cfdbab0a6f3"
+    },
+    {
+      "example_id": "1304c59233efbc1ec3cb2a94dc98bdb230fcbca561f2c5b5627915ac9faf231f",
+      "task": "structured_fact_semantics",
+      "training_candidate_id": "nasa-npsl:53bff1aad4df549b3af250c30545e641cbb4a3d77e5eba17859bc146264ad217",
+      "expected_target_json": {
+        "external_field_key": "V_EBO",
+        "predicate_term_id": "discrete.bjt.emitter_base_voltage.open_collector",
+        "quantity_kind": "electronics:ElectricPotential",
+        "raw_unit": "V",
+        "raw_value": "8.0",
+        "regime": null,
+        "source_part_number": "JAN#@2N3419",
+        "value_shape": "scalar"
+      },
+      "observation_ids": [
+        "2a8abe3ba72c719f98754e4fc359c1e6724d4b95a646a2fd68b046a005bdae23"
+      ],
+      "reviewer_record_id": "6f54e63225ec974c8cb4c44578e3d461e45185fd8384c2a129a97e2a6347fbf6"
+    },
+    {
+      "example_id": "17f30e06ebb1d13c9ed6d62bd3f3a49a179ca4308381056d028be5fc340fabb2",
+      "task": "structured_fact_semantics",
+      "training_candidate_id": "nasa-npsl:c2a58102ddd6527e056e81d13501b790dad603b524957ef9419114541de4d1b4",
+      "expected_target_json": {
+        "external_field_key": "V_EBO",
+        "predicate_term_id": "discrete.bjt.emitter_base_voltage.open_collector",
+        "quantity_kind": "electronics:ElectricPotential",
+        "raw_unit": "V",
+        "raw_value": "4.5",
+        "regime": null,
+        "source_part_number": "JAN#@2N2369A",
+        "value_shape": "scalar"
+      },
+      "observation_ids": [
+        "54d70e814d0c2c44b24d445195e9851d581e5e8ead9267d62d3e8baaa4931b51"
+      ],
+      "reviewer_record_id": "bbdc5d3013b5845f747f39e9af37e6149d6ff22574ce2f1fe904bf2fac9b9472"
+    },
+    {
+      "example_id": "1a89b3bfb4bea2712beef2c49cd05ea93374887c28bace9c39f58a624bd56660",
+      "task": "structured_fact_semantics",
+      "training_candidate_id": "nasa-npsl:dd7ec2b05dda9b904e88d679d11bf486715d7cdb8d095909cf4c9494519b1c83",
+      "expected_target_json": {
+        "external_field_key": "V_CEO",
+        "predicate_term_id": "discrete.bjt.collector_emitter_voltage.open_base",
+        "quantity_kind": "electronics:ElectricPotential",
+        "raw_unit": "V",
+        "raw_value": "200",
+        "regime": null,
+        "source_part_number": "JAN#@2N5660",
+        "value_shape": "scalar"
+      },
+      "observation_ids": [
+        "64447c10b59685211e85d66c087836640555580dc5615e749fe5887ead8711c8"
+      ],
+      "reviewer_record_id": "0d4aca9e9dc98f69493d5c18d920c45e78804f075d9a15c496df4d626b7dfb7f"
+    },
+    {
+      "example_id": "1fd125523216716f15b520624ff205c71f640736960da5eb73b2b6bf927facb9",
+      "task": "structured_fact_semantics",
+      "training_candidate_id": "nasa-npsl:2c8745f5523c2873967f1510b3f74a5181740dec1ced54b7fd12e7015427fd54",
+      "expected_target_json": {
+        "external_field_key": "V_EBO",
+        "predicate_term_id": "discrete.bjt.emitter_base_voltage.open_collector",
+        "quantity_kind": "electronics:ElectricPotential",
+        "raw_unit": "V",
+        "raw_value": "6.0",
+        "regime": null,
+        "source_part_number": "JAN#@2N5660",
+        "value_shape": "scalar"
+      },
+      "observation_ids": [
+        "083331297f305a041068c45f82316c1079d98f46fb357c58fb532f17d9f29c42"
+      ],
+      "reviewer_record_id": "1d06e460ef674c7da1ff2f8da90d5f9de5f8cbc2b408699313a4a9eebc694c48"
+    },
+    {
+      "example_id": "2cef108224da2620764bf27fe208cb0805f88837bedb08fa27a9b136d877ad7a",
+      "task": "structured_fact_semantics",
+      "training_candidate_id": "nasa-npsl:7a3a48d060fc2391f6ad6a7438b2f2023ba86b196fbf76ddfbdaeb7cc24bf48f",
+      "expected_target_json": {
+        "external_field_key": "V_CEO",
+        "predicate_term_id": "discrete.bjt.collector_emitter_voltage.open_base",
+        "quantity_kind": "electronics:ElectricPotential",
+        "raw_unit": "V",
+        "raw_value": "30",
+        "regime": null,
+        "source_part_number": "JAN#@2N2219",
+        "value_shape": "scalar"
+      },
+      "observation_ids": [
+        "3be22c12af54ce403f3992147aa1a776c72b29047d06ee7a0ff06fad8688e792"
+      ],
+      "reviewer_record_id": "6318cd2e26c92a31ad40148372bb20c95cd1c3fd68f1497f7e313d4f76bee95a"
+    },
+    {
+      "example_id": "2fb69c70fc90ae66dd02ebf1be3d747b52529bd0429fc506e4e77552d18d9eee",
+      "task": "structured_fact_semantics",
+      "training_candidate_id": "nasa-npsl:73ee2530629500e80a535462afd9ac5645346aa4f022aa214d5524203bbc3277",
+      "expected_target_json": {
+        "external_field_key": "h_FE_at_I_C",
+        "predicate_term_id": "condition.bjt.collector_current.for_forward_gain",
+        "quantity_kind": "si:ElectricCurrent",
+        "raw_unit": "mA",
+        "raw_value": "1.0",
+        "regime": null,
+        "source_part_number": "JAN#@2N3419",
+        "value_shape": "scalar"
+      },
+      "observation_ids": [
+        "58e9642f6ec86008b8358f7933aa4ef60c89a8d51a3f2d8ce9c5e4044200ec77"
+      ],
+      "reviewer_record_id": "51d791b54efef0bbbab147be7465b9d56a7f5ca75501f4bb547b4dd2c0f8e544"
+    },
+    {
+      "example_id": "33ced347acb5c68a86d576dc045945261f44cf75fcf790d33b930289accdfb87",
+      "task": "structured_fact_semantics",
+      "training_candidate_id": "nasa-npsl:1858c07e70adc2badb2c3f882e30103fefed21a00073837775bf158bf3a9a89a",
+      "expected_target_json": {
+        "external_field_key": "I_C",
+        "predicate_term_id": "discrete.bjt.collector_current",
+        "quantity_kind": "si:ElectricCurrent",
+        "raw_unit": "A",
+        "raw_value": "2.0",
+        "regime": null,
+        "source_part_number": "JAN#@2N5660",
+        "value_shape": "scalar"
+      },
+      "observation_ids": [
+        "2b57632ada8aae6a04d1ca12e6a4b1ece8f3d54659da8db4300ac7bb2a268ad6"
+      ],
+      "reviewer_record_id": "539f6b1f6f1983da427a37da05659d4c7c3d9485ee5f003098130d51c2ea8944"
+    },
+    {
+      "example_id": "34ea99f86ee55691e4bc09b1ceffe6e3c7f40a1f37209ca5edf0cd29cc38c583",
+      "task": "structured_fact_semantics",
+      "training_candidate_id": "nasa-npsl:c898663d5045b53a95c60e609fe74c1131e5b35a3be9cb320773dd7c09c113e4",
+      "expected_target_json": {
+        "external_field_key": "h_FE_min_max",
+        "predicate_term_id": "discrete.bjt.forward_current_gain",
+        "quantity_kind": "datasheet:Ratio",
+        "raw_unit": null,
+        "raw_value": "25/75",
+        "regime": null,
+        "source_part_number": "JAN#@2N5667",
+        "value_shape": "range"
+      },
+      "observation_ids": [
+        "77f4bc56e1f618b5d02c939f4cf1acbc88aba7ec6afccebe99f93cffc98fba9a"
+      ],
+      "reviewer_record_id": "5c5233920ee9547c36468687b30c560584e87bc51a658c7f7a5e20b7ce0972ae"
+    },
+    {
+      "example_id": "3751d690c4cfe656316d54d8f35240e17972b790a2c242292e5146da8f9f407f",
+      "task": "structured_fact_semantics",
+      "training_candidate_id": "nasa-npsl:0ed766149d20449e916bd1e6cc2d5a24f5ef6c05fe674191c3eb3e3ae3ab6d55",
+      "expected_target_json": {
+        "external_field_key": "V_EBO",
+        "predicate_term_id": "discrete.bjt.emitter_base_voltage.open_collector",
+        "quantity_kind": "electronics:ElectricPotential",
+        "raw_unit": "V",
+        "raw_value": "5.0",
+        "regime": null,
+        "source_part_number": "JAN#@2N2219",
+        "value_shape": "scalar"
+      },
+      "observation_ids": [
+        "4bd0df80e0eb77bbd5cdf384c556b70f8bbf6768e3b4772ef5ad265883a1912b"
+      ],
+      "reviewer_record_id": "4b6848620fee8b28cb6e8bfdbae8178891b106152ff9fe763d1f4d56d1478b27"
+    },
+    {
+      "example_id": "3ffa599bb064e54451c11de1bcdf4fcaf7133184cabfe40f1fd760898d123eb0",
+      "task": "structured_fact_semantics",
+      "training_candidate_id": "nasa-npsl:05994baee8ca3d393e94a7d2bffba3079178eb752a5fbe6897d27e430a6db457",
+      "expected_target_json": {
+        "external_field_key": "I_C",
+        "predicate_term_id": "discrete.bjt.collector_current",
+        "quantity_kind": "si:ElectricCurrent",
+        "raw_unit": "A",
+        "raw_value": "0.8",
+        "regime": null,
+        "source_part_number": "JAN#@2N2219",
+        "value_shape": "scalar"
+      },
+      "observation_ids": [
+        "325df5d4e5f3fdfbdf088a1d0e3881734708ff4d63309d711d8d400518a30abb"
+      ],
+      "reviewer_record_id": "24581c908d665ed438583899408b80c8c3998e5bd5a35d26ce4b39338932409a"
+    },
+    {
+      "example_id": "4b3afaca037110ecf6e119f7429198a73f707b4fa64c1c5ed51816fc4d96603e",
+      "task": "structured_fact_semantics",
+      "training_candidate_id": "nasa-npsl:f178ab3eaa42eac740b4acf77b2979a44d69c4ccb95a9c9b37cfa7b8c60aa63d",
+      "expected_target_json": {
+        "external_field_key": "V_CBO",
+        "predicate_term_id": "discrete.bjt.collector_base_voltage.open_emitter",
+        "quantity_kind": "electronics:ElectricPotential",
+        "raw_unit": "V",
+        "raw_value": "125",
+        "regime": null,
+        "source_part_number": "JAN#@2N3419",
+        "value_shape": "scalar"
+      },
+      "observation_ids": [
+        "4bad08e982bda4b262a0e32fc42ff2c56b4c1773ed5cde1c7082423a66123025"
+      ],
+      "reviewer_record_id": "f3a7dfcdaee34f7d53f16f54888e3defe02fc8da9bc0f85832f22a9e51d66fef"
+    },
+    {
+      "example_id": "5b8049f0dfec105bfd5487d8a1ba8ec6b8c3e9ff78b9fbf924c87b33eec3f345",
+      "task": "structured_fact_semantics",
+      "training_candidate_id": "nasa-npsl:b2d8ae285e51f61244beea3d241d5c234a04ef1d7805b1109e76b8adfa21afe1",
+      "expected_target_json": {
+        "external_field_key": "h_FE_at_I_C",
+        "predicate_term_id": "condition.bjt.collector_current.for_forward_gain",
+        "quantity_kind": "si:ElectricCurrent",
+        "raw_unit": "mA",
+        "raw_value": "500",
+        "regime": null,
+        "source_part_number": "JAN#@2N5660",
+        "value_shape": "scalar"
+      },
+      "observation_ids": [
+        "1c1e5d62396ead2e982280aac48db523e9725dba5ae55cff3e9b5fedc2259d20"
+      ],
+      "reviewer_record_id": "f2cba0de67d8efbd2a4c1895fb2079ecdb4bdf37e38d945653dc015541a36e19"
+    },
+    {
+      "example_id": "622321918e6326b727b08e178661f137c67027fe3ad2348c00fd137dba0d6ba2",
+      "task": "structured_fact_semantics",
+      "training_candidate_id": "nasa-npsl:13a8ecdac7c7e17c65a41a81211f9cdfa91dc9034dc62db664bd99e8d607bf66",
+      "expected_target_json": {
+        "external_field_key": "h_FE_at_I_C",
+        "predicate_term_id": "condition.bjt.collector_current.for_forward_gain",
+        "quantity_kind": "si:ElectricCurrent",
+        "raw_unit": "mA",
+        "raw_value": "1000",
+        "regime": null,
+        "source_part_number": "JAN#@2N5667",
+        "value_shape": "scalar"
+      },
+      "observation_ids": [
+        "fdec11818d1c0932df1b1b9f41455ed9d1192b962e660872bcde865305120fb9"
+      ],
+      "reviewer_record_id": "1a1691b1eaead458e590d390d7a2d156ec929ee3146385addb517698ebb75796"
+    },
+    {
+      "example_id": "626bc58291b66b7c0b42c2178f8509db11d074ad6c904fda763a80a3fae95428",
+      "task": "structured_fact_semantics",
+      "training_candidate_id": "nasa-npsl:8f3ec97bc1b555f92ae496f2775f9521304faa1e578598d2ab027a7b0b16dcbd",
+      "expected_target_json": {
+        "external_field_key": "h_FE_min_max",
+        "predicate_term_id": "discrete.bjt.forward_current_gain",
+        "quantity_kind": "datasheet:Ratio",
+        "raw_unit": null,
+        "raw_value": "30/120",
+        "regime": null,
+        "source_part_number": "JAN#@2N2369A",
+        "value_shape": "range"
+      },
+      "observation_ids": [
+        "26e368982ea5243094378c82963b21b9c4aeefc08467de731f308edb8542d595"
+      ],
+      "reviewer_record_id": "6285b1208640b17a00bdcf1498f44008e4361550ea0d366bf108320d63041cfc"
+    },
+    {
+      "example_id": "6cc0fecbf03d7477df3e9497f67d5e401ca93bb932de01d54ace1394b3cc80f3",
+      "task": "structured_fact_semantics",
+      "training_candidate_id": "nasa-npsl:0f1ad5041091a0f7e4e9457e94884dd0e61cb0e3a4cc63959c99b205237d4239",
+      "expected_target_json": {
+        "external_field_key": "V_CBO",
+        "predicate_term_id": "discrete.bjt.collector_base_voltage.open_emitter",
+        "quantity_kind": "electronics:ElectricPotential",
+        "raw_unit": "V",
+        "raw_value": "40",
+        "regime": null,
+        "source_part_number": "JAN#@2N2369A",
+        "value_shape": "scalar"
+      },
+      "observation_ids": [
+        "5ad5bb0778a26bac8070be2722535b71ff4e7d8097ec882bc09fbc542c0f1b4f"
+      ],
+      "reviewer_record_id": "733b3e2259b76cae6d42fe0072debba64313ff16ebe337aa1e9d2b243b79d8e6"
+    },
+    {
+      "example_id": "6ce42c9846422207092727cf2c2f3e147bd534f848f9a8767b4eddb7fffcc3a0",
+      "task": "structured_fact_semantics",
+      "training_candidate_id": "nasa-npsl:f6e9cd1cc7d9fb3d7389818a3551bd5bcccef3f99ff0082a28779e1f468282fd",
+      "expected_target_json": {
+        "external_field_key": "V_CEO",
+        "predicate_term_id": "discrete.bjt.collector_emitter_voltage.open_base",
+        "quantity_kind": "electronics:ElectricPotential",
+        "raw_unit": "V",
+        "raw_value": "15",
+        "regime": null,
+        "source_part_number": "JAN#@2N2369A",
+        "value_shape": "scalar"
+      },
+      "observation_ids": [
+        "d6dd0a27cd45de3927c0e6a7bebfcc0e8d3e8ad0d6d5f99fdd178d9e51cedb95"
+      ],
+      "reviewer_record_id": "2184592c90fd1e1cc0b84382c5a040a61cb66ed5cac1d55cc034c0b392b2b688"
+    },
+    {
+      "example_id": "8388a55d04b1f2c1eb14c0a6bcdefc4483ff350b5315b596cb3ff37c1acb5702",
+      "task": "structured_fact_semantics",
+      "training_candidate_id": "nasa-npsl:f2b3cb5a92c0fb872932d97e6f1b296e2679598ea52866190832eaa458eec6bf",
+      "expected_target_json": {
+        "external_field_key": "I_C",
+        "predicate_term_id": "discrete.bjt.collector_current",
+        "quantity_kind": "si:ElectricCurrent",
+        "raw_unit": "A",
+        "raw_value": "10",
+        "regime": null,
+        "source_part_number": "JAN#@2N4150S",
+        "value_shape": "scalar"
+      },
+      "observation_ids": [
+        "1609f5d1bf2b6142e09c4b1b238a4574c4bd9bdde0bdaab95b6073db072a6d1c"
+      ],
+      "reviewer_record_id": "c0516e9b7d4ff440f8bd02f432010c2a67921cd8fae0fff4afd5ea16a5e4131c"
+    },
+    {
+      "example_id": "8967b4dcda7a60c72816b83f4143b5d94c4a83109be785831c18a37cbca545ea",
+      "task": "structured_fact_semantics",
+      "training_candidate_id": "nasa-npsl:31a51a6a6794850b9efde04346381c113d08242b1f4bc610eb22d852944d288e",
+      "expected_target_json": {
+        "external_field_key": "V_CBO",
+        "predicate_term_id": "discrete.bjt.collector_base_voltage.open_emitter",
+        "quantity_kind": "electronics:ElectricPotential",
+        "raw_unit": "V",
+        "raw_value": "60",
+        "regime": null,
+        "source_part_number": "JAN#@2N2219",
+        "value_shape": "scalar"
+      },
+      "observation_ids": [
+        "5d1990d7a9023d4e3396e9689364212e17f8b6b70c55489fa055b56a924c84c5"
+      ],
+      "reviewer_record_id": "6c952ca4bce40fe8587fc146da25fc91b56dc0fb966fd68265b9adc9d55ec864"
+    },
+    {
+      "example_id": "97d3a509a7fc4dc108b35b5f4561a85b0dbc13a1cf749d9cdaa2126635df4296",
+      "task": "structured_fact_semantics",
+      "training_candidate_id": "nasa-npsl:9d42c8fb06bc9268f653b10b1867ff055474565441f25a4ea79224f3f38062be",
+      "expected_target_json": {
+        "external_field_key": "h_FE_at_I_C",
+        "predicate_term_id": "condition.bjt.collector_current.for_forward_gain",
+        "quantity_kind": "si:ElectricCurrent",
+        "raw_unit": "mA",
+        "raw_value": "5000",
+        "regime": null,
+        "source_part_number": "JAN#@2N4150S",
+        "value_shape": "scalar"
+      },
+      "observation_ids": [
+        "f54fb906870d5c2f39d2c85ff1fa867a7e24b4f8fc2fc005815e886a56c29cfb"
+      ],
+      "reviewer_record_id": "e2c7234624ecd09dace1afa4a8ba41f8467159f6375da07bd2ba109bf0e5fc59"
+    },
+    {
+      "example_id": "9f141edaf0a288db3ddbedbe4a3d77ce275c902bcb77ae29baf1365ca18f256c",
+      "task": "structured_fact_semantics",
+      "training_candidate_id": "nasa-npsl:a75b1d7f6fa2066713cdd6e1d156f46d0655d4e6b96f0360e37846678b0521f3",
+      "expected_target_json": {
+        "external_field_key": "h_FE_min_max",
+        "predicate_term_id": "discrete.bjt.forward_current_gain",
+        "quantity_kind": "datasheet:Ratio",
+        "raw_unit": null,
+        "raw_value": "50/325",
+        "regime": null,
+        "source_part_number": "JAN#@2N2219",
+        "value_shape": "range"
+      },
+      "observation_ids": [
+        "1298194884aa1c4c5ea1feb5fbca9d44c2fbedd6dcd38896f01e29344a80e881"
+      ],
+      "reviewer_record_id": "a5356687b19f117dbaf8039e61c4658618913158a3af4dad602c9dffe1b03062"
+    },
+    {
+      "example_id": "a082cb521072ee98c1b716b7a0dfa8356c549ce5eabb0f97a5b430b54d2f9b31",
+      "task": "structured_fact_semantics",
+      "training_candidate_id": "nasa-npsl:8f7cb491c77613ff9ace12fbe29d54e259c1c0216377e86c6f1273640a107d3e",
+      "expected_target_json": {
+        "external_field_key": "h_FE_at_I_C",
+        "predicate_term_id": "condition.bjt.collector_current.for_forward_gain",
+        "quantity_kind": "si:ElectricCurrent",
+        "raw_unit": "mA",
+        "raw_value": "1.0",
+        "regime": null,
+        "source_part_number": "JAN#@2N2219",
+        "value_shape": "scalar"
+      },
+      "observation_ids": [
+        "237e884422aee3c5c7ff25478ee1adaff99dea4ff3f8dedb8c8f291c4cdeb71c"
+      ],
+      "reviewer_record_id": "649a18ca0b6fe7becfc64882a93df99eacb47ba119acf657653c05c670e9e1b1"
+    },
+    {
+      "example_id": "a28a4253421da45be9a8f832f1c525840203b5976b59ad30128c106ee4a7e3c1",
+      "task": "structured_fact_semantics",
+      "training_candidate_id": "nasa-npsl:7cada44d77071b3304f5efceb87cbe0d8060eff80ef1668cb6d2e875ec1ee1f2",
+      "expected_target_json": {
+        "external_field_key": "V_EBO",
+        "predicate_term_id": "discrete.bjt.emitter_base_voltage.open_collector",
+        "quantity_kind": "electronics:ElectricPotential",
+        "raw_unit": "V",
+        "raw_value": "5.0",
+        "regime": null,
+        "source_part_number": "JAN#@2N3507",
+        "value_shape": "scalar"
+      },
+      "observation_ids": [
+        "39b9a552514ddf774c5559d921aa8efa74ce20154991ee702263b068e1f0e39b"
+      ],
+      "reviewer_record_id": "604a8741cf61c1e67c4e6118692f126693adaff376c18e13b801e50562d3d72a"
+    },
+    {
+      "example_id": "aa1c1eb6a480241cebe5cf110d55017eb6dd08954e9b2c928b2155db96dec385",
+      "task": "structured_fact_semantics",
+      "training_candidate_id": "nasa-npsl:bc40e7551fbcb6d0f373e8472229f414cb68391460f00ac5a80f8d9245b9f458",
+      "expected_target_json": {
+        "external_field_key": "h_FE_at_I_C",
+        "predicate_term_id": "condition.bjt.collector_current.for_forward_gain",
+        "quantity_kind": "si:ElectricCurrent",
+        "raw_unit": "mA",
+        "raw_value": "30",
+        "regime": null,
+        "source_part_number": "JAN#@2N2369A",
+        "value_shape": "scalar"
+      },
+      "observation_ids": [
+        "42431880b5a9782553887d28862c57fdc94378a2c2609cf6245548c2dc251e20"
+      ],
+      "reviewer_record_id": "62f5d5e266a885294d50a3407a159bcbeab106e9cc3071f9eca17689022031df"
+    },
+    {
+      "example_id": "aec0f667a8a10ce746f62ea043a57a2bc83cb18642a5883dd5e558fe84d0a245",
+      "task": "structured_fact_semantics",
+      "training_candidate_id": "nasa-npsl:b078faec384913c18b1829a1c286633c1b90dc82d5fb5d9670d20d4045d94a60",
+      "expected_target_json": {
+        "external_field_key": "V_CBO",
+        "predicate_term_id": "discrete.bjt.collector_base_voltage.open_emitter",
+        "quantity_kind": "electronics:ElectricPotential",
+        "raw_unit": "V",
+        "raw_value": "250",
+        "regime": null,
+        "source_part_number": "JAN#@2N5660",
+        "value_shape": "scalar"
+      },
+      "observation_ids": [
+        "27ead6454c4bff3eec89c949cebc523ff37a226e35dde52c32b9db06bd54b6ec"
+      ],
+      "reviewer_record_id": "70d3de99f1579eabfdb72e5d00bfc87e347ae8857102c4006273ddc48c536189"
+    },
+    {
+      "example_id": "b53600917f195d4953b19b7bd063d3bf38bbaa2d7128c6267ca3294dcd30954c",
+      "task": "structured_fact_semantics",
+      "training_candidate_id": "nasa-npsl:05ce514962849e0a00cf7fb306a1aba05cec552b393e74fe14d90cbf0662d825",
+      "expected_target_json": {
+        "external_field_key": "V_CBO",
+        "predicate_term_id": "discrete.bjt.collector_base_voltage.open_emitter",
+        "quantity_kind": "electronics:ElectricPotential",
+        "raw_unit": "V",
+        "raw_value": "80",
+        "regime": null,
+        "source_part_number": "JAN#@2N3507",
+        "value_shape": "scalar"
+      },
+      "observation_ids": [
+        "ee3d16343936dc19fcfe88f3826fbd419531956c5b3c0d35d7f3f3cb7f22f883"
+      ],
+      "reviewer_record_id": "414d335eedd57d72e5b9b18e117708f2bba8b801603abbb0cfc82a46856e58e9"
+    },
+    {
+      "example_id": "b617396304857d8d64a45a9687db87e982d3f1b81d968bff1a01388bc056ded6",
+      "task": "structured_fact_semantics",
+      "training_candidate_id": "nasa-npsl:0376c19534e348d35bd73e7b25d2ea58c54978a7b646a46b99fc159e07315195",
+      "expected_target_json": {
+        "external_field_key": "V_CEO",
+        "predicate_term_id": "discrete.bjt.collector_emitter_voltage.open_base",
+        "quantity_kind": "electronics:ElectricPotential",
+        "raw_unit": "V",
+        "raw_value": "50",
+        "regime": null,
+        "source_part_number": "JAN#@2N3507",
+        "value_shape": "scalar"
+      },
+      "observation_ids": [
+        "30b3b209fab3590b17fb37d965a3e1a0a0a37d449e37150518305a0a1990c224"
+      ],
+      "reviewer_record_id": "47f3aadf858fe20e1771becf4a74b3e9628bbd42bbbd0aa99ae9ee4d5a6c43fc"
+    },
+    {
+      "example_id": "c7ad7c94973e03208d2f8a296fc21dd6cf4d43acfb857e4342ee36bf61495591",
+      "task": "structured_fact_semantics",
+      "training_candidate_id": "nasa-npsl:3eb86c2366586e336c38c2b4b681924b859f059764901a6454d032d4b9d57d8d",
+      "expected_target_json": {
+        "external_field_key": "h_FE_at_I_C",
+        "predicate_term_id": "condition.bjt.collector_current.for_forward_gain",
+        "quantity_kind": "si:ElectricCurrent",
+        "raw_unit": "mA",
+        "raw_value": "1500",
+        "regime": null,
+        "source_part_number": "JAN#@2N3507",
+        "value_shape": "scalar"
+      },
+      "observation_ids": [
+        "fce6daff40e0f9fe9b2a5bc0129f2d75a8c8a4f7057fd0a4a45c612bc2ab00e9"
+      ],
+      "reviewer_record_id": "e0f1f169b80bd3177a5125410921a3408940b139de61a66eab5745b302283728"
+    },
+    {
+      "example_id": "ca340c9cdb59c418e231cf08ea363035790ab8bece11cee6e4efa7811e3ecc66",
+      "task": "structured_fact_semantics",
+      "training_candidate_id": "nasa-npsl:6dc879c5f8de1f79b7b52c44dacb0638ad09cbd38498e0c458cda35312b05e4b",
+      "expected_target_json": {
+        "external_field_key": "V_CBO",
+        "predicate_term_id": "discrete.bjt.collector_base_voltage.open_emitter",
+        "quantity_kind": "electronics:ElectricPotential",
+        "raw_unit": "V",
+        "raw_value": "100",
+        "regime": null,
+        "source_part_number": "JAN#@2N4150S",
+        "value_shape": "scalar"
+      },
+      "observation_ids": [
+        "4d79331684823c88376bcb99a93eb8d9c34e8848c09a18b262d36303606920ab"
+      ],
+      "reviewer_record_id": "bbf08c47f05892945e922551401fe3fdb572e4418f43f239716c6accbbe60d5a"
+    },
+    {
+      "example_id": "d29483bd57c1b4f234799fe34ec9a469455bed8c59333e0f834b38b65b1e4861",
+      "task": "structured_fact_semantics",
+      "training_candidate_id": "nasa-npsl:9bc33a96c3d73d7bd7d8dc1296f7af93c58477ede497941b17d673fd0f73f161",
+      "expected_target_json": {
+        "external_field_key": "V_CBO",
+        "predicate_term_id": "discrete.bjt.collector_base_voltage.open_emitter",
+        "quantity_kind": "electronics:ElectricPotential",
+        "raw_unit": "V",
+        "raw_value": "400",
+        "regime": null,
+        "source_part_number": "JAN#@2N5667",
+        "value_shape": "scalar"
+      },
+      "observation_ids": [
+        "8d13e175f239aae48795172296435501bf6faf4aaf73e57e814185dbaf58f6bb"
+      ],
+      "reviewer_record_id": "f479967bcec2114d3ad5c97cb28ad311113d6ac0c41cd5d5e5ecf3fdca69b1b8"
+    },
+    {
+      "example_id": "d58cec75101f6dd05c781a263e270fea055a32a312f0d0d99648536577d740ab",
+      "task": "structured_fact_semantics",
+      "training_candidate_id": "nasa-npsl:88f72bfde785b3e01549d9a22029ab0596a5f1c7ecd70ca06f88cb95597684c1",
+      "expected_target_json": {
+        "external_field_key": "h_FE_min_max",
+        "predicate_term_id": "discrete.bjt.forward_current_gain",
+        "quantity_kind": "datasheet:Ratio",
+        "raw_unit": null,
+        "raw_value": "20/60",
+        "regime": null,
+        "source_part_number": "JAN#@2N3419",
+        "value_shape": "range"
+      },
+      "observation_ids": [
+        "dc24d1fcb4126ee701384871de5dad5f45453b4ed8737ffbe5a596711869ae0c"
+      ],
+      "reviewer_record_id": "269cad75bccee33f199a19d142c1ec0e41a2252e1e59bb3017c81c6a34cf0429"
+    },
+    {
+      "example_id": "d6cd9a038b6c3c56ff2081efd679010eb9200b888f4113810072e1c9517dc002",
+      "task": "structured_fact_semantics",
+      "training_candidate_id": "nasa-npsl:4b5e1a6adfc35332ef7f1b3cfd12cdcba2ce1b7eda2544732facc188af1e4e74",
+      "expected_target_json": {
+        "external_field_key": "I_C",
+        "predicate_term_id": "discrete.bjt.collector_current",
+        "quantity_kind": "si:ElectricCurrent",
+        "raw_unit": "A",
+        "raw_value": "3.0",
+        "regime": null,
+        "source_part_number": "JAN#@2N3507",
+        "value_shape": "scalar"
+      },
+      "observation_ids": [
+        "d97c59b984aae69ee2e0b427c4ae2b0b6055db093dfae705754b029ef5e2901e"
+      ],
+      "reviewer_record_id": "2d37523d8fafc3eb955452815bbb7776b93a4f172808fb69a369e60356c421e7"
+    },
+    {
+      "example_id": "db5ff6c15b05bb6ee2dff9935219072fcbdf3bc7fe3b22f1fcddcc2cca60ff0d",
+      "task": "structured_fact_semantics",
+      "training_candidate_id": "nasa-npsl:7f6848d18d944c0b0b88880113065eda3d49a2f953d75b30b78edbc292803fc6",
+      "expected_target_json": {
+        "external_field_key": "h_FE_min_max",
+        "predicate_term_id": "discrete.bjt.forward_current_gain",
+        "quantity_kind": "datasheet:Ratio",
+        "raw_unit": null,
+        "raw_value": "40/120",
+        "regime": null,
+        "source_part_number": "JAN#@2N5660",
+        "value_shape": "range"
+      },
+      "observation_ids": [
+        "fc2b55eff517d325153d991a3bb8aaa7c5421526abe3e4af4608b10b76fce018"
+      ],
+      "reviewer_record_id": "776db57f4e03b621f7409df04c5f02ae6a26fdfac3f741654f3d51721c40caab"
+    },
+    {
+      "example_id": "dc42e097fc3cfe8bd7e036002a2a47882c7158894a94619e3e3d1335801d663e",
+      "task": "structured_fact_semantics",
+      "training_candidate_id": "nasa-npsl:8f7d508f7b7782d43330e8a872dd10b26c0f527a5915cb09c351e8414e703ee3",
+      "expected_target_json": {
+        "external_field_key": "I_C",
+        "predicate_term_id": "discrete.bjt.collector_current",
+        "quantity_kind": "si:ElectricCurrent",
+        "raw_unit": "A",
+        "raw_value": "5.0",
+        "regime": null,
+        "source_part_number": "JAN#@2N5667",
+        "value_shape": "scalar"
+      },
+      "observation_ids": [
+        "342ed6df4163ed222712341de67d92aa696e6796380793c7d8adad2ba2705d03"
+      ],
+      "reviewer_record_id": "d825fefe0a557cc26c96dfa2c49e80b990d0b49dbb034eb912ed5ac018dd308f"
+    },
+    {
+      "example_id": "ed02df2d65de8c0b48d60fa9f7a86859240ebea6068ec2efb9170e07016b64ea",
+      "task": "structured_fact_semantics",
+      "training_candidate_id": "nasa-npsl:141acc1366cf9f1cb39444a0aad712f9a4b27adfe6677eb4533692441cc00032",
+      "expected_target_json": {
+        "external_field_key": "V_EBO",
+        "predicate_term_id": "discrete.bjt.emitter_base_voltage.open_collector",
+        "quantity_kind": "electronics:ElectricPotential",
+        "raw_unit": "V",
+        "raw_value": "6.0",
+        "regime": null,
+        "source_part_number": "JAN#@2N5667",
+        "value_shape": "scalar"
+      },
+      "observation_ids": [
+        "2f324fe6628aa2221f7ae1c244eab64cf0ea4fe1960974b9fcb2c6b9f1a16b07"
+      ],
+      "reviewer_record_id": "b28650a08e3ec2cb190d3f555e30c1db6df76c16c611f4a81efc57f3a87283fd"
+    },
+    {
+      "example_id": "f1fe13dee5a5cfbbe0ab7660291231c0fec4c90434d019032b957b82588051c4",
+      "task": "structured_fact_semantics",
+      "training_candidate_id": "nasa-npsl:7c0f5ad5d8176d63f4a8489565cfef62a63c06cddfbfd5f8380644dc72b7bad5",
+      "expected_target_json": {
+        "external_field_key": "V_CEO",
+        "predicate_term_id": "discrete.bjt.collector_emitter_voltage.open_base",
+        "quantity_kind": "electronics:ElectricPotential",
+        "raw_unit": "V",
+        "raw_value": "70",
+        "regime": null,
+        "source_part_number": "JAN#@2N4150S",
+        "value_shape": "scalar"
+      },
+      "observation_ids": [
+        "c077e633b58a5c102e4d49793da2832816cb3fc52f4558c520115cf3082b996d"
+      ],
+      "reviewer_record_id": "0dd379f8d7c660a5bbdc843e655de28f70833d4430cf2f62b6e94a60e2bbd521"
+    },
+    {
+      "example_id": "f75157dbb5d66156d33ed79269884eb5fa5877837698908fa45f9f038e9c32ab",
+      "task": "structured_fact_semantics",
+      "training_candidate_id": "nasa-npsl:d80645881909823c29fdfe7db47dd0e776eda6ffa68901816e38792fe16d93cf",
+      "expected_target_json": {
+        "external_field_key": "V_CEO",
+        "predicate_term_id": "discrete.bjt.collector_emitter_voltage.open_base",
+        "quantity_kind": "electronics:ElectricPotential",
+        "raw_unit": "V",
+        "raw_value": "300",
+        "regime": null,
+        "source_part_number": "JAN#@2N5667",
+        "value_shape": "scalar"
+      },
+      "observation_ids": [
+        "e643f22cc6e972cf1ec679c8c15d237e4ea2256384a509722601cbbdd9aad3ca"
+      ],
+      "reviewer_record_id": "5258c74e6fe007c3c9091761acb5a36ce7e9e8a23e7d1a7b694436ed16217fd3"
+    },
+    {
+      "example_id": "f81a1093becd666faabcf6fa44d07c17711997465a7a3a891c7cf6f56f2cc4f3",
+      "task": "structured_fact_semantics",
+      "training_candidate_id": "nasa-npsl:b152951772ed3c2a535fd1ec4edc9a9f56dc2d950a5e387dafbb5a1f0da2abb0",
+      "expected_target_json": {
+        "external_field_key": "V_EBO",
+        "predicate_term_id": "discrete.bjt.emitter_base_voltage.open_collector",
+        "quantity_kind": "electronics:ElectricPotential",
+        "raw_unit": "V",
+        "raw_value": "7.0",
+        "regime": null,
+        "source_part_number": "JAN#@2N4150S",
+        "value_shape": "scalar"
+      },
+      "observation_ids": [
+        "a9133b3e623b5cc0c29d07f24cfb04ba8ad2899d748e7afea1ef0f53ee61c8c3"
+      ],
+      "reviewer_record_id": "9c250c34173e6f272e0f884a9af8f8347e67b9f4a27b4e8e5d2e89564888bbae"
+    }
+  ],
+  "producer": {
+    "name": "datasheet-fdx3-nasa-npsl-production",
+    "version": "1",
+    "build": "foundry-5ec50e4+datasheet-8272515",
+    "configuration_digest": "01a6cfbdfcd32f12ba611a45b525c1c41d6854a3f484df9dd0df80badd9b2975"
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "schema_version": "labeler-calibration/1",
+  "digest": "72558d93b74ffdd9c85bf7013261a4b01aa15fdaf22ddbf758f3719bf9101040",
+  "reviewed_development_set_digest": "f9cf81db5cf356748a8b535a4a05ec6d910a0e9b4d81fa252424968e42823576",
+  "ontology_snapshot_digest": "942c84a70c2ae0c45aa5665ecb85e03abbefdbf8fdd20760dedc99594d27511e",
+  "entries": [
+    {
+      "labeler": {
+        "labeler_id": "quantity.dimension.v1",
+        "labeler_version": "1"
+      },
+      "reviewed_correct": 42,
+      "reviewed_total": 42,
+      "precision_millionths": 1000000,
+      "weight_millionths": 1000000
+    },
+    {
+      "labeler": {
+        "labeler_id": "source.range_align.v1",
+        "labeler_version": "1"
+      },
+      "reviewed_correct": 7,
+      "reviewed_total": 7,
+      "precision_millionths": 1000000,
+      "weight_millionths": 1000000
+    },
+    {
+      "labeler": {
+        "labeler_id": "source.value_align_unique.v1",
+        "labeler_version": "1"
+      },
+      "reviewed_correct": 35,
+      "reviewed_total": 35,
+      "precision_millionths": 1000000,
+      "weight_millionths": 1000000
+    },
+    {
+      "labeler": {
+        "labeler_id": "source.vocabulary_map.v1",
+        "labeler_version": "1"
+      },
+      "reviewed_correct": 42,
+      "reviewed_total": 42,
+      "precision_millionths": 1000000,
+      "weight_millionths": 1000000
+    }
+  ],
+  "minimum_posterior_millionths": 1000000,
+  "minimum_independent_lineages": 1,
+  "producer": {
+    "name": "datasheet-fdx3-nasa-npsl-production",
+    "version": "1",
+    "build": "foundry-5ec50e4+datasheet-8272515",
+    "configuration_digest": "01a6cfbdfcd32f12ba611a45b525c1c41d6854a3f484df9dd0df80badd9b2975"
+  }
+}

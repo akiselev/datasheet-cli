@@ -1,8 +1,8 @@
 use datasheet_compiler::supervision::{
-    build_label_vote, combine_votes, derive_source_vocabulary_map, freeze_calibration_snapshot,
-    freeze_reviewed_development_set, frozen_labeler_catalog, validate_source_vocabulary_map,
-    validate_training_label, CombinationAbstentionReason, CombinationResult, LabelVoteInput,
-    SourceVocabularyMapInput, LABELER_CATALOG,
+    CombinationAbstentionReason, CombinationResult, LABELER_CATALOG, LabelVoteInput,
+    SourceVocabularyMapInput, build_label_vote, combine_votes, derive_source_vocabulary_map,
+    freeze_calibration_snapshot, freeze_reviewed_development_set, frozen_labeler_catalog,
+    validate_source_vocabulary_map, validate_training_label,
 };
 use datasheet_core::supervision::{
     CalibrationSnapshot, LabelVote, LabelerCalibration, LabelerRef, ProductionReadinessManifest,
@@ -240,23 +240,25 @@ fn vocabulary_mapping_is_order_independent_and_ontology_bound() {
 
     let mut missing = vocabulary;
     missing.terms.clear();
-    assert!(derive_source_vocabulary_map(
-        SourceVocabularyMapInput {
-            source_schema: first.source_schema,
-            external_namespace: first.external_namespace,
-            external_field_key: first.external_field_key,
-            predicate_term_id: first.predicate_term_id,
-            expected_quantity_kind: first.expected_quantity_kind,
-            expected_value_shapes: first.expected_value_shapes,
-            regime_hint: first.regime_hint,
-            category_scope: first.category_scope,
-            mapping_observation_ids: first.mapping_observation_ids,
-            producer: first.producer,
-            mapping_version: first.mapping_version,
-        },
-        &missing
-    )
-    .is_err());
+    assert!(
+        derive_source_vocabulary_map(
+            SourceVocabularyMapInput {
+                source_schema: first.source_schema,
+                external_namespace: first.external_namespace,
+                external_field_key: first.external_field_key,
+                predicate_term_id: first.predicate_term_id,
+                expected_quantity_kind: first.expected_quantity_kind,
+                expected_value_shapes: first.expected_value_shapes,
+                regime_hint: first.regime_hint,
+                category_scope: first.category_scope,
+                mapping_observation_ids: first.mapping_observation_ids,
+                producer: first.producer,
+                mapping_version: first.mapping_version,
+            },
+            &missing
+        )
+        .is_err()
+    );
 }
 
 #[test]
@@ -352,16 +354,16 @@ fn production_readiness_is_exact_and_fails_closed() {
     assert_eq!(manifest.manifest_digest, manifest.recompute_digest());
     manifest.validate().unwrap();
     assert_eq!(manifest.eligible_family_count, 1);
-    assert!(!manifest.production_acceptance);
-    assert!(manifest.reviewed_development_set_digest.is_none());
-    assert!(manifest.calibration_digest.is_none());
+    assert!(manifest.production_acceptance);
+    assert!(manifest.reviewed_development_set_digest.is_some());
+    assert!(manifest.calibration_digest.is_some());
+    assert!(manifest.documented_second_family_blocker.is_some());
     assert!(manifest.families.iter().all(|family| {
-        family.reviewed_development_example_ids.is_empty()
-            && family.selected_labelers.iter().all(|selected| {
-                LABELER_CATALOG.iter().any(|known| {
-                    known.id == selected.labeler_id && known.version == selected.labeler_version
-                })
+        family.selected_labelers.iter().all(|selected| {
+            LABELER_CATALOG.iter().any(|known| {
+                known.id == selected.labeler_id && known.version == selected.labeler_version
             })
+        })
     }));
     let nasa = manifest
         .families
@@ -370,6 +372,7 @@ fn production_readiness_is_exact_and_fails_closed() {
         .unwrap();
     assert!(nasa.admitted_for_training);
     assert_eq!(nasa.source_vocabulary_map_ids.len(), 6);
+    assert_eq!(nasa.reviewed_development_example_ids.len(), 42);
     assert!(nasa.blocker_codes.is_empty());
     assert!(
         manifest
@@ -400,9 +403,77 @@ fn production_readiness_is_exact_and_fails_closed() {
         "../../../evidence/fdx3-production-readiness-2026-08-22.json"
     ))
     .unwrap();
-    manifest.production_acceptance = true;
+    manifest.documented_second_family_blocker = None;
     manifest.manifest_digest = manifest.recompute_digest();
     assert!(manifest.validate().is_err());
+}
+
+#[test]
+fn real_nasa_bundle_retains_every_vote_abstention_label_and_source_identity() {
+    let bundle: serde_json::Value = serde_json::from_str(include_str!(
+        "../../../evidence/fdx3-nasa-production-bundle.json"
+    ))
+    .unwrap();
+    let structured: Vec<StructuredFactRecord> =
+        serde_json::from_value(bundle["structured_facts"].clone()).unwrap();
+    let votes: Vec<LabelVote> = serde_json::from_value(bundle["votes"].clone()).unwrap();
+    let labels: Vec<TrainingLabel> = serde_json::from_value(bundle["labels"].clone()).unwrap();
+    let examples: Vec<TrainingExample> =
+        serde_json::from_value(bundle["training_examples"].clone()).unwrap();
+    assert_eq!(
+        (structured.len(), votes.len(), labels.len(), examples.len()),
+        (210, 840, 210, 210)
+    );
+    assert_eq!(
+        votes
+            .iter()
+            .filter(|vote| matches!(vote.outcome, VoteOutcome::Abstain { .. }))
+            .count(),
+        210
+    );
+    for record in &structured {
+        record.validate_structure().unwrap();
+    }
+    for vote in &votes {
+        datasheet_compiler::supervision::validate_label_vote(vote).unwrap();
+        assert!(vote.observations.iter().all(|observation| {
+            observation
+                .rights_snapshots
+                .iter()
+                .all(|rights| !rights.remote_disclosure_permitted)
+        }));
+    }
+    for label in &labels {
+        validate_training_label(label).unwrap();
+    }
+    for example in &examples {
+        example.validate_structure().unwrap();
+        assert!(example.document_state_id.is_none());
+        assert_eq!(example.source_record_ids.len(), 1);
+        assert!(example.manufacturer_key.is_none());
+    }
+    assert!(
+        labels
+            .iter()
+            .all(|label| label.target_json["regime"].is_null())
+    );
+}
+
+#[test]
+fn source_native_training_example_refuses_missing_or_mixed_identity() {
+    let bundle: serde_json::Value = serde_json::from_str(include_str!(
+        "../../../evidence/fdx3-nasa-production-bundle.json"
+    ))
+    .unwrap();
+    let mut example: TrainingExample =
+        serde_json::from_value(bundle["training_examples"][0].clone()).unwrap();
+    example.observation_ids.clear();
+    assert!(example.validate_structure().is_err());
+    let mut example: TrainingExample =
+        serde_json::from_value(bundle["training_examples"][0].clone()).unwrap();
+    example.document_state_id = Some("invented-state".into());
+    example.datasheet_sketch_digest = Some(digest('a'));
+    assert!(example.validate_structure().is_err());
 }
 
 #[test]

@@ -1,0 +1,24 @@
+{
+  "schema_version": "fdx3-independent-source-row-review/1",
+  "source_artifact_sha256": "916fcf4561f6961c78c686421abe8922f2845d9e9946c59ea742199374192c43",
+  "method": "python_stdlib_htmlparser_latin1_independent_of_foundry_scraper",
+  "reviewer": "codex_assistant_manual_semantic_review",
+  "reviewed_fields": ["I_C", "V_CBO", "V_CEO", "V_EBO", "h_FE_min_max", "h_FE_at_I_C"],
+  "rows": [
+    {"data_row_index": 0, "part_through_condition_cells_sha256": "2eee347dbc83fbdba04bcb16b5d30f192a5b8d3b7d3c8151140ff062e96fb0fd"},
+    {"data_row_index": 5, "part_through_condition_cells_sha256": "d0864fbb0aef17f6595180401dfe11157498a6edca734c24ff50fe5c71e4a1cf"},
+    {"data_row_index": 11, "part_through_condition_cells_sha256": "8b36c01b8556fe9d80b7852457b59487687b099b0d6666fdd77149a096da15ae"},
+    {"data_row_index": 19, "part_through_condition_cells_sha256": "8215ab51f376a9d1a370a92d43ffebf9c98260b599156e3af422ee2e1cf61a12"},
+    {"data_row_index": 24, "part_through_condition_cells_sha256": "13565baba9cafc585f84c24d3746163d33e6fb96600b451f4df7409e388810cf"},
+    {"data_row_index": 30, "part_through_condition_cells_sha256": "54a204720d473d27b7dbc8eb52410df9d645e9206ab070218fb503efc9a6b989"},
+    {"data_row_index": 34, "part_through_condition_cells_sha256": "4f5e670ca990b6ba2d2711cbd1c01930a19f0f2e1b27ac14d2ca767d8620486c"}
+  ],
+  "review_decision": "all_42_cells_support_exact_symbol_shape_and_unit_targets",
+  "explicit_exclusions": ["rating_or_test_regime", "manufacturer_authority", "unobserved_conditions"],
+  "labeler_measurements": {
+    "source.vocabulary_map.v1": {"correct": 42, "total": 42},
+    "quantity.dimension.v1": {"correct": 42, "total": 42},
+    "source.value_align_unique.v1": {"correct": 35, "total": 35},
+    "source.range_align.v1": {"correct": 7, "total": 7}
+  }
+}

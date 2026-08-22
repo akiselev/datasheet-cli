@@ -5,14 +5,14 @@
   "required": [
     "assigned_split",
     "candidate_ids",
-    "datasheet_sketch_digest",
     "document_family_id",
-    "document_state_id",
     "example_id",
+    "observation_ids",
     "ontology_snapshot_digest",
     "producer",
     "rights_snapshot_ids",
     "schema_version",
+    "source_record_ids",
     "task",
     "training_label_record_id"
   ],
@@ -27,7 +27,10 @@
       }
     },
     "datasheet_sketch_digest": {
-      "type": "string"
+      "type": [
+        "string",
+        "null"
+      ]
     },
     "document_family_id": {
       "type": "string"
@@ -39,7 +42,10 @@
       ]
     },
     "document_state_id": {
-      "type": "string"
+      "type": [
+        "string",
+        "null"
+      ]
     },
     "example_id": {
       "type": "string"
@@ -49,6 +55,12 @@
         "string",
         "null"
       ]
+    },
+    "observation_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
     },
     "ontology_snapshot_digest": {
       "type": "string"
@@ -64,6 +76,12 @@
     },
     "schema_version": {
       "type": "string"
+    },
+    "source_record_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
     },
     "task": {
       "type": "string"

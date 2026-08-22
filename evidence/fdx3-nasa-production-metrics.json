@@ -1,0 +1,18 @@
+{
+  "abstention_buckets": {
+    "shape_mismatch": 210
+  },
+  "abstentions": 210,
+  "combined_labels": 210,
+  "failure_buckets": {
+    "ambiguous_regime_excluded": 210,
+    "manufacturer_authority_excluded": 210,
+    "second_family_access_or_rights_blocked": 1
+  },
+  "positive_votes": 630,
+  "reviewed_examples": 42,
+  "schema_version": "fdx3-production-metrics/1",
+  "source_facts": 210,
+  "training_examples": 210,
+  "votes": 840
+}

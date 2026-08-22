@@ -29,6 +29,16 @@
     "datasheet_revision": {
       "type": "string"
     },
+    "documented_second_family_blocker": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/ProductionArtifactBinding"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
     "eligible_family_count": {
       "type": "integer",
       "format": "uint32",

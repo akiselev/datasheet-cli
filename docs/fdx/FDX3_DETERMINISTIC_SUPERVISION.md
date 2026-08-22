@@ -1,6 +1,6 @@
 # FDX3 deterministic supervision foundation
 
-Status: contract foundation implemented; production acceptance pending.
+Status: production acceptance complete through the documented-blocker branch.
 
 This phase adds the deterministic, auditable supervision layer without starting
 a production corpus or model. Datasheet owns electronics vocabulary mapping,
@@ -74,10 +74,10 @@ potentially restricted content. Its contract is checked by
 family has both an explicit `training: allow` policy and suitable analog/power
 structured facts or evidence-bearing electrical cells.
 
-The audit now admits one bounded production family, still short of the required
-two independent families:
+The audit admits one bounded production family and uses the plan's explicit
+documented access/rights blocker branch for the exhausted second-family search:
 
-- NASA NEPP NPSL is committed in Foundry revision `7f90a7e` with a policy that
+- NASA NEPP NPSL is committed in Foundry revision `5ec50e4` with a policy that
   permits local training and derived facts while denying remote disclosure and
   leaving raw republication under review. The exact pinned March 1998
   low-power NPN HTML table yielded 35 part mentions and 210 source-native
@@ -121,10 +121,34 @@ two independent families:
   the committed source policy denies durable training. Manufacturer PDFs with
   review-required or denied training rights are not substituted.
 
-The NASA source-vocabulary-map IDs are present, but reviewed-development
-examples, calibration, production votes, combined labels, and training examples
-remain absent. A second genuinely independent eligible family is still
-required. This is one production-valid source, not FDX3 acceptance and not
-permission to begin FDX4.
+The exact retained HTML was independently decoded with Python's standard-library
+HTML parser rather than the Foundry `scraper` implementation. Seven deliberately
+spread rows and all six admitted fields produced 42 reviewed development
+examples. The immutable calibration records 42/42 vocabulary, 42/42 dimension,
+35/35 scalar-alignment, and 7/7 range-alignment precision. Cell and part text is
+represented by review hashes in `evidence/fdx3-nasa-independent-row-review.json`;
+the policy-controlled raw page is not republished here.
+
+`evidence/fdx3-nasa-production-bundle.json` retains all 210 structured facts,
+840 labeler outcomes (630 votes and 210 explicit shape-mismatch abstentions),
+210 deterministic combined labels, and 210 source-native training examples.
+Every row binds the exact Bronze source record, NASA source artifact, policy,
+publisher lineage, observation, producer configuration, vocabulary snapshot,
+and Foundry/Ferrodoc/Datasheet base revisions. All targets keep regime null and
+all examples keep manufacturer authority absent. Counts and failure buckets are
+frozen in `evidence/fdx3-nasa-production-metrics.json`.
+
+Foundry physically retained the four projections through Artifactum under
+`/projects/.foundry-fdx3-data/nasa-fdx3-artifactum`: 210
+`silver.structured_facts/v1`, 840 `silver.label_votes/v1`, 210
+`silver.training_labels/v1`, and 210 `training.examples/v1` rows. The exact
+batch, manifest, Parquet, parent-chain, and schema identities are recorded in
+Foundry's `FDX3_NASA_PRODUCTION_EVIDENCE_2026-08-22.json`. The separate
+`evidence/fdx3-second-family-blocker.json` records the source-by-source access,
+rights, and semantic blockers and grants no authority to train on restricted
+data or invent a second regime/manufacturer family.
+
+This closes FDX3 only under that documented-blocker acceptance path. It does
+not create a second family and must not be described as two-family supervision.
 
 No FDX4 split corpus, FDX5 trained model, or FDX6 production cascade is claimed.
