@@ -2,7 +2,7 @@ use datasheet_compiler::corpus::freeze_sealed_hidden_handoff;
 use datasheet_core::Sha256Digest;
 use datasheet_core::corpus::{
     CorpusEvidenceClass, GroupingLevel, ProtectedSplit, SEALED_HIDDEN_HANDOFF_SCHEMA,
-    SealedHandoffState, SealedHiddenEvaluationHandoff,
+    SealedArtifactRole, SealedHandoffState, SealedHiddenEvaluationHandoff,
 };
 
 fn digest(byte: char) -> Sha256Digest {
@@ -14,6 +14,7 @@ fn request() -> SealedHiddenEvaluationHandoff {
         schema_version: SEALED_HIDDEN_HANDOFF_SCHEMA.into(),
         handoff_digest: digest('0'),
         qualification_context_digest: digest('1'),
+        training_group_commitment_sha256: digest('2'),
         split: ProtectedSplit::FinalBlindTest,
         state: SealedHandoffState::AwaitingExternalSeal,
         external_store_locator: "artifactum+sealed://independent-evaluator/fdx4/final-blind-test"
@@ -29,6 +30,10 @@ fn request() -> SealedHiddenEvaluationHandoff {
             GroupingLevel::PublisherLineage,
         ],
         required_evidence_class: CorpusEvidenceClass::RealDocument,
+        required_artifact_roles: SealedArtifactRole::ALL.into(),
+        retention_permission_required: true,
+        training_permission_required: true,
+        policy_fail_closed: true,
         source_bytes_repository_visible: false,
         labels_repository_visible: false,
         candidate_network_access: false,
@@ -57,9 +62,9 @@ fn sealed_ready_requires_complete_external_attestation() {
 
     let mut complete = request();
     complete.state = SealedHandoffState::SealedReady;
-    complete.sealed_manifest_content_sha256 = Some(digest('2'));
-    complete.artifactum_collection_id = Some(format!("sha256:{}", digest('3').0));
-    complete.operator_attestation_sha256 = Some(digest('4'));
+    complete.sealed_manifest_content_sha256 = Some(digest('3'));
+    complete.artifactum_collection_id = Some(format!("sha256:{}", digest('4').0));
+    complete.operator_attestation_sha256 = Some(digest('5'));
     assert!(
         freeze_sealed_hidden_handoff(complete)
             .unwrap()
@@ -76,6 +81,8 @@ fn local_or_candidate_visible_handoffs_fail_closed() {
         "network",
         "credentials",
         "synthetic",
+        "rights",
+        "role",
     ] {
         let mut handoff = request();
         match mutation {
@@ -86,6 +93,10 @@ fn local_or_candidate_visible_handoffs_fail_closed() {
             "credentials" => handoff.candidate_credentials_available = true,
             "synthetic" => {
                 handoff.required_evidence_class = CorpusEvidenceClass::IndependentlySynthetic
+            }
+            "rights" => handoff.training_permission_required = false,
+            "role" => {
+                handoff.required_artifact_roles.pop();
             }
             _ => unreachable!(),
         }

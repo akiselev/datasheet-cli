@@ -49,6 +49,7 @@ pub fn freeze_sealed_hidden_handoff(
     mut handoff: SealedHiddenEvaluationHandoff,
 ) -> Result<SealedHiddenEvaluationHandoff, datasheet_core::corpus::CorpusContractError> {
     handoff.held_out_from_train_by.sort();
+    handoff.required_artifact_roles.sort();
     handoff.limitation_codes.sort();
     handoff.handoff_digest = handoff.recompute_digest();
     handoff.validate()?;

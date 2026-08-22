@@ -61,6 +61,34 @@ pub enum SealedHandoffState {
     SealedReady,
 }
 
+#[derive(
+    Clone, Copy, Debug, Eq, Ord, PartialEq, PartialOrd, Serialize, Deserialize, JsonSchema,
+)]
+#[serde(rename_all = "snake_case")]
+pub enum SealedArtifactRole {
+    SourceBytes,
+    LicenseTermsBytes,
+    SourcePolicySnapshot,
+    AuthorityPolicySnapshot,
+    AcquisitionReceipt,
+    GroupingManifest,
+    ReviewedLabels,
+    EvaluationManifest,
+}
+
+impl SealedArtifactRole {
+    pub const ALL: [Self; 8] = [
+        Self::SourceBytes,
+        Self::LicenseTermsBytes,
+        Self::SourcePolicySnapshot,
+        Self::AuthorityPolicySnapshot,
+        Self::AcquisitionReceipt,
+        Self::GroupingManifest,
+        Self::ReviewedLabels,
+        Self::EvaluationManifest,
+    ];
+}
+
 /// Repository-safe contract for an independently operated final-blind evaluation.
 ///
 /// Source bytes, labels, and decryption credentials must remain outside the shared
@@ -72,11 +100,16 @@ pub struct SealedHiddenEvaluationHandoff {
     pub schema_version: String,
     pub handoff_digest: Sha256Digest,
     pub qualification_context_digest: Sha256Digest,
+    pub training_group_commitment_sha256: Sha256Digest,
     pub split: ProtectedSplit,
     pub state: SealedHandoffState,
     pub external_store_locator: String,
     pub held_out_from_train_by: Vec<GroupingLevel>,
     pub required_evidence_class: CorpusEvidenceClass,
+    pub required_artifact_roles: Vec<SealedArtifactRole>,
+    pub retention_permission_required: bool,
+    pub training_permission_required: bool,
+    pub policy_fail_closed: bool,
     pub source_bytes_repository_visible: bool,
     pub labels_repository_visible: bool,
     pub candidate_network_access: bool,
@@ -96,6 +129,7 @@ impl SealedHiddenEvaluationHandoff {
         let mut canonical = self.clone();
         canonical.handoff_digest = Sha256Digest::of_bytes(b"placeholder");
         canonical.held_out_from_train_by.sort();
+        canonical.required_artifact_roles.sort();
         canonical.limitation_codes.sort();
         Sha256Digest::of_bytes(&serde_json::to_vec(&canonical).expect("handoff serialization"))
     }
@@ -107,6 +141,7 @@ impl SealedHiddenEvaluationHandoff {
                 .external_store_locator
                 .starts_with("artifactum+sealed://")
             || self.held_out_from_train_by.is_empty()
+            || self.required_artifact_roles.len() != SealedArtifactRole::ALL.len()
             || self.limitation_codes.is_empty()
         {
             return Err(CorpusContractError::Invalid("sealed handoff identity"));
@@ -116,13 +151,28 @@ impl SealedHiddenEvaluationHandoff {
             || self.candidate_network_access
             || self.candidate_credentials_available
             || self.required_evidence_class != CorpusEvidenceClass::RealDocument
+            || !self.retention_permission_required
+            || !self.training_permission_required
+            || !self.policy_fail_closed
         {
             return Err(CorpusContractError::Invalid("hidden evaluation isolation"));
         }
         self.qualification_context_digest
             .validate()
             .map_err(|_| CorpusContractError::Invalid("handoff context digest"))?;
+        self.training_group_commitment_sha256
+            .validate()
+            .map_err(|_| CorpusContractError::Invalid("training grouping commitment"))?;
         unique(self.held_out_from_train_by.iter(), "handoff grouping")?;
+        unique(self.required_artifact_roles.iter(), "handoff artifact role")?;
+        if !SealedArtifactRole::ALL
+            .iter()
+            .all(|role| self.required_artifact_roles.contains(role))
+        {
+            return Err(CorpusContractError::Missing(
+                "sealed rights/provenance artifact",
+            ));
+        }
         unique(self.limitation_codes.iter(), "handoff limitation")?;
         let sealed = self.sealed_manifest_content_sha256.is_some()
             && self.artifactum_collection_id.is_some()

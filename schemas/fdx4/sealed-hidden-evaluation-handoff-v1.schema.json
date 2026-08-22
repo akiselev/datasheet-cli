@@ -11,12 +11,17 @@
     "held_out_from_train_by",
     "labels_repository_visible",
     "limitation_codes",
+    "policy_fail_closed",
     "qualification_context_digest",
+    "required_artifact_roles",
     "required_evidence_class",
+    "retention_permission_required",
     "schema_version",
     "source_bytes_repository_visible",
     "split",
-    "state"
+    "state",
+    "training_group_commitment_sha256",
+    "training_permission_required"
   ],
   "properties": {
     "artifactum_collection_id": {
@@ -58,11 +63,23 @@
         "null"
       ]
     },
+    "policy_fail_closed": {
+      "type": "boolean"
+    },
     "qualification_context_digest": {
       "type": "string"
     },
+    "required_artifact_roles": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/SealedArtifactRole"
+      }
+    },
     "required_evidence_class": {
       "$ref": "#/definitions/CorpusEvidenceClass"
+    },
+    "retention_permission_required": {
+      "type": "boolean"
     },
     "schema_version": {
       "type": "string"
@@ -81,6 +98,12 @@
     },
     "state": {
       "$ref": "#/definitions/SealedHandoffState"
+    },
+    "training_group_commitment_sha256": {
+      "type": "string"
+    },
+    "training_permission_required": {
+      "type": "boolean"
     }
   },
   "additionalProperties": false,
@@ -117,6 +140,19 @@
         "document-family-held-out",
         "manufacturer-held-out",
         "final-blind-test"
+      ]
+    },
+    "SealedArtifactRole": {
+      "type": "string",
+      "enum": [
+        "source_bytes",
+        "license_terms_bytes",
+        "source_policy_snapshot",
+        "authority_policy_snapshot",
+        "acquisition_receipt",
+        "grouping_manifest",
+        "reviewed_labels",
+        "evaluation_manifest"
       ]
     },
     "SealedHandoffState": {

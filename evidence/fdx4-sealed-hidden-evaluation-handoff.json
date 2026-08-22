@@ -1,7 +1,8 @@
 {
   "schema_version": "fdx4.sealed-hidden-evaluation-handoff/v1",
-  "handoff_digest": "07e09e1f0e9dc419f7be58ec000fe4af181c1055a769642c2914a959eaa412f1",
-  "qualification_context_digest": "9f0b0199de506ea29757d5f17e93a6cf4e9b1a8186ea178f53c1070bb0b8a998",
+  "handoff_digest": "cd37b07c0574ee98bf1d1899748e4a8035f087b7f13f4175b55c179e9343e854",
+  "qualification_context_digest": "32f87445dd27ba252c400dd5746ebee8595dace0f5613f381bf65ec1e6696b5b",
+  "training_group_commitment_sha256": "129cb9ade00fdb9aa961a74d60d41b5c7c298a3bdd159e1dcde97c6bfa741b30",
   "split": "final-blind-test",
   "state": "awaiting_external_seal",
   "external_store_locator": "artifactum+sealed://independent-evaluator/fdx4/final-blind-test",
@@ -16,6 +17,19 @@
     "publisher_lineage"
   ],
   "required_evidence_class": "real_document",
+  "required_artifact_roles": [
+    "source_bytes",
+    "license_terms_bytes",
+    "source_policy_snapshot",
+    "authority_policy_snapshot",
+    "acquisition_receipt",
+    "grouping_manifest",
+    "reviewed_labels",
+    "evaluation_manifest"
+  ],
+  "retention_permission_required": true,
+  "training_permission_required": true,
+  "policy_fail_closed": true,
   "source_bytes_repository_visible": false,
   "labels_repository_visible": false,
   "candidate_network_access": false,

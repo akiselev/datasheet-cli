@@ -110,7 +110,10 @@ request for an independent evaluator to retain a real final-blind artifact in an
 external sealed Artifactum collection. A ready handoff requires exact sealed-manifest,
 collection, and operator-attestation identities while forbidding repository-visible
 source bytes/labels and candidate network access or credentials. The current request is
-`awaiting_external_seal`; it is not hidden evidence.
+`awaiting_external_seal`; it is not hidden evidence. It binds the exact corpus/train-group
+commitment and requires sealed source bytes, license terms, source/authority policies,
+acquisition receipt, grouping manifest, reviewed labels, and evaluation manifest before
+the state can become ready.
 
 `contract_plumbing_ready` is false and every evaluation slice deliberately sets
 `supports_real_world_generalization` false. The same single real Arduino
