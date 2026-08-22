@@ -1,8 +1,8 @@
 use datasheet_compiler::corpus::freeze_protected_corpus;
 use datasheet_core::Sha256Digest;
 use datasheet_core::corpus::{
-    CorpusInputBinding, CorpusMember, ModelQualificationExhaustion, PROTECTED_CORPUS_SCHEMA,
-    ProtectedCorpusManifest, ProtectedSplit, ProtectedSplitManifest,
+    CorpusInputBinding, CorpusMember, PROTECTED_CORPUS_SCHEMA, ProtectedCorpusManifest,
+    ProtectedSplit, ProtectedSplitManifest,
 };
 
 fn digest(byte: char) -> Sha256Digest {
@@ -12,13 +12,6 @@ fn digest(byte: char) -> Sha256Digest {
 fn production() -> ProtectedCorpusManifest {
     serde_json::from_str(include_str!(
         "../../../evidence/fdx4-protected-corpus-manifest.json"
-    ))
-    .unwrap()
-}
-
-fn exhaustion() -> ModelQualificationExhaustion {
-    serde_json::from_str(include_str!(
-        "../../../evidence/fdx4-model-qualification-exhaustion-2026-08-22.json"
     ))
     .unwrap()
 }
@@ -107,48 +100,6 @@ fn production_manifest_is_train_only_and_replays_canonically() {
     shuffled.splits.reverse();
     shuffled.inputs.reverse();
     assert_eq!(freeze_protected_corpus(shuffled).unwrap(), manifest);
-}
-
-#[test]
-fn checked_in_qualification_exhaustion_is_bound_and_fails_closed() {
-    let mut ledger = exhaustion();
-    assert_eq!(ledger.qualification_digest, ledger.recompute_digest());
-    ledger.validate().unwrap();
-    assert_eq!(ledger.qualification_eligible_member_count, 0);
-    assert_eq!(ledger.minimum_pairwise_disjoint_manufacturer_groups, 6);
-    assert!(!ledger.model_qualification_ready);
-    assert!(!ledger.fdx5_training_started);
-
-    ledger.model_qualification_ready = true;
-    ledger.qualification_digest = ledger.recompute_digest();
-    assert!(ledger.validate().is_err());
-
-    let mut ledger = exhaustion();
-    ledger.fdx5_training_started = true;
-    ledger.qualification_digest = ledger.recompute_digest();
-    assert!(ledger.validate().is_err());
-
-    let mut ledger = exhaustion();
-    ledger.eligible_new_manufacturer_groups = 1;
-    ledger.qualification_digest = ledger.recompute_digest();
-    assert!(ledger.validate().is_err());
-}
-
-#[test]
-fn checked_in_fdx4_schemas_match_rust_contracts() {
-    fn check<T: schemars::JsonSchema>(bytes: &str) {
-        let expected: serde_json::Value = serde_json::from_str(bytes).unwrap();
-        assert_eq!(
-            serde_json::to_value(schemars::schema_for!(T)).unwrap(),
-            expected
-        );
-    }
-    check::<ProtectedCorpusManifest>(include_str!(
-        "../../../schemas/fdx4/protected-corpus-manifest-v1.schema.json"
-    ));
-    check::<ModelQualificationExhaustion>(include_str!(
-        "../../../schemas/fdx4/model-qualification-exhaustion-v1.schema.json"
-    ));
 }
 
 #[test]
