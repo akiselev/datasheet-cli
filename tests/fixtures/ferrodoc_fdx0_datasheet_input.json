@@ -1,0 +1,109 @@
+{
+  "upstream_revision": "2a4d886703753a8893bfa17ade8a554df61f59ab",
+  "evidence_delta_schema_sha256": "ab98db6810db12bdf22b04e6b113bbbe4cbe43aa187702967ad1db30c1e0ff16",
+  "document_state_schema_sha256": "a9a81cd6b65acf1a256529337c985ad512d34a7b79274f48a926490c35f1aa2b",
+  "evidence_delta": {
+    "delta_schema": "ferrodoc-evidence-delta/1",
+    "source_pdf_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "ir_schema": {"major": 1, "minor": 0},
+    "stage": "native_extract",
+    "producer": {
+      "name": "ferrodoc-portable-conformance",
+      "version": "1.0.0",
+      "build": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      "model_digest": null,
+      "configuration_digest": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+    },
+    "scope": {"kind": "document"},
+    "input_state_id": null,
+    "required_evidence_ids": [],
+    "new_pages": [
+      {
+        "id": "page_2222222222222222222222222222222222222222222222222222222222222222",
+        "index": 0,
+        "bounds": {"page_index":0,"rect":{"x":0.0,"y":0.0,"width":100.0,"height":100.0,"space":"pdf","unit":"point"},"source_transform":[1.0,0.0,0.0,1.0,0.0,0.0]},
+        "layers": [{"id":"layer_1111111111111111111111111111111111111111111111111111111111111111","kind":{"kind":"native_pdf"},"provenance":{"schema_version":{"major":1,"minor":0},"input_digest":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","engine_id":"portable-fixture","engine_version":"1.0.0","model_digest":null,"parameters":{},"stage":"native_extract"}}],
+        "artifacts": [],
+        "regions": [
+          {
+            "id":"region_4444444444444444444444444444444444444444444444444444444444444444","kind":"heading","geometry":{"page_index":0,"rect":{"x":5.0,"y":5.0,"width":70.0,"height":5.0,"space":"pdf","unit":"point"},"source_transform":[1.0,0.0,0.0,1.0,0.0,0.0]},
+            "evidence":[{"id":"evidence_1000000000000000000000000000000000000000000000000000000000000000","layer_id":"layer_1111111111111111111111111111111111111111111111111111111111111111","content":{"kind":"text","text":"Portable Semiconductor SYNTH2000"},"geometry":{"page_index":0,"rect":{"x":5.0,"y":5.0,"width":70.0,"height":5.0,"space":"pdf","unit":"point"},"source_transform":[1.0,0.0,0.0,1.0,0.0,0.0]},"geometry_quality":"region","confidence":null,"provenance":{"schema_version":{"major":1,"minor":0},"input_digest":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","engine_id":"portable-fixture","engine_version":"1.0.0","model_digest":null,"parameters":{},"stage":"native_extract"},"engine_metadata":{}}],
+            "selected":{"evidence_ids":["evidence_1000000000000000000000000000000000000000000000000000000000000000"],"reason":"native_quality","explanation":"selected exact source title"}
+          },
+          {
+            "id":"region_5555555555555555555555555555555555555555555555555555555555555555","kind":"heading","geometry":{"page_index":0,"rect":{"x":5.0,"y":15.0,"width":70.0,"height":5.0,"space":"pdf","unit":"point"},"source_transform":[1.0,0.0,0.0,1.0,0.0,0.0]},
+            "evidence":[{"id":"evidence_2000000000000000000000000000000000000000000000000000000000000000","layer_id":"layer_1111111111111111111111111111111111111111111111111111111111111111","content":{"kind":"text","text":"Recommended Operating Conditions"},"geometry":{"page_index":0,"rect":{"x":5.0,"y":15.0,"width":70.0,"height":5.0,"space":"pdf","unit":"point"},"source_transform":[1.0,0.0,0.0,1.0,0.0,0.0]},"geometry_quality":"region","confidence":null,"provenance":{"schema_version":{"major":1,"minor":0},"input_digest":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","engine_id":"portable-fixture","engine_version":"1.0.0","model_digest":null,"parameters":{},"stage":"native_extract"},"engine_metadata":{}}],
+            "selected":{"evidence_ids":["evidence_2000000000000000000000000000000000000000000000000000000000000000"],"reason":"native_quality","explanation":"selected exact source heading"}
+          },
+          {
+            "id":"region_6666666666666666666666666666666666666666666666666666666666666666","kind":"table","geometry":{"page_index":0,"rect":{"x":5.0,"y":25.0,"width":90.0,"height":30.0,"space":"pdf","unit":"point"},"source_transform":[1.0,0.0,0.0,1.0,0.0,0.0]},
+            "evidence":[
+              {"id":"evidence_3000000000000000000000000000000000000000000000000000000000000000","layer_id":"layer_1111111111111111111111111111111111111111111111111111111111111111","content":{"kind":"text","text":"Parameter"},"geometry":null,"geometry_quality":"region","confidence":null,"provenance":{"schema_version":{"major":1,"minor":0},"input_digest":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","engine_id":"portable-fixture","engine_version":"1.0.0","model_digest":null,"parameters":{},"stage":"native_extract"},"engine_metadata":{}},
+              {"id":"evidence_4000000000000000000000000000000000000000000000000000000000000000","layer_id":"layer_1111111111111111111111111111111111111111111111111111111111111111","content":{"kind":"text","text":"Conditions"},"geometry":null,"geometry_quality":"region","confidence":null,"provenance":{"schema_version":{"major":1,"minor":0},"input_digest":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","engine_id":"portable-fixture","engine_version":"1.0.0","model_digest":null,"parameters":{},"stage":"native_extract"},"engine_metadata":{}},
+              {"id":"evidence_5000000000000000000000000000000000000000000000000000000000000000","layer_id":"layer_1111111111111111111111111111111111111111111111111111111111111111","content":{"kind":"text","text":"Min"},"geometry":null,"geometry_quality":"region","confidence":null,"provenance":{"schema_version":{"major":1,"minor":0},"input_digest":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","engine_id":"portable-fixture","engine_version":"1.0.0","model_digest":null,"parameters":{},"stage":"native_extract"},"engine_metadata":{}},
+              {"id":"evidence_6000000000000000000000000000000000000000000000000000000000000000","layer_id":"layer_1111111111111111111111111111111111111111111111111111111111111111","content":{"kind":"text","text":"Typ"},"geometry":null,"geometry_quality":"region","confidence":null,"provenance":{"schema_version":{"major":1,"minor":0},"input_digest":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","engine_id":"portable-fixture","engine_version":"1.0.0","model_digest":null,"parameters":{},"stage":"native_extract"},"engine_metadata":{}},
+              {"id":"evidence_7000000000000000000000000000000000000000000000000000000000000000","layer_id":"layer_1111111111111111111111111111111111111111111111111111111111111111","content":{"kind":"text","text":"Max"},"geometry":null,"geometry_quality":"region","confidence":null,"provenance":{"schema_version":{"major":1,"minor":0},"input_digest":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","engine_id":"portable-fixture","engine_version":"1.0.0","model_digest":null,"parameters":{},"stage":"native_extract"},"engine_metadata":{}},
+              {"id":"evidence_8000000000000000000000000000000000000000000000000000000000000000","layer_id":"layer_1111111111111111111111111111111111111111111111111111111111111111","content":{"kind":"text","text":"Unit"},"geometry":null,"geometry_quality":"region","confidence":null,"provenance":{"schema_version":{"major":1,"minor":0},"input_digest":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","engine_id":"portable-fixture","engine_version":"1.0.0","model_digest":null,"parameters":{},"stage":"native_extract"},"engine_metadata":{}},
+              {"id":"evidence_9000000000000000000000000000000000000000000000000000000000000000","layer_id":"layer_1111111111111111111111111111111111111111111111111111111111111111","content":{"kind":"text","text":"Input voltage"},"geometry":null,"geometry_quality":"region","confidence":null,"provenance":{"schema_version":{"major":1,"minor":0},"input_digest":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","engine_id":"portable-fixture","engine_version":"1.0.0","model_digest":null,"parameters":{},"stage":"native_extract"},"engine_metadata":{}},
+              {"id":"evidence_a000000000000000000000000000000000000000000000000000000000000000","layer_id":"layer_1111111111111111111111111111111111111111111111111111111111111111","content":{"kind":"text","text":"TA = 25 °C [1]"},"geometry":null,"geometry_quality":"region","confidence":null,"provenance":{"schema_version":{"major":1,"minor":0},"input_digest":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","engine_id":"portable-fixture","engine_version":"1.0.0","model_digest":null,"parameters":{},"stage":"native_extract"},"engine_metadata":{}},
+              {"id":"evidence_b000000000000000000000000000000000000000000000000000000000000000","layer_id":"layer_1111111111111111111111111111111111111111111111111111111111111111","content":{"kind":"text","text":"1.8"},"geometry":null,"geometry_quality":"region","confidence":null,"provenance":{"schema_version":{"major":1,"minor":0},"input_digest":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","engine_id":"portable-fixture","engine_version":"1.0.0","model_digest":null,"parameters":{},"stage":"native_extract"},"engine_metadata":{}},
+              {"id":"evidence_c000000000000000000000000000000000000000000000000000000000000000","layer_id":"layer_1111111111111111111111111111111111111111111111111111111111111111","content":{"kind":"text","text":"3.3"},"geometry":null,"geometry_quality":"region","confidence":null,"provenance":{"schema_version":{"major":1,"minor":0},"input_digest":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","engine_id":"portable-fixture","engine_version":"1.0.0","model_digest":null,"parameters":{},"stage":"native_extract"},"engine_metadata":{}},
+              {"id":"evidence_d000000000000000000000000000000000000000000000000000000000000000","layer_id":"layer_1111111111111111111111111111111111111111111111111111111111111111","content":{"kind":"text","text":"5.5"},"geometry":null,"geometry_quality":"region","confidence":null,"provenance":{"schema_version":{"major":1,"minor":0},"input_digest":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","engine_id":"portable-fixture","engine_version":"1.0.0","model_digest":null,"parameters":{},"stage":"native_extract"},"engine_metadata":{}},
+              {"id":"evidence_e000000000000000000000000000000000000000000000000000000000000000","layer_id":"layer_1111111111111111111111111111111111111111111111111111111111111111","content":{"kind":"text","text":"V"},"geometry":null,"geometry_quality":"region","confidence":null,"provenance":{"schema_version":{"major":1,"minor":0},"input_digest":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","engine_id":"portable-fixture","engine_version":"1.0.0","model_digest":null,"parameters":{},"stage":"native_extract"},"engine_metadata":{}},
+              {"id":"evidence_f000000000000000000000000000000000000000000000000000000000000000","layer_id":"layer_1111111111111111111111111111111111111111111111111111111111111111","content":{"kind":"table","rows":2,"columns":6,"cells":[
+                {"row":0,"column":0,"row_span":1,"column_span":1,"text":"Parameter","geometry":null,"geometry_quality":"region","source_spans":[{"evidence_id":"evidence_3000000000000000000000000000000000000000000000000000000000000000","start":0,"end":9}]},
+                {"row":0,"column":1,"row_span":1,"column_span":1,"text":"Conditions","geometry":null,"geometry_quality":"region","source_spans":[{"evidence_id":"evidence_4000000000000000000000000000000000000000000000000000000000000000","start":0,"end":10}]},
+                {"row":0,"column":2,"row_span":1,"column_span":1,"text":"Min","geometry":null,"geometry_quality":"region","source_spans":[{"evidence_id":"evidence_5000000000000000000000000000000000000000000000000000000000000000","start":0,"end":3}]},
+                {"row":0,"column":3,"row_span":1,"column_span":1,"text":"Typ","geometry":null,"geometry_quality":"region","source_spans":[{"evidence_id":"evidence_6000000000000000000000000000000000000000000000000000000000000000","start":0,"end":3}]},
+                {"row":0,"column":4,"row_span":1,"column_span":1,"text":"Max","geometry":null,"geometry_quality":"region","source_spans":[{"evidence_id":"evidence_7000000000000000000000000000000000000000000000000000000000000000","start":0,"end":3}]},
+                {"row":0,"column":5,"row_span":1,"column_span":1,"text":"Unit","geometry":null,"geometry_quality":"region","source_spans":[{"evidence_id":"evidence_8000000000000000000000000000000000000000000000000000000000000000","start":0,"end":4}]},
+                {"row":1,"column":0,"row_span":1,"column_span":1,"text":"Input voltage","geometry":null,"geometry_quality":"region","source_spans":[{"evidence_id":"evidence_9000000000000000000000000000000000000000000000000000000000000000","start":0,"end":13}]},
+                {"row":1,"column":1,"row_span":1,"column_span":1,"text":"TA = 25 °C [1]","geometry":null,"geometry_quality":"region","source_spans":[{"evidence_id":"evidence_a000000000000000000000000000000000000000000000000000000000000000","start":0,"end":15}]},
+                {"row":1,"column":2,"row_span":1,"column_span":1,"text":"1.8","geometry":null,"geometry_quality":"region","source_spans":[{"evidence_id":"evidence_b000000000000000000000000000000000000000000000000000000000000000","start":0,"end":3}]},
+                {"row":1,"column":3,"row_span":1,"column_span":1,"text":"3.3","geometry":null,"geometry_quality":"region","source_spans":[{"evidence_id":"evidence_c000000000000000000000000000000000000000000000000000000000000000","start":0,"end":3}]},
+                {"row":1,"column":4,"row_span":1,"column_span":1,"text":"5.5","geometry":null,"geometry_quality":"region","source_spans":[{"evidence_id":"evidence_d000000000000000000000000000000000000000000000000000000000000000","start":0,"end":3}]},
+                {"row":1,"column":5,"row_span":1,"column_span":1,"text":"V","geometry":null,"geometry_quality":"region","source_spans":[{"evidence_id":"evidence_e000000000000000000000000000000000000000000000000000000000000000","start":0,"end":1}]}
+              ]},"geometry":{"page_index":0,"rect":{"x":5.0,"y":25.0,"width":90.0,"height":30.0,"space":"pdf","unit":"point"},"source_transform":[1.0,0.0,0.0,1.0,0.0,0.0]},"geometry_quality":"region","confidence":null,"provenance":{"schema_version":{"major":1,"minor":0},"input_digest":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","engine_id":"portable-fixture","engine_version":"1.0.0","model_digest":null,"parameters":{},"stage":"native_extract"},"engine_metadata":{}}
+            ],
+            "selected":{"evidence_ids":["evidence_f000000000000000000000000000000000000000000000000000000000000000"],"reason":"reconciled","explanation":"selected evidence-bearing structured table"}
+          },
+          {
+            "id":"region_7777777777777777777777777777777777777777777777777777777777777777","kind":"footnote","geometry":{"page_index":0,"rect":{"x":5.0,"y":57.0,"width":80.0,"height":4.0,"space":"pdf","unit":"point"},"source_transform":[1.0,0.0,0.0,1.0,0.0,0.0]},
+            "evidence":[{"id":"evidence_0100000000000000000000000000000000000000000000000000000000000000","layer_id":"layer_1111111111111111111111111111111111111111111111111111111111111111","content":{"kind":"text","text":"[1] Valid only for the QFN-8 package."},"geometry":{"page_index":0,"rect":{"x":5.0,"y":57.0,"width":80.0,"height":4.0,"space":"pdf","unit":"point"},"source_transform":[1.0,0.0,0.0,1.0,0.0,0.0]},"geometry_quality":"line","confidence":null,"provenance":{"schema_version":{"major":1,"minor":0},"input_digest":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","engine_id":"portable-fixture","engine_version":"1.0.0","model_digest":null,"parameters":{},"stage":"native_extract"},"engine_metadata":{}}],
+            "selected":{"evidence_ids":["evidence_0100000000000000000000000000000000000000000000000000000000000000"],"reason":"native_quality","explanation":"selected exact source footnote"}
+          }
+        ],
+        "reading_order": []
+      },
+      {
+        "id": "page_3333333333333333333333333333333333333333333333333333333333333333",
+        "index": 1,
+        "bounds": {"page_index":1,"rect":{"x":0.0,"y":0.0,"width":100.0,"height":100.0,"space":"pdf","unit":"point"},"source_transform":[1.0,0.0,0.0,1.0,0.0,0.0]},
+        "layers": [{"id":"layer_2111111111111111111111111111111111111111111111111111111111111111","kind":{"kind":"native_pdf"},"provenance":{"schema_version":{"major":1,"minor":0},"input_digest":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","engine_id":"portable-fixture","engine_version":"1.0.0","model_digest":null,"parameters":{},"stage":"native_extract"}}],
+        "artifacts": [],
+        "regions": [{"id":"region_8888888888888888888888888888888888888888888888888888888888888888","kind":"paragraph","geometry":{"page_index":1,"rect":{"x":5.0,"y":5.0,"width":50.0,"height":5.0,"space":"pdf","unit":"point"},"source_transform":[1.0,0.0,0.0,1.0,0.0,0.0]},"evidence":[{"id":"evidence_0200000000000000000000000000000000000000000000000000000000000000","layer_id":"layer_2111111111111111111111111111111111111111111111111111111111111111","content":{"kind":"text","text":"Second page proves region references are page-qualified."},"geometry":null,"geometry_quality":"page_only","confidence":null,"provenance":{"schema_version":{"major":1,"minor":0},"input_digest":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","engine_id":"portable-fixture","engine_version":"1.0.0","model_digest":null,"parameters":{},"stage":"native_extract"},"engine_metadata":{}}],"selected":{"evidence_ids":["evidence_0200000000000000000000000000000000000000000000000000000000000000"],"reason":"native_quality","explanation":"selected page-qualified paragraph"}}],
+        "reading_order": []
+      }
+    ],
+    "page_additions": [],
+    "selection_hints": [],
+    "diagnostics": [],
+    "coverage_delta": []
+  },
+  "document_state_manifest": {
+    "state_schema": "ferrodoc-document-state/1",
+    "source_pdf_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "ir_schema": {"major": 1, "minor": 0},
+    "evidence_delta_ids": ["delta_7ec0faca0207a967d135389f816cdf95b53ba7e3e96eae848f7174945de081dc"],
+    "reconciliation_policy_id": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+    "coverage": [],
+    "materialized_ir_checkpoint": {"document_ir_logical_sha256":"eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee","artifact_id":"artifact_9999999999999999999999999999999999999999999999999999999999999999","representation":"application/json"},
+    "parent_state_ids": []
+  },
+  "targets": [{
+    "base_document_state_id": "state_839531833bb511d007fb3f9ca6ed8c651d0b0a1fc68e47b961e20d7ab903ee4b",
+    "page_id": "page_2222222222222222222222222222222222222222222222222222222222222222",
+    "region_id": "region_6666666666666666666666666666666666666666666666666666666666666666",
+    "requested_capabilities": ["table_structure"]
+  }]
+}

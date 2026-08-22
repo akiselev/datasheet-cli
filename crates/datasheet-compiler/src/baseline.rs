@@ -539,6 +539,9 @@ pub fn compile_analog_power_baseline(
 ) -> Result<DeterministicBaseline, BaselineError> {
     document.validate()?;
     producer.validate()?;
+    if producer.document_ir_schema != document.schema_version {
+        return Err(BaselineError::DocumentSchemaMismatch);
+    }
     if producer.ontology_snapshot_digest != vocabulary.digest {
         return Err(BaselineError::OntologyMismatch);
     }
@@ -1268,6 +1271,7 @@ fn extract_manufacturer_hint(title: &str, subject: &str) -> Option<String> {
 pub enum BaselineError {
     Compiler(crate::CompilerError),
     Contract(datasheet_core::ContractError),
+    DocumentSchemaMismatch,
     InvalidAnchor(String),
     InvalidDocument(String),
     Json(serde_json::Error),

@@ -1,0 +1,821 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "FerrodocConformanceInput",
+  "type": "object",
+  "required": [
+    "document_state_manifest",
+    "document_state_schema_sha256",
+    "evidence_delta",
+    "evidence_delta_schema_sha256",
+    "targets",
+    "upstream_revision"
+  ],
+  "properties": {
+    "document_state_manifest": {
+      "$ref": "#/definitions/FerrodocDocumentStateManifest"
+    },
+    "document_state_schema_sha256": {
+      "type": "string"
+    },
+    "evidence_delta": {
+      "$ref": "#/definitions/FerrodocEvidenceDelta"
+    },
+    "evidence_delta_schema_sha256": {
+      "type": "string"
+    },
+    "targets": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/FerrodocRegionRefinementTarget"
+      }
+    },
+    "upstream_revision": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "definitions": {
+    "FerrodocDeltaProducer": {
+      "type": "object",
+      "required": [
+        "build",
+        "configuration_digest",
+        "name",
+        "version"
+      ],
+      "properties": {
+        "build": {
+          "type": "string"
+        },
+        "configuration_digest": {
+          "type": "string"
+        },
+        "model_digest": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "name": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        }
+      }
+    },
+    "FerrodocDocumentStateManifest": {
+      "type": "object",
+      "required": [
+        "evidence_delta_ids",
+        "ir_schema",
+        "reconciliation_policy_id",
+        "source_pdf_sha256",
+        "state_schema"
+      ],
+      "properties": {
+        "coverage": {
+          "default": [],
+          "type": "array",
+          "items": true
+        },
+        "evidence_delta_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        },
+        "ir_schema": {
+          "$ref": "#/definitions/FerrodocSchemaVersion"
+        },
+        "materialized_ir_checkpoint": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/FerrodocMaterializedCheckpoint"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "parent_state_ids": {
+          "default": [],
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        },
+        "reconciliation_policy_id": {
+          "type": "string"
+        },
+        "source_pdf_sha256": {
+          "type": "string"
+        },
+        "state_schema": {
+          "type": "string"
+        }
+      }
+    },
+    "FerrodocEvidence": {
+      "type": "object",
+      "required": [
+        "content",
+        "id",
+        "layer_id",
+        "provenance"
+      ],
+      "properties": {
+        "confidence": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "format": "double"
+        },
+        "content": {
+          "$ref": "#/definitions/FerrodocEvidenceContent"
+        },
+        "engine_metadata": {
+          "default": {},
+          "type": "object",
+          "additionalProperties": true
+        },
+        "geometry": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/FerrodocPageRect"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "geometry_quality": {
+          "default": "unknown",
+          "allOf": [
+            {
+              "$ref": "#/definitions/FerrodocGeometryQuality"
+            }
+          ]
+        },
+        "id": {
+          "type": "string"
+        },
+        "layer_id": {
+          "type": "string"
+        },
+        "provenance": {
+          "$ref": "#/definitions/FerrodocProvenance"
+        }
+      }
+    },
+    "FerrodocEvidenceContent": {
+      "oneOf": [
+        {
+          "type": "object",
+          "required": [
+            "kind",
+            "text"
+          ],
+          "properties": {
+            "kind": {
+              "type": "string",
+              "enum": [
+                "text"
+              ]
+            },
+            "text": {
+              "type": "string"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "required": [
+            "cells",
+            "columns",
+            "kind",
+            "rows"
+          ],
+          "properties": {
+            "cells": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/FerrodocTableCell"
+              }
+            },
+            "columns": {
+              "type": "integer",
+              "format": "uint32",
+              "minimum": 0.0
+            },
+            "kind": {
+              "type": "string",
+              "enum": [
+                "table"
+              ]
+            },
+            "rows": {
+              "type": "integer",
+              "format": "uint32",
+              "minimum": 0.0
+            }
+          }
+        },
+        {
+          "type": "object",
+          "required": [
+            "kind",
+            "latex"
+          ],
+          "properties": {
+            "kind": {
+              "type": "string",
+              "enum": [
+                "formula"
+              ]
+            },
+            "latex": {
+              "type": "string"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "required": [
+            "artifact",
+            "kind"
+          ],
+          "properties": {
+            "alt": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "artifact": {
+              "type": "string"
+            },
+            "kind": {
+              "type": "string",
+              "enum": [
+                "image"
+              ]
+            }
+          }
+        },
+        {
+          "type": "object",
+          "required": [
+            "kind",
+            "media_type",
+            "value"
+          ],
+          "properties": {
+            "kind": {
+              "type": "string",
+              "enum": [
+                "unknown"
+              ]
+            },
+            "media_type": {
+              "type": "string"
+            },
+            "value": true
+          }
+        }
+      ]
+    },
+    "FerrodocEvidenceDelta": {
+      "type": "object",
+      "required": [
+        "delta_schema",
+        "ir_schema",
+        "producer",
+        "scope",
+        "source_pdf_sha256",
+        "stage"
+      ],
+      "properties": {
+        "coverage_delta": {
+          "default": [],
+          "type": "array",
+          "items": true
+        },
+        "delta_schema": {
+          "type": "string"
+        },
+        "diagnostics": {
+          "default": [],
+          "type": "array",
+          "items": true
+        },
+        "input_state_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "ir_schema": {
+          "$ref": "#/definitions/FerrodocSchemaVersion"
+        },
+        "new_pages": {
+          "default": [],
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/FerrodocPage"
+          }
+        },
+        "page_additions": {
+          "default": [],
+          "type": "array",
+          "items": true
+        },
+        "producer": {
+          "$ref": "#/definitions/FerrodocDeltaProducer"
+        },
+        "required_evidence_ids": {
+          "default": [],
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        },
+        "scope": {
+          "$ref": "#/definitions/FerrodocRefinementScope"
+        },
+        "selection_hints": {
+          "default": [],
+          "type": "array",
+          "items": true
+        },
+        "source_pdf_sha256": {
+          "type": "string"
+        },
+        "stage": {
+          "type": "string"
+        }
+      }
+    },
+    "FerrodocGeometryQuality": {
+      "type": "string",
+      "enum": [
+        "glyph",
+        "word",
+        "line",
+        "region",
+        "page_only",
+        "unknown"
+      ]
+    },
+    "FerrodocMaterializedCheckpoint": {
+      "type": "object",
+      "required": [
+        "artifact_id",
+        "document_ir_logical_sha256",
+        "representation"
+      ],
+      "properties": {
+        "artifact_id": {
+          "type": "string"
+        },
+        "document_ir_logical_sha256": {
+          "type": "string"
+        },
+        "representation": {
+          "type": "string"
+        }
+      }
+    },
+    "FerrodocPage": {
+      "type": "object",
+      "required": [
+        "bounds",
+        "id",
+        "index"
+      ],
+      "properties": {
+        "artifacts": {
+          "default": [],
+          "type": "array",
+          "items": true
+        },
+        "bounds": {
+          "$ref": "#/definitions/FerrodocPageRect"
+        },
+        "id": {
+          "type": "string"
+        },
+        "index": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0.0
+        },
+        "layers": {
+          "default": [],
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/FerrodocSourceLayer"
+          }
+        },
+        "reading_order": {
+          "default": [],
+          "type": "array",
+          "items": true
+        },
+        "regions": {
+          "default": [],
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/FerrodocRegion"
+          }
+        }
+      }
+    },
+    "FerrodocPageRect": {
+      "type": "object",
+      "required": [
+        "page_index",
+        "rect",
+        "source_transform"
+      ],
+      "properties": {
+        "page_index": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0.0
+        },
+        "rect": {
+          "$ref": "#/definitions/FerrodocRect"
+        },
+        "source_transform": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "format": "double"
+          },
+          "maxItems": 6,
+          "minItems": 6
+        }
+      }
+    },
+    "FerrodocPageRegionRef": {
+      "type": "object",
+      "required": [
+        "page_id",
+        "region_id"
+      ],
+      "properties": {
+        "page_id": {
+          "type": "string"
+        },
+        "region_id": {
+          "type": "string"
+        }
+      }
+    },
+    "FerrodocProvenance": {
+      "type": "object",
+      "required": [
+        "engine_id",
+        "engine_version",
+        "input_digest",
+        "parameters",
+        "schema_version",
+        "stage"
+      ],
+      "properties": {
+        "engine_id": {
+          "type": "string"
+        },
+        "engine_version": {
+          "type": "string"
+        },
+        "input_digest": {
+          "type": "string"
+        },
+        "model_digest": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "parameters": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "schema_version": {
+          "$ref": "#/definitions/FerrodocSchemaVersion"
+        },
+        "stage": {
+          "type": "string"
+        }
+      }
+    },
+    "FerrodocRect": {
+      "type": "object",
+      "required": [
+        "height",
+        "space",
+        "unit",
+        "width",
+        "x",
+        "y"
+      ],
+      "properties": {
+        "height": {
+          "type": "number",
+          "format": "double"
+        },
+        "space": {
+          "type": "string"
+        },
+        "unit": {
+          "type": "string"
+        },
+        "width": {
+          "type": "number",
+          "format": "double"
+        },
+        "x": {
+          "type": "number",
+          "format": "double"
+        },
+        "y": {
+          "type": "number",
+          "format": "double"
+        }
+      }
+    },
+    "FerrodocRefinementScope": {
+      "oneOf": [
+        {
+          "type": "object",
+          "required": [
+            "kind"
+          ],
+          "properties": {
+            "kind": {
+              "type": "string",
+              "enum": [
+                "document"
+              ]
+            }
+          }
+        },
+        {
+          "type": "object",
+          "required": [
+            "kind",
+            "page_ids"
+          ],
+          "properties": {
+            "kind": {
+              "type": "string",
+              "enum": [
+                "pages"
+              ]
+            },
+            "page_ids": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "uniqueItems": true
+            }
+          }
+        },
+        {
+          "type": "object",
+          "required": [
+            "kind",
+            "regions"
+          ],
+          "properties": {
+            "kind": {
+              "type": "string",
+              "enum": [
+                "regions"
+              ]
+            },
+            "regions": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/FerrodocPageRegionRef"
+              },
+              "uniqueItems": true
+            }
+          }
+        }
+      ]
+    },
+    "FerrodocRegion": {
+      "type": "object",
+      "required": [
+        "geometry",
+        "id",
+        "kind"
+      ],
+      "properties": {
+        "evidence": {
+          "default": [],
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/FerrodocEvidence"
+          }
+        },
+        "geometry": {
+          "$ref": "#/definitions/FerrodocPageRect"
+        },
+        "id": {
+          "type": "string"
+        },
+        "kind": {
+          "type": "string"
+        },
+        "selected": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/FerrodocSelectedView"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "FerrodocRegionRefinementTarget": {
+      "type": "object",
+      "required": [
+        "base_document_state_id",
+        "page_id",
+        "region_id",
+        "requested_capabilities"
+      ],
+      "properties": {
+        "base_document_state_id": {
+          "type": "string"
+        },
+        "page_id": {
+          "type": "string"
+        },
+        "region_id": {
+          "type": "string"
+        },
+        "requested_capabilities": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        }
+      }
+    },
+    "FerrodocSchemaVersion": {
+      "type": "object",
+      "required": [
+        "major",
+        "minor"
+      ],
+      "properties": {
+        "major": {
+          "type": "integer",
+          "format": "uint16",
+          "minimum": 0.0
+        },
+        "minor": {
+          "type": "integer",
+          "format": "uint16",
+          "minimum": 0.0
+        }
+      }
+    },
+    "FerrodocSelectedView": {
+      "type": "object",
+      "required": [
+        "evidence_ids",
+        "explanation",
+        "reason"
+      ],
+      "properties": {
+        "evidence_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "explanation": {
+          "type": "string"
+        },
+        "reason": {
+          "type": "string"
+        }
+      }
+    },
+    "FerrodocSourceLayer": {
+      "type": "object",
+      "required": [
+        "id",
+        "kind",
+        "provenance"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "kind": true,
+        "provenance": {
+          "$ref": "#/definitions/FerrodocProvenance"
+        }
+      }
+    },
+    "FerrodocTableCell": {
+      "type": "object",
+      "required": [
+        "column",
+        "column_span",
+        "row",
+        "row_span",
+        "text"
+      ],
+      "properties": {
+        "column": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0.0
+        },
+        "column_span": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0.0
+        },
+        "geometry": {
+          "default": null,
+          "anyOf": [
+            {
+              "$ref": "#/definitions/FerrodocPageRect"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "geometry_quality": {
+          "default": "unknown",
+          "allOf": [
+            {
+              "$ref": "#/definitions/FerrodocGeometryQuality"
+            }
+          ]
+        },
+        "row": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0.0
+        },
+        "row_span": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0.0
+        },
+        "source_spans": {
+          "default": [],
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/FerrodocTextSourceSpan"
+          }
+        },
+        "text": {
+          "type": "string"
+        }
+      }
+    },
+    "FerrodocTextSourceSpan": {
+      "type": "object",
+      "required": [
+        "end",
+        "evidence_id",
+        "start"
+      ],
+      "properties": {
+        "end": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0.0
+        },
+        "evidence_id": {
+          "type": "string"
+        },
+        "start": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0.0
+        }
+      }
+    }
+  }
+}

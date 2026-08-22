@@ -3,6 +3,7 @@
 
 pub mod baseline;
 pub mod evaluation;
+pub mod ferrodoc;
 pub mod quantity;
 
 use std::collections::{BTreeMap, BTreeSet};
