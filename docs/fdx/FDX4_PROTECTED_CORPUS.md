@@ -32,6 +32,22 @@ The corpus is consequently leakage-safe and replayable, but
 distinct rights-cleared development, held-out, and hidden groups are acquired
 and independently audited.
 
+This is a corpus insufficiency result, not a terminal source-exhaustion proof.
+The authoritative grouping contract is split-specific: each held-out slice
+must be disjoint from training at the grouping level it declares. The current
+v1 manifest is conservatively stricter—it assigns one split per member and
+rejects every group kind across all splits—so six nonempty v1 splits do imply
+six values per populated grouping dimension. That implementation constraint is
+not a universal data prerequisite; declared overlap among evaluation tags needs
+an additive manifest version. A `manufacturer_key` is grouping metadata rather
+than proof of manufacturer authority. FDX4 also permits independently synthetic
+protected corpora, while requiring every derivative of an existing example to
+remain with its root.
+Synthetic-only results must be reported as such and cannot establish real-world
+manufacturer/template generalization. No learned FDX5 model may be trained
+until the frozen corpus supplies truthful nonempty partitions and every model
+qualification gate is satisfied.
+
 Checked schemas live under `schemas/fdx4/`; adversarial tests cover every group
 kind, order-independent replay, missing splits, hidden-state misuse,
 trainability/restriction refusal, and exclusion/admission conflicts.
