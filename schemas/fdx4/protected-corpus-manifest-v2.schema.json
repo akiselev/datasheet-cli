@@ -1,0 +1,299 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ProtectedCorpusManifestV2",
+  "description": "Additive, backward-readable protected-corpus manifest. V1 remains accepted unchanged.",
+  "type": "object",
+  "required": [
+    "builder_configuration_digest",
+    "calibration_snapshot_digest",
+    "contract_plumbing_ready",
+    "corpus_digest",
+    "datasheet_revision",
+    "exclusions",
+    "foundry_revision",
+    "inputs",
+    "limitation_codes",
+    "members",
+    "model_qualification_ready",
+    "ontology_snapshot_digest",
+    "schema_version",
+    "slices"
+  ],
+  "properties": {
+    "builder_configuration_digest": {
+      "type": "string"
+    },
+    "calibration_snapshot_digest": {
+      "type": "string"
+    },
+    "contract_plumbing_ready": {
+      "type": "boolean"
+    },
+    "corpus_digest": {
+      "type": "string"
+    },
+    "datasheet_revision": {
+      "type": "string"
+    },
+    "exclusions": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/CorpusExclusion"
+      }
+    },
+    "foundry_revision": {
+      "type": "string"
+    },
+    "inputs": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/CorpusInputBinding"
+      }
+    },
+    "limitation_codes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "members": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/CorpusMemberV2"
+      }
+    },
+    "model_qualification_ready": {
+      "type": "boolean"
+    },
+    "ontology_snapshot_digest": {
+      "type": "string"
+    },
+    "schema_version": {
+      "type": "string"
+    },
+    "slices": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/ProtectedSliceManifestV2"
+      }
+    }
+  },
+  "additionalProperties": false,
+  "definitions": {
+    "CorpusEvidenceClass": {
+      "description": "The evidence class controls which claims a protected slice may support.",
+      "type": "string",
+      "enum": [
+        "real_document",
+        "independently_synthetic",
+        "synthetic_derivative"
+      ]
+    },
+    "CorpusExclusion": {
+      "type": "object",
+      "required": [
+        "example_id",
+        "reason_codes",
+        "rights_snapshot_ids"
+      ],
+      "properties": {
+        "example_id": {
+          "type": "string"
+        },
+        "reason_codes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "rights_snapshot_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "CorpusInputBinding": {
+      "type": "object",
+      "required": [
+        "content_sha256",
+        "role",
+        "row_count"
+      ],
+      "properties": {
+        "content_sha256": {
+          "type": "string"
+        },
+        "logical_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "role": {
+          "type": "string"
+        },
+        "row_count": {
+          "type": "integer",
+          "format": "uint64",
+          "minimum": 0.0
+        }
+      },
+      "additionalProperties": false
+    },
+    "CorpusMemberV2": {
+      "description": "A corpus member whose membership is projected by one or more slice tags.\n\nUnlike v1, evaluation tags may overlap. They are not partitions: every evaluation slice independently proves its declared grouping dimensions disjoint from train.",
+      "type": "object",
+      "required": [
+        "document_family_id",
+        "evidence_class",
+        "example_content_sha256",
+        "example_id",
+        "lineage_group_ids",
+        "near_duplicate_group_id",
+        "real_world_generalization_eligible",
+        "restriction_codes",
+        "rights_snapshot_ids",
+        "training_permitted"
+      ],
+      "properties": {
+        "document_family_id": {
+          "type": "string"
+        },
+        "evidence_class": {
+          "$ref": "#/definitions/CorpusEvidenceClass"
+        },
+        "example_content_sha256": {
+          "type": "string"
+        },
+        "example_id": {
+          "type": "string"
+        },
+        "lineage_group_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "manufacturer_key": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "near_duplicate_group_id": {
+          "type": "string"
+        },
+        "real_world_generalization_eligible": {
+          "type": "boolean"
+        },
+        "restriction_codes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "revision_group_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "rights_snapshot_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "synthetic_root_example_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "template_family_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "training_permitted": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false
+    },
+    "GroupingLevel": {
+      "description": "A grouping dimension that an evaluation slice promises is disjoint from train.",
+      "type": "string",
+      "enum": [
+        "exact_content",
+        "near_duplicate",
+        "revision",
+        "synthetic_root",
+        "document_family",
+        "template_family",
+        "manufacturer",
+        "publisher_lineage"
+      ]
+    },
+    "ProtectedSliceManifestV2": {
+      "type": "object",
+      "required": [
+        "artifact_digest",
+        "held_out_from_train_by",
+        "hidden",
+        "limitation_codes",
+        "member_ids",
+        "split",
+        "supports_real_world_generalization"
+      ],
+      "properties": {
+        "artifact_digest": {
+          "type": "string"
+        },
+        "held_out_from_train_by": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/GroupingLevel"
+          }
+        },
+        "hidden": {
+          "type": "boolean"
+        },
+        "limitation_codes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "member_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "split": {
+          "$ref": "#/definitions/ProtectedSplit"
+        },
+        "supports_real_world_generalization": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false
+    },
+    "ProtectedSplit": {
+      "type": "string",
+      "enum": [
+        "train",
+        "development",
+        "template-held-out",
+        "document-family-held-out",
+        "manufacturer-held-out",
+        "final-blind-test"
+      ]
+    }
+  }
+}

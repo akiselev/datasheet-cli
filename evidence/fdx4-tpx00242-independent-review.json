@@ -1,0 +1,779 @@
+{
+  "schema_version": "fdx4-tpx00242-independent-review/1",
+  "reviewed_by": "independent-primary-source-table-review",
+  "source_markdown_sha256": "2cb2dff3c03952804b7b0abc0648289242c17cf34d829ad94ad2b796adeae284",
+  "foundry_export_sha256": "4ebfd791db8972b99309600e3347cc77f24dc27e3c02962739ace73d1c7d7912",
+  "review_scope": "exact electrical and operating table value cells; no inferred regimes or component authority",
+  "rows": [
+    {
+      "record_id": "e735cbe4e5ce95e07c4d90e990ed63e374f96cb66bb47f8bfb18d97e2e0dd30f",
+      "external_field_key": "INPUTSPECIFICATIONS.RATEDINPUTVOLTAGE",
+      "raw_value": "100 - 240 V AC",
+      "source_metadata": {
+        "model": "TPX00242",
+        "rendered_pdf_url": "https://docs.arduino.cc/resources/datasheets/TPX00242-datasheet.pdf",
+        "row_key": "Rated Input Voltage",
+        "source_column": "2",
+        "source_line": "35",
+        "source_url": "https://github.com/arduino/docs-content/blob/ad72210c6dffa698374d4f834aae2d568e49b41d/content/hardware/13.accessories/accessories/usb-c-power-supply-45w/datasheet/datasheet.md",
+        "table": "Input Specifications"
+      }
+    },
+    {
+      "record_id": "9f83d583376fa2b500e7409ef558bc7050c48529258ecf595b9c8056a1169178",
+      "external_field_key": "INPUTSPECIFICATIONS.INPUTVOLTAGERANGE",
+      "raw_value": "90 - 264 V AC",
+      "source_metadata": {
+        "model": "TPX00242",
+        "rendered_pdf_url": "https://docs.arduino.cc/resources/datasheets/TPX00242-datasheet.pdf",
+        "row_key": "Input Voltage Range",
+        "source_column": "2",
+        "source_line": "36",
+        "source_url": "https://github.com/arduino/docs-content/blob/ad72210c6dffa698374d4f834aae2d568e49b41d/content/hardware/13.accessories/accessories/usb-c-power-supply-45w/datasheet/datasheet.md",
+        "table": "Input Specifications"
+      }
+    },
+    {
+      "record_id": "6d97f6b9050a430e15d420d113ab71f1dc7bea1c17525e2cff6ba5e9c24b4377",
+      "external_field_key": "INPUTSPECIFICATIONS.INPUTFREQUENCY",
+      "raw_value": "47 - 63 Hz (50/60 Hz)",
+      "source_metadata": {
+        "model": "TPX00242",
+        "rendered_pdf_url": "https://docs.arduino.cc/resources/datasheets/TPX00242-datasheet.pdf",
+        "row_key": "Input Frequency",
+        "source_column": "2",
+        "source_line": "37",
+        "source_url": "https://github.com/arduino/docs-content/blob/ad72210c6dffa698374d4f834aae2d568e49b41d/content/hardware/13.accessories/accessories/usb-c-power-supply-45w/datasheet/datasheet.md",
+        "table": "Input Specifications"
+      }
+    },
+    {
+      "record_id": "7deca50ef92089079742fc6d2c0dec8c54f3e95740e5770be59b6673cd69dc1f",
+      "external_field_key": "INPUTSPECIFICATIONS.MAXIMUMINPUTCURRENT",
+      "raw_value": "1.5 A",
+      "source_metadata": {
+        "model": "TPX00242",
+        "rendered_pdf_url": "https://docs.arduino.cc/resources/datasheets/TPX00242-datasheet.pdf",
+        "row_key": "Maximum Input Current",
+        "source_column": "2",
+        "source_line": "38",
+        "source_url": "https://github.com/arduino/docs-content/blob/ad72210c6dffa698374d4f834aae2d568e49b41d/content/hardware/13.accessories/accessories/usb-c-power-supply-45w/datasheet/datasheet.md",
+        "table": "Input Specifications"
+      }
+    },
+    {
+      "record_id": "621e971534fce7c5381f3d5339e31c82a038ec6dfeb0179274dce022711d8f5f",
+      "external_field_key": "OUTPUTSPECIFICATIONS.OUTPUTVOLTAGE",
+      "raw_value": "5.0 V DC",
+      "source_metadata": {
+        "model": "TPX00242",
+        "rendered_pdf_url": "https://docs.arduino.cc/resources/datasheets/TPX00242-datasheet.pdf",
+        "row_key": "5.0 V DC",
+        "source_column": "1",
+        "source_line": "46",
+        "source_url": "https://github.com/arduino/docs-content/blob/ad72210c6dffa698374d4f834aae2d568e49b41d/content/hardware/13.accessories/accessories/usb-c-power-supply-45w/datasheet/datasheet.md",
+        "table": "Output Specifications"
+      }
+    },
+    {
+      "record_id": "af734d578bad33567dc628f175be69d6f00c501489d4729d159687691f8e2d7e",
+      "external_field_key": "OUTPUTSPECIFICATIONS.MAXIMUMCURRENT",
+      "raw_value": "3.0 A",
+      "source_metadata": {
+        "model": "TPX00242",
+        "rendered_pdf_url": "https://docs.arduino.cc/resources/datasheets/TPX00242-datasheet.pdf",
+        "row_key": "5.0 V DC",
+        "source_column": "2",
+        "source_line": "46",
+        "source_url": "https://github.com/arduino/docs-content/blob/ad72210c6dffa698374d4f834aae2d568e49b41d/content/hardware/13.accessories/accessories/usb-c-power-supply-45w/datasheet/datasheet.md",
+        "table": "Output Specifications"
+      }
+    },
+    {
+      "record_id": "f01f8275ef12c69936acc410582a4e096026ada2c2bc4b45983d7fc1394ea34e",
+      "external_field_key": "OUTPUTSPECIFICATIONS.MAXIMUMPOWER",
+      "raw_value": "15 W",
+      "source_metadata": {
+        "model": "TPX00242",
+        "rendered_pdf_url": "https://docs.arduino.cc/resources/datasheets/TPX00242-datasheet.pdf",
+        "row_key": "5.0 V DC",
+        "source_column": "3",
+        "source_line": "46",
+        "source_url": "https://github.com/arduino/docs-content/blob/ad72210c6dffa698374d4f834aae2d568e49b41d/content/hardware/13.accessories/accessories/usb-c-power-supply-45w/datasheet/datasheet.md",
+        "table": "Output Specifications"
+      }
+    },
+    {
+      "record_id": "8ade1979677ae86237725430aa800b129fc7e815d6b442625be3169619843bf6",
+      "external_field_key": "OUTPUTSPECIFICATIONS.OUTPUTVOLTAGE",
+      "raw_value": "9.0 V DC",
+      "source_metadata": {
+        "model": "TPX00242",
+        "rendered_pdf_url": "https://docs.arduino.cc/resources/datasheets/TPX00242-datasheet.pdf",
+        "row_key": "9.0 V DC",
+        "source_column": "1",
+        "source_line": "47",
+        "source_url": "https://github.com/arduino/docs-content/blob/ad72210c6dffa698374d4f834aae2d568e49b41d/content/hardware/13.accessories/accessories/usb-c-power-supply-45w/datasheet/datasheet.md",
+        "table": "Output Specifications"
+      }
+    },
+    {
+      "record_id": "3af95865e28ca119e201af7e3a91cb50686319872fbab264f5631764466e8526",
+      "external_field_key": "OUTPUTSPECIFICATIONS.MAXIMUMCURRENT",
+      "raw_value": "3.0 A",
+      "source_metadata": {
+        "model": "TPX00242",
+        "rendered_pdf_url": "https://docs.arduino.cc/resources/datasheets/TPX00242-datasheet.pdf",
+        "row_key": "9.0 V DC",
+        "source_column": "2",
+        "source_line": "47",
+        "source_url": "https://github.com/arduino/docs-content/blob/ad72210c6dffa698374d4f834aae2d568e49b41d/content/hardware/13.accessories/accessories/usb-c-power-supply-45w/datasheet/datasheet.md",
+        "table": "Output Specifications"
+      }
+    },
+    {
+      "record_id": "7d98e25f4d2c271b6043310afe66f81c37be423fce2c5dca3c774d3ca676cc02",
+      "external_field_key": "OUTPUTSPECIFICATIONS.MAXIMUMPOWER",
+      "raw_value": "27 W",
+      "source_metadata": {
+        "model": "TPX00242",
+        "rendered_pdf_url": "https://docs.arduino.cc/resources/datasheets/TPX00242-datasheet.pdf",
+        "row_key": "9.0 V DC",
+        "source_column": "3",
+        "source_line": "47",
+        "source_url": "https://github.com/arduino/docs-content/blob/ad72210c6dffa698374d4f834aae2d568e49b41d/content/hardware/13.accessories/accessories/usb-c-power-supply-45w/datasheet/datasheet.md",
+        "table": "Output Specifications"
+      }
+    },
+    {
+      "record_id": "f041e2898f322ea3484ac415497e1ac5d9dc3426e3bdbbd898eab226e8afcd65",
+      "external_field_key": "OUTPUTSPECIFICATIONS.OUTPUTVOLTAGE",
+      "raw_value": "12.0 V DC",
+      "source_metadata": {
+        "model": "TPX00242",
+        "rendered_pdf_url": "https://docs.arduino.cc/resources/datasheets/TPX00242-datasheet.pdf",
+        "row_key": "12.0 V DC",
+        "source_column": "1",
+        "source_line": "48",
+        "source_url": "https://github.com/arduino/docs-content/blob/ad72210c6dffa698374d4f834aae2d568e49b41d/content/hardware/13.accessories/accessories/usb-c-power-supply-45w/datasheet/datasheet.md",
+        "table": "Output Specifications"
+      }
+    },
+    {
+      "record_id": "8b4df7485563ccbe77c3dc4635be66ee8115a78bd10e90a5adce496ca629b12f",
+      "external_field_key": "OUTPUTSPECIFICATIONS.MAXIMUMCURRENT",
+      "raw_value": "3.0 A",
+      "source_metadata": {
+        "model": "TPX00242",
+        "rendered_pdf_url": "https://docs.arduino.cc/resources/datasheets/TPX00242-datasheet.pdf",
+        "row_key": "12.0 V DC",
+        "source_column": "2",
+        "source_line": "48",
+        "source_url": "https://github.com/arduino/docs-content/blob/ad72210c6dffa698374d4f834aae2d568e49b41d/content/hardware/13.accessories/accessories/usb-c-power-supply-45w/datasheet/datasheet.md",
+        "table": "Output Specifications"
+      }
+    },
+    {
+      "record_id": "cf034cc04641d5925b2623f0f0d0e15043664f11efc158f859842ec67f75e2b8",
+      "external_field_key": "OUTPUTSPECIFICATIONS.MAXIMUMPOWER",
+      "raw_value": "36 W",
+      "source_metadata": {
+        "model": "TPX00242",
+        "rendered_pdf_url": "https://docs.arduino.cc/resources/datasheets/TPX00242-datasheet.pdf",
+        "row_key": "12.0 V DC",
+        "source_column": "3",
+        "source_line": "48",
+        "source_url": "https://github.com/arduino/docs-content/blob/ad72210c6dffa698374d4f834aae2d568e49b41d/content/hardware/13.accessories/accessories/usb-c-power-supply-45w/datasheet/datasheet.md",
+        "table": "Output Specifications"
+      }
+    },
+    {
+      "record_id": "dd37f5cfb5b969c4a0904853e534c96915a638012146e144445832018b8e79cb",
+      "external_field_key": "OUTPUTSPECIFICATIONS.OUTPUTVOLTAGE",
+      "raw_value": "15.0 V DC",
+      "source_metadata": {
+        "model": "TPX00242",
+        "rendered_pdf_url": "https://docs.arduino.cc/resources/datasheets/TPX00242-datasheet.pdf",
+        "row_key": "15.0 V DC",
+        "source_column": "1",
+        "source_line": "49",
+        "source_url": "https://github.com/arduino/docs-content/blob/ad72210c6dffa698374d4f834aae2d568e49b41d/content/hardware/13.accessories/accessories/usb-c-power-supply-45w/datasheet/datasheet.md",
+        "table": "Output Specifications"
+      }
+    },
+    {
+      "record_id": "07c05510448352902e9cab1448f7cbff1ebd3e1dd9798591e1a0473aa47c0f62",
+      "external_field_key": "OUTPUTSPECIFICATIONS.MAXIMUMCURRENT",
+      "raw_value": "3.0 A",
+      "source_metadata": {
+        "model": "TPX00242",
+        "rendered_pdf_url": "https://docs.arduino.cc/resources/datasheets/TPX00242-datasheet.pdf",
+        "row_key": "15.0 V DC",
+        "source_column": "2",
+        "source_line": "49",
+        "source_url": "https://github.com/arduino/docs-content/blob/ad72210c6dffa698374d4f834aae2d568e49b41d/content/hardware/13.accessories/accessories/usb-c-power-supply-45w/datasheet/datasheet.md",
+        "table": "Output Specifications"
+      }
+    },
+    {
+      "record_id": "3d37f52bce84b19cb5b5e1a429765571a9eb06da7fc6ed14d160bfec630e78cc",
+      "external_field_key": "OUTPUTSPECIFICATIONS.MAXIMUMPOWER",
+      "raw_value": "45 W",
+      "source_metadata": {
+        "model": "TPX00242",
+        "rendered_pdf_url": "https://docs.arduino.cc/resources/datasheets/TPX00242-datasheet.pdf",
+        "row_key": "15.0 V DC",
+        "source_column": "3",
+        "source_line": "49",
+        "source_url": "https://github.com/arduino/docs-content/blob/ad72210c6dffa698374d4f834aae2d568e49b41d/content/hardware/13.accessories/accessories/usb-c-power-supply-45w/datasheet/datasheet.md",
+        "table": "Output Specifications"
+      }
+    },
+    {
+      "record_id": "f1ef71dbbf80ea1070ee7e22b50e2e664fe071b93237928f744806368fd76d9d",
+      "external_field_key": "OUTPUTSPECIFICATIONS.OUTPUTVOLTAGE",
+      "raw_value": "20.0 V DC",
+      "source_metadata": {
+        "model": "TPX00242",
+        "rendered_pdf_url": "https://docs.arduino.cc/resources/datasheets/TPX00242-datasheet.pdf",
+        "row_key": "20.0 V DC",
+        "source_column": "1",
+        "source_line": "50",
+        "source_url": "https://github.com/arduino/docs-content/blob/ad72210c6dffa698374d4f834aae2d568e49b41d/content/hardware/13.accessories/accessories/usb-c-power-supply-45w/datasheet/datasheet.md",
+        "table": "Output Specifications"
+      }
+    },
+    {
+      "record_id": "df0887b68a8c28c97b535ac85e9b6a386a1888911d9b176d77df6053742a6812",
+      "external_field_key": "OUTPUTSPECIFICATIONS.MAXIMUMCURRENT",
+      "raw_value": "2.25 A",
+      "source_metadata": {
+        "model": "TPX00242",
+        "rendered_pdf_url": "https://docs.arduino.cc/resources/datasheets/TPX00242-datasheet.pdf",
+        "row_key": "20.0 V DC",
+        "source_column": "2",
+        "source_line": "50",
+        "source_url": "https://github.com/arduino/docs-content/blob/ad72210c6dffa698374d4f834aae2d568e49b41d/content/hardware/13.accessories/accessories/usb-c-power-supply-45w/datasheet/datasheet.md",
+        "table": "Output Specifications"
+      }
+    },
+    {
+      "record_id": "51eddb07c150f8596d838b63ce5c9d94b518e07eeddc598a6a20411c8bad4b92",
+      "external_field_key": "OUTPUTSPECIFICATIONS.MAXIMUMPOWER",
+      "raw_value": "45 W",
+      "source_metadata": {
+        "model": "TPX00242",
+        "rendered_pdf_url": "https://docs.arduino.cc/resources/datasheets/TPX00242-datasheet.pdf",
+        "row_key": "20.0 V DC",
+        "source_column": "3",
+        "source_line": "50",
+        "source_url": "https://github.com/arduino/docs-content/blob/ad72210c6dffa698374d4f834aae2d568e49b41d/content/hardware/13.accessories/accessories/usb-c-power-supply-45w/datasheet/datasheet.md",
+        "table": "Output Specifications"
+      }
+    },
+    {
+      "record_id": "a2b649863142286ff90f130bff3e5033d6f12d63a0e9fc457bb287977ee57a15",
+      "external_field_key": "VOLTAGEREGULATION.OUTPUTVOLTAGE",
+      "raw_value": "5.0 V",
+      "source_metadata": {
+        "model": "TPX00242",
+        "rendered_pdf_url": "https://docs.arduino.cc/resources/datasheets/TPX00242-datasheet.pdf",
+        "row_key": "5.0 V",
+        "source_column": "1",
+        "source_line": "110",
+        "source_url": "https://github.com/arduino/docs-content/blob/ad72210c6dffa698374d4f834aae2d568e49b41d/content/hardware/13.accessories/accessories/usb-c-power-supply-45w/datasheet/datasheet.md",
+        "table": "Voltage Regulation"
+      }
+    },
+    {
+      "record_id": "0d45ea171299b1f2a7ea7528a15fcf3a815992d3c2af64f64e091dcede21136c",
+      "external_field_key": "VOLTAGEREGULATION.VOLTAGERANGE",
+      "raw_value": "4.6 - 5.25 V",
+      "source_metadata": {
+        "model": "TPX00242",
+        "rendered_pdf_url": "https://docs.arduino.cc/resources/datasheets/TPX00242-datasheet.pdf",
+        "row_key": "5.0 V",
+        "source_column": "2",
+        "source_line": "110",
+        "source_url": "https://github.com/arduino/docs-content/blob/ad72210c6dffa698374d4f834aae2d568e49b41d/content/hardware/13.accessories/accessories/usb-c-power-supply-45w/datasheet/datasheet.md",
+        "table": "Voltage Regulation"
+      }
+    },
+    {
+      "record_id": "165516e8b384287ca609d8127953f3ae3666f617a2cfbc564cfbadfc10576456",
+      "external_field_key": "VOLTAGEREGULATION.REGULATION",
+      "raw_value": "±5%",
+      "source_metadata": {
+        "model": "TPX00242",
+        "rendered_pdf_url": "https://docs.arduino.cc/resources/datasheets/TPX00242-datasheet.pdf",
+        "row_key": "5.0 V",
+        "source_column": "3",
+        "source_line": "110",
+        "source_url": "https://github.com/arduino/docs-content/blob/ad72210c6dffa698374d4f834aae2d568e49b41d/content/hardware/13.accessories/accessories/usb-c-power-supply-45w/datasheet/datasheet.md",
+        "table": "Voltage Regulation"
+      }
+    },
+    {
+      "record_id": "3b7d9de4ce84ee7d1ce5b465a99956c3bf4aab168e659d85775a3ec9fc6171e7",
+      "external_field_key": "VOLTAGEREGULATION.OUTPUTVOLTAGE",
+      "raw_value": "9.0 V",
+      "source_metadata": {
+        "model": "TPX00242",
+        "rendered_pdf_url": "https://docs.arduino.cc/resources/datasheets/TPX00242-datasheet.pdf",
+        "row_key": "9.0 V",
+        "source_column": "1",
+        "source_line": "111",
+        "source_url": "https://github.com/arduino/docs-content/blob/ad72210c6dffa698374d4f834aae2d568e49b41d/content/hardware/13.accessories/accessories/usb-c-power-supply-45w/datasheet/datasheet.md",
+        "table": "Voltage Regulation"
+      }
+    },
+    {
+      "record_id": "fa295fa897b8935c3d8cd8e28c67d73a0321be59a9ba6f0ead9f8d48eea65e38",
+      "external_field_key": "VOLTAGEREGULATION.VOLTAGERANGE",
+      "raw_value": "8.55 - 9.45 V",
+      "source_metadata": {
+        "model": "TPX00242",
+        "rendered_pdf_url": "https://docs.arduino.cc/resources/datasheets/TPX00242-datasheet.pdf",
+        "row_key": "9.0 V",
+        "source_column": "2",
+        "source_line": "111",
+        "source_url": "https://github.com/arduino/docs-content/blob/ad72210c6dffa698374d4f834aae2d568e49b41d/content/hardware/13.accessories/accessories/usb-c-power-supply-45w/datasheet/datasheet.md",
+        "table": "Voltage Regulation"
+      }
+    },
+    {
+      "record_id": "2c0d38d1a7a5b4115fe1c68408a16e2bea6b57047d5f445eff748e3bc74a106e",
+      "external_field_key": "VOLTAGEREGULATION.REGULATION",
+      "raw_value": "±5%",
+      "source_metadata": {
+        "model": "TPX00242",
+        "rendered_pdf_url": "https://docs.arduino.cc/resources/datasheets/TPX00242-datasheet.pdf",
+        "row_key": "9.0 V",
+        "source_column": "3",
+        "source_line": "111",
+        "source_url": "https://github.com/arduino/docs-content/blob/ad72210c6dffa698374d4f834aae2d568e49b41d/content/hardware/13.accessories/accessories/usb-c-power-supply-45w/datasheet/datasheet.md",
+        "table": "Voltage Regulation"
+      }
+    },
+    {
+      "record_id": "61e331a0ba16820f708d56de15bef6f8cc640f2755d95e2b80210efb238011d9",
+      "external_field_key": "VOLTAGEREGULATION.OUTPUTVOLTAGE",
+      "raw_value": "12.0 V",
+      "source_metadata": {
+        "model": "TPX00242",
+        "rendered_pdf_url": "https://docs.arduino.cc/resources/datasheets/TPX00242-datasheet.pdf",
+        "row_key": "12.0 V",
+        "source_column": "1",
+        "source_line": "112",
+        "source_url": "https://github.com/arduino/docs-content/blob/ad72210c6dffa698374d4f834aae2d568e49b41d/content/hardware/13.accessories/accessories/usb-c-power-supply-45w/datasheet/datasheet.md",
+        "table": "Voltage Regulation"
+      }
+    },
+    {
+      "record_id": "297c924e5f4eed2eb98142c27c2316807dfb06af151a31b1fa0abd2fb4075ba4",
+      "external_field_key": "VOLTAGEREGULATION.VOLTAGERANGE",
+      "raw_value": "11.4 - 12.6 V",
+      "source_metadata": {
+        "model": "TPX00242",
+        "rendered_pdf_url": "https://docs.arduino.cc/resources/datasheets/TPX00242-datasheet.pdf",
+        "row_key": "12.0 V",
+        "source_column": "2",
+        "source_line": "112",
+        "source_url": "https://github.com/arduino/docs-content/blob/ad72210c6dffa698374d4f834aae2d568e49b41d/content/hardware/13.accessories/accessories/usb-c-power-supply-45w/datasheet/datasheet.md",
+        "table": "Voltage Regulation"
+      }
+    },
+    {
+      "record_id": "998ea82c1d2c8d0df080e380faed4e442a318ae4b84cbb7ff43b7cf9e3e3d92d",
+      "external_field_key": "VOLTAGEREGULATION.REGULATION",
+      "raw_value": "±5%",
+      "source_metadata": {
+        "model": "TPX00242",
+        "rendered_pdf_url": "https://docs.arduino.cc/resources/datasheets/TPX00242-datasheet.pdf",
+        "row_key": "12.0 V",
+        "source_column": "3",
+        "source_line": "112",
+        "source_url": "https://github.com/arduino/docs-content/blob/ad72210c6dffa698374d4f834aae2d568e49b41d/content/hardware/13.accessories/accessories/usb-c-power-supply-45w/datasheet/datasheet.md",
+        "table": "Voltage Regulation"
+      }
+    },
+    {
+      "record_id": "ae0de5e94b81243f750d4ab59344b3c7037fa58ba87d8a39263bcd120a508353",
+      "external_field_key": "VOLTAGEREGULATION.OUTPUTVOLTAGE",
+      "raw_value": "15.0 V",
+      "source_metadata": {
+        "model": "TPX00242",
+        "rendered_pdf_url": "https://docs.arduino.cc/resources/datasheets/TPX00242-datasheet.pdf",
+        "row_key": "15.0 V",
+        "source_column": "1",
+        "source_line": "113",
+        "source_url": "https://github.com/arduino/docs-content/blob/ad72210c6dffa698374d4f834aae2d568e49b41d/content/hardware/13.accessories/accessories/usb-c-power-supply-45w/datasheet/datasheet.md",
+        "table": "Voltage Regulation"
+      }
+    },
+    {
+      "record_id": "8610db6f7d9cdb740a934eb1b9df89770af818bdc7a424cbb951316ba5497eb9",
+      "external_field_key": "VOLTAGEREGULATION.VOLTAGERANGE",
+      "raw_value": "14.25 - 15.75 V",
+      "source_metadata": {
+        "model": "TPX00242",
+        "rendered_pdf_url": "https://docs.arduino.cc/resources/datasheets/TPX00242-datasheet.pdf",
+        "row_key": "15.0 V",
+        "source_column": "2",
+        "source_line": "113",
+        "source_url": "https://github.com/arduino/docs-content/blob/ad72210c6dffa698374d4f834aae2d568e49b41d/content/hardware/13.accessories/accessories/usb-c-power-supply-45w/datasheet/datasheet.md",
+        "table": "Voltage Regulation"
+      }
+    },
+    {
+      "record_id": "e43b56909fe28273687a0a8f10ed3185c8c8e1bc617e79ce1db9a7433a01789a",
+      "external_field_key": "VOLTAGEREGULATION.REGULATION",
+      "raw_value": "±5%",
+      "source_metadata": {
+        "model": "TPX00242",
+        "rendered_pdf_url": "https://docs.arduino.cc/resources/datasheets/TPX00242-datasheet.pdf",
+        "row_key": "15.0 V",
+        "source_column": "3",
+        "source_line": "113",
+        "source_url": "https://github.com/arduino/docs-content/blob/ad72210c6dffa698374d4f834aae2d568e49b41d/content/hardware/13.accessories/accessories/usb-c-power-supply-45w/datasheet/datasheet.md",
+        "table": "Voltage Regulation"
+      }
+    },
+    {
+      "record_id": "2ae79dae46f5055c2ebe5fa82501261a32111af7a79e5a3eb414b913943f0b02",
+      "external_field_key": "VOLTAGEREGULATION.OUTPUTVOLTAGE",
+      "raw_value": "20.0 V",
+      "source_metadata": {
+        "model": "TPX00242",
+        "rendered_pdf_url": "https://docs.arduino.cc/resources/datasheets/TPX00242-datasheet.pdf",
+        "row_key": "20.0 V",
+        "source_column": "1",
+        "source_line": "114",
+        "source_url": "https://github.com/arduino/docs-content/blob/ad72210c6dffa698374d4f834aae2d568e49b41d/content/hardware/13.accessories/accessories/usb-c-power-supply-45w/datasheet/datasheet.md",
+        "table": "Voltage Regulation"
+      }
+    },
+    {
+      "record_id": "10808f4f044388648440816e07535d1eeca1e332a6ad6587eca7ecbea4c18996",
+      "external_field_key": "VOLTAGEREGULATION.VOLTAGERANGE",
+      "raw_value": "19.0 - 21.0 V",
+      "source_metadata": {
+        "model": "TPX00242",
+        "rendered_pdf_url": "https://docs.arduino.cc/resources/datasheets/TPX00242-datasheet.pdf",
+        "row_key": "20.0 V",
+        "source_column": "2",
+        "source_line": "114",
+        "source_url": "https://github.com/arduino/docs-content/blob/ad72210c6dffa698374d4f834aae2d568e49b41d/content/hardware/13.accessories/accessories/usb-c-power-supply-45w/datasheet/datasheet.md",
+        "table": "Voltage Regulation"
+      }
+    },
+    {
+      "record_id": "b4098ccb40344a137a7be715a431bff8a267a130d4fb8aaa5f65e84e06d0331c",
+      "external_field_key": "VOLTAGEREGULATION.REGULATION",
+      "raw_value": "±5%",
+      "source_metadata": {
+        "model": "TPX00242",
+        "rendered_pdf_url": "https://docs.arduino.cc/resources/datasheets/TPX00242-datasheet.pdf",
+        "row_key": "20.0 V",
+        "source_column": "3",
+        "source_line": "114",
+        "source_url": "https://github.com/arduino/docs-content/blob/ad72210c6dffa698374d4f834aae2d568e49b41d/content/hardware/13.accessories/accessories/usb-c-power-supply-45w/datasheet/datasheet.md",
+        "table": "Voltage Regulation"
+      }
+    },
+    {
+      "record_id": "f1019853d065b4d30166afb5a590897615aebf3e7f307271cc82cc690191f25e",
+      "external_field_key": "RIPPLEANDNOISE.RIPPLEANDNOISEALLMODES",
+      "raw_value": "150 mVp-p maximum (at full load)",
+      "source_metadata": {
+        "model": "TPX00242",
+        "rendered_pdf_url": "https://docs.arduino.cc/resources/datasheets/TPX00242-datasheet.pdf",
+        "row_key": "Ripple and Noise (all modes)",
+        "source_column": "2",
+        "source_line": "120",
+        "source_url": "https://github.com/arduino/docs-content/blob/ad72210c6dffa698374d4f834aae2d568e49b41d/content/hardware/13.accessories/accessories/usb-c-power-supply-45w/datasheet/datasheet.md",
+        "table": "Ripple and Noise"
+      }
+    },
+    {
+      "record_id": "870558389a4037c24c628ca82f8004231addce5e9abd7b0f51028c72f24ce6c0",
+      "external_field_key": "RIPPLEANDNOISE.MEASUREMENTBANDWIDTH",
+      "raw_value": "20 MHz",
+      "source_metadata": {
+        "model": "TPX00242",
+        "rendered_pdf_url": "https://docs.arduino.cc/resources/datasheets/TPX00242-datasheet.pdf",
+        "row_key": "Measurement Bandwidth",
+        "source_column": "2",
+        "source_line": "121",
+        "source_url": "https://github.com/arduino/docs-content/blob/ad72210c6dffa698374d4f834aae2d568e49b41d/content/hardware/13.accessories/accessories/usb-c-power-supply-45w/datasheet/datasheet.md",
+        "table": "Ripple and Noise"
+      }
+    },
+    {
+      "record_id": "8b0b24b9b0603448b0b75efe075f78ee4dfb0d6adb866da191ba6277541a453f",
+      "external_field_key": "DYNAMICRESPONSE.TURNONDELAY",
+      "raw_value": "3 seconds maximum @ 115 V AC, full load",
+      "source_metadata": {
+        "model": "TPX00242",
+        "rendered_pdf_url": "https://docs.arduino.cc/resources/datasheets/TPX00242-datasheet.pdf",
+        "row_key": "Turn-on Delay",
+        "source_column": "2",
+        "source_line": "131",
+        "source_url": "https://github.com/arduino/docs-content/blob/ad72210c6dffa698374d4f834aae2d568e49b41d/content/hardware/13.accessories/accessories/usb-c-power-supply-45w/datasheet/datasheet.md",
+        "table": "Dynamic Response"
+      }
+    },
+    {
+      "record_id": "bed093b38fab388b8341506a66833fa112742d3355fcedfe58e35b1e50ea1745",
+      "external_field_key": "DYNAMICRESPONSE.HOLDUPTIME",
+      "raw_value": "5 ms minimum @ 230 V AC, full load",
+      "source_metadata": {
+        "model": "TPX00242",
+        "rendered_pdf_url": "https://docs.arduino.cc/resources/datasheets/TPX00242-datasheet.pdf",
+        "row_key": "Hold-up Time",
+        "source_column": "2",
+        "source_line": "132",
+        "source_url": "https://github.com/arduino/docs-content/blob/ad72210c6dffa698374d4f834aae2d568e49b41d/content/hardware/13.accessories/accessories/usb-c-power-supply-45w/datasheet/datasheet.md",
+        "table": "Dynamic Response"
+      }
+    },
+    {
+      "record_id": "c67011985b047030307f0ae1cc86ed352692b7594b5695325a7cb2a3fed6433a",
+      "external_field_key": "DYNAMICRESPONSE.RISETIME",
+      "raw_value": "80 ms maximum (10% to 90% of rated output)",
+      "source_metadata": {
+        "model": "TPX00242",
+        "rendered_pdf_url": "https://docs.arduino.cc/resources/datasheets/TPX00242-datasheet.pdf",
+        "row_key": "Rise Time",
+        "source_column": "2",
+        "source_line": "133",
+        "source_url": "https://github.com/arduino/docs-content/blob/ad72210c6dffa698374d4f834aae2d568e49b41d/content/hardware/13.accessories/accessories/usb-c-power-supply-45w/datasheet/datasheet.md",
+        "table": "Dynamic Response"
+      }
+    },
+    {
+      "record_id": "06e7d95bfa31d0e07ce26a34702d64e44b3945112c7a5f20448c9be6bb1bf80c",
+      "external_field_key": "EFFICIENCY.50V30A",
+      "raw_value": "81.39% minimum",
+      "source_metadata": {
+        "model": "TPX00242",
+        "rendered_pdf_url": "https://docs.arduino.cc/resources/datasheets/TPX00242-datasheet.pdf",
+        "row_key": "5.0 V / 3.0 A",
+        "source_column": "2",
+        "source_line": "139",
+        "source_url": "https://github.com/arduino/docs-content/blob/ad72210c6dffa698374d4f834aae2d568e49b41d/content/hardware/13.accessories/accessories/usb-c-power-supply-45w/datasheet/datasheet.md",
+        "table": "Efficiency"
+      }
+    },
+    {
+      "record_id": "df8b7c8386ee00cdcbb63e9cfe0f1bd901cca721d2a98266b43230f9c270bcd0",
+      "external_field_key": "EFFICIENCY.90V30A",
+      "raw_value": "86.62% minimum",
+      "source_metadata": {
+        "model": "TPX00242",
+        "rendered_pdf_url": "https://docs.arduino.cc/resources/datasheets/TPX00242-datasheet.pdf",
+        "row_key": "9.0 V / 3.0 A",
+        "source_column": "2",
+        "source_line": "140",
+        "source_url": "https://github.com/arduino/docs-content/blob/ad72210c6dffa698374d4f834aae2d568e49b41d/content/hardware/13.accessories/accessories/usb-c-power-supply-45w/datasheet/datasheet.md",
+        "table": "Efficiency"
+      }
+    },
+    {
+      "record_id": "429f084c46742b2edf7cd027777128c7683d29ef0267bf34a6bb189f3e123ed6",
+      "external_field_key": "EFFICIENCY.120V30A",
+      "raw_value": "87.40% minimum",
+      "source_metadata": {
+        "model": "TPX00242",
+        "rendered_pdf_url": "https://docs.arduino.cc/resources/datasheets/TPX00242-datasheet.pdf",
+        "row_key": "12.0 V / 3.0 A",
+        "source_column": "2",
+        "source_line": "141",
+        "source_url": "https://github.com/arduino/docs-content/blob/ad72210c6dffa698374d4f834aae2d568e49b41d/content/hardware/13.accessories/accessories/usb-c-power-supply-45w/datasheet/datasheet.md",
+        "table": "Efficiency"
+      }
+    },
+    {
+      "record_id": "a5e09c1e3c9e482d646fb744f1317dc596060d03a6ddfb43bcd4bd776d906d3b",
+      "external_field_key": "EFFICIENCY.150V30A",
+      "raw_value": "87.73% minimum",
+      "source_metadata": {
+        "model": "TPX00242",
+        "rendered_pdf_url": "https://docs.arduino.cc/resources/datasheets/TPX00242-datasheet.pdf",
+        "row_key": "15.0 V / 3.0 A",
+        "source_column": "2",
+        "source_line": "142",
+        "source_url": "https://github.com/arduino/docs-content/blob/ad72210c6dffa698374d4f834aae2d568e49b41d/content/hardware/13.accessories/accessories/usb-c-power-supply-45w/datasheet/datasheet.md",
+        "table": "Efficiency"
+      }
+    },
+    {
+      "record_id": "ccaa68c3a04e5d2c61d907d8f772e2b58e1e0ae4634f1952bed8a756f23f3c2e",
+      "external_field_key": "EFFICIENCY.200V225A",
+      "raw_value": "87.73% minimum",
+      "source_metadata": {
+        "model": "TPX00242",
+        "rendered_pdf_url": "https://docs.arduino.cc/resources/datasheets/TPX00242-datasheet.pdf",
+        "row_key": "20.0 V / 2.25 A",
+        "source_column": "2",
+        "source_line": "143",
+        "source_url": "https://github.com/arduino/docs-content/blob/ad72210c6dffa698374d4f834aae2d568e49b41d/content/hardware/13.accessories/accessories/usb-c-power-supply-45w/datasheet/datasheet.md",
+        "table": "Efficiency"
+      }
+    },
+    {
+      "record_id": "52c6c6f9e6ef4e86aae079146536eb94d3cb67e497d345750fb7ea5a6da0b11e",
+      "external_field_key": "OPERATINGCONDITIONS.OPERATINGTEMPERATURE",
+      "raw_value": "0 °C - 35 °C",
+      "source_metadata": {
+        "model": "TPX00242",
+        "rendered_pdf_url": "https://docs.arduino.cc/resources/datasheets/TPX00242-datasheet.pdf",
+        "row_key": "Operating Temperature",
+        "source_column": "2",
+        "source_line": "166",
+        "source_url": "https://github.com/arduino/docs-content/blob/ad72210c6dffa698374d4f834aae2d568e49b41d/content/hardware/13.accessories/accessories/usb-c-power-supply-45w/datasheet/datasheet.md",
+        "table": "Operating Conditions"
+      }
+    },
+    {
+      "record_id": "a8f80b628a9cfa79070de59f9ee941cf3e93bea09a886fe0e66eb6dcac663e03",
+      "external_field_key": "OPERATINGCONDITIONS.STORAGETEMPERATURE",
+      "raw_value": "-40 °C - 70 °C",
+      "source_metadata": {
+        "model": "TPX00242",
+        "rendered_pdf_url": "https://docs.arduino.cc/resources/datasheets/TPX00242-datasheet.pdf",
+        "row_key": "Storage Temperature",
+        "source_column": "2",
+        "source_line": "167",
+        "source_url": "https://github.com/arduino/docs-content/blob/ad72210c6dffa698374d4f834aae2d568e49b41d/content/hardware/13.accessories/accessories/usb-c-power-supply-45w/datasheet/datasheet.md",
+        "table": "Operating Conditions"
+      }
+    },
+    {
+      "record_id": "b51498eb12c1ab42a308a69bfd35d86ea849732638171aaa727824dab272858e",
+      "external_field_key": "OPERATINGCONDITIONS.OPERATINGHUMIDITY",
+      "raw_value": "10% - 90% RH (non-condensing)",
+      "source_metadata": {
+        "model": "TPX00242",
+        "rendered_pdf_url": "https://docs.arduino.cc/resources/datasheets/TPX00242-datasheet.pdf",
+        "row_key": "Operating Humidity",
+        "source_column": "2",
+        "source_line": "168",
+        "source_url": "https://github.com/arduino/docs-content/blob/ad72210c6dffa698374d4f834aae2d568e49b41d/content/hardware/13.accessories/accessories/usb-c-power-supply-45w/datasheet/datasheet.md",
+        "table": "Operating Conditions"
+      }
+    },
+    {
+      "record_id": "6fd62adcfbc323067acaf14259e308046c1c29aca7efe70bedff45e7a8adcc27",
+      "external_field_key": "OPERATINGCONDITIONS.STORAGEHUMIDITY",
+      "raw_value": "5% - 95% RH (non-condensing)",
+      "source_metadata": {
+        "model": "TPX00242",
+        "rendered_pdf_url": "https://docs.arduino.cc/resources/datasheets/TPX00242-datasheet.pdf",
+        "row_key": "Storage Humidity",
+        "source_column": "2",
+        "source_line": "169",
+        "source_url": "https://github.com/arduino/docs-content/blob/ad72210c6dffa698374d4f834aae2d568e49b41d/content/hardware/13.accessories/accessories/usb-c-power-supply-45w/datasheet/datasheet.md",
+        "table": "Operating Conditions"
+      }
+    },
+    {
+      "record_id": "c4f419a04a8ab11917e807bf0c01b9d6154989f092f40798cba3606ad9bf5cc1",
+      "external_field_key": "OPERATINGCONDITIONS.OPERATINGALTITUDE",
+      "raw_value": "Up to 5000 m",
+      "source_metadata": {
+        "model": "TPX00242",
+        "rendered_pdf_url": "https://docs.arduino.cc/resources/datasheets/TPX00242-datasheet.pdf",
+        "row_key": "Operating Altitude",
+        "source_column": "2",
+        "source_line": "170",
+        "source_url": "https://github.com/arduino/docs-content/blob/ad72210c6dffa698374d4f834aae2d568e49b41d/content/hardware/13.accessories/accessories/usb-c-power-supply-45w/datasheet/datasheet.md",
+        "table": "Operating Conditions"
+      }
+    },
+    {
+      "record_id": "d1cdd6ccea3270e14275497024002e57f8073bbd1fb4fd37388e481f8149bb29",
+      "external_field_key": "OPERATINGCONDITIONS.STORAGEALTITUDE",
+      "raw_value": "Up to 5000 m",
+      "source_metadata": {
+        "model": "TPX00242",
+        "rendered_pdf_url": "https://docs.arduino.cc/resources/datasheets/TPX00242-datasheet.pdf",
+        "row_key": "Storage Altitude",
+        "source_column": "2",
+        "source_line": "171",
+        "source_url": "https://github.com/arduino/docs-content/blob/ad72210c6dffa698374d4f834aae2d568e49b41d/content/hardware/13.accessories/accessories/usb-c-power-supply-45w/datasheet/datasheet.md",
+        "table": "Operating Conditions"
+      }
+    },
+    {
+      "record_id": "7e7208a1aa51d8dc2949931e65e1eaa7602c5a94e6923c52cbaf60eb8e90c0ab",
+      "external_field_key": "ELECTRICALSAFETY.DIELECTRICSTRENGTH",
+      "raw_value": "3000 V AC @ 50 Hz, 5 mA max, 60 seconds",
+      "source_metadata": {
+        "model": "TPX00242",
+        "rendered_pdf_url": "https://docs.arduino.cc/resources/datasheets/TPX00242-datasheet.pdf",
+        "row_key": "Dielectric Strength",
+        "source_column": "2",
+        "source_line": "179",
+        "source_url": "https://github.com/arduino/docs-content/blob/ad72210c6dffa698374d4f834aae2d568e49b41d/content/hardware/13.accessories/accessories/usb-c-power-supply-45w/datasheet/datasheet.md",
+        "table": "Electrical Safety"
+      }
+    },
+    {
+      "record_id": "ab39607d7d991683ca87b0165c9c4f94da6f1bf9c258c02bd02260bcded5bb76",
+      "external_field_key": "ELECTRICALSAFETY.PRODUCTIONHIPOTTEST",
+      "raw_value": "3600 V AC @ 50 Hz, 5 mA max, 3 seconds",
+      "source_metadata": {
+        "model": "TPX00242",
+        "rendered_pdf_url": "https://docs.arduino.cc/resources/datasheets/TPX00242-datasheet.pdf",
+        "row_key": "Production Hi-Pot Test",
+        "source_column": "2",
+        "source_line": "180",
+        "source_url": "https://github.com/arduino/docs-content/blob/ad72210c6dffa698374d4f834aae2d568e49b41d/content/hardware/13.accessories/accessories/usb-c-power-supply-45w/datasheet/datasheet.md",
+        "table": "Electrical Safety"
+      }
+    },
+    {
+      "record_id": "fa51416250a93c64c1b273c3e385f12d6f01b8e09a0d7cee04ed60661274a99a",
+      "external_field_key": "ELECTRICALSAFETY.LEAKAGECURRENT",
+      "raw_value": "0.25 mA maximum @ 230 V AC / 50 Hz",
+      "source_metadata": {
+        "model": "TPX00242",
+        "rendered_pdf_url": "https://docs.arduino.cc/resources/datasheets/TPX00242-datasheet.pdf",
+        "row_key": "Leakage Current",
+        "source_column": "2",
+        "source_line": "181",
+        "source_url": "https://github.com/arduino/docs-content/blob/ad72210c6dffa698374d4f834aae2d568e49b41d/content/hardware/13.accessories/accessories/usb-c-power-supply-45w/datasheet/datasheet.md",
+        "table": "Electrical Safety"
+      }
+    },
+    {
+      "record_id": "bc337fa1da830c7c0a56b6d63b6ad21295b1829c825d41cf83dd5ae44081ec96",
+      "external_field_key": "ELECTRICALSAFETY.INSULATIONRESISTANCE",
+      "raw_value": "10 MΩ minimum @ 500 V DC, 90% RH",
+      "source_metadata": {
+        "model": "TPX00242",
+        "rendered_pdf_url": "https://docs.arduino.cc/resources/datasheets/TPX00242-datasheet.pdf",
+        "row_key": "Insulation Resistance",
+        "source_column": "2",
+        "source_line": "182",
+        "source_url": "https://github.com/arduino/docs-content/blob/ad72210c6dffa698374d4f834aae2d568e49b41d/content/hardware/13.accessories/accessories/usb-c-power-supply-45w/datasheet/datasheet.md",
+        "table": "Electrical Safety"
+      }
+    },
+    {
+      "record_id": "ad67dea1c82b5a94f4b68ebc36c8454be5f58f4e99b4b19606c32aebdbe780a5",
+      "external_field_key": "ELECTRICALSAFETY.PROTECTIONCLASS",
+      "raw_value": "Class II (double insulated)",
+      "source_metadata": {
+        "model": "TPX00242",
+        "rendered_pdf_url": "https://docs.arduino.cc/resources/datasheets/TPX00242-datasheet.pdf",
+        "row_key": "Protection Class",
+        "source_column": "2",
+        "source_line": "183",
+        "source_url": "https://github.com/arduino/docs-content/blob/ad72210c6dffa698374d4f834aae2d568e49b41d/content/hardware/13.accessories/accessories/usb-c-power-supply-45w/datasheet/datasheet.md",
+        "table": "Electrical Safety"
+      }
+    }
+  ]
+}

@@ -1,7 +1,10 @@
 // SPDX-License-Identifier: MIT OR Apache-2.0
 //! Deterministic FDX4 protected-corpus construction.
 
-use datasheet_core::corpus::{ProtectedCorpusManifest, ProtectedSplitManifest};
+use datasheet_core::corpus::{
+    ProtectedCorpusManifest, ProtectedCorpusManifestV2, ProtectedSliceManifestV2,
+    ProtectedSplitManifest,
+};
 
 /// Freezes split artifact identities, canonical corpus order, and the corpus digest.
 /// # Errors
@@ -41,5 +44,45 @@ pub fn freeze_protected_corpus(
 
 #[must_use]
 pub fn split_digest(split: &ProtectedSplitManifest) -> datasheet_core::Sha256Digest {
+    split.recompute_digest()
+}
+
+/// Freezes the additive v2 manifest while preserving overlapping evaluation tags.
+/// # Errors
+/// Returns an error if rights, declared train-disjoint grouping, or claim invariants fail.
+pub fn freeze_protected_corpus_v2(
+    mut manifest: ProtectedCorpusManifestV2,
+) -> Result<ProtectedCorpusManifestV2, datasheet_core::corpus::CorpusContractError> {
+    manifest.inputs.sort_by(|a, b| a.role.cmp(&b.role));
+    manifest
+        .members
+        .sort_by(|a, b| a.example_id.cmp(&b.example_id));
+    manifest
+        .exclusions
+        .sort_by(|a, b| a.example_id.cmp(&b.example_id));
+    manifest.slices.sort_by_key(|slice| slice.split);
+    for member in &mut manifest.members {
+        member.lineage_group_ids.sort();
+        member.rights_snapshot_ids.sort();
+        member.restriction_codes.sort();
+    }
+    for exclusion in &mut manifest.exclusions {
+        exclusion.reason_codes.sort();
+        exclusion.rights_snapshot_ids.sort();
+    }
+    for slice in &mut manifest.slices {
+        slice.member_ids.sort();
+        slice.held_out_from_train_by.sort();
+        slice.limitation_codes.sort();
+        slice.artifact_digest = split_digest_v2(slice);
+    }
+    manifest.limitation_codes.sort();
+    manifest.corpus_digest = manifest.recompute_digest();
+    manifest.validate()?;
+    Ok(manifest)
+}
+
+#[must_use]
+pub fn split_digest_v2(split: &ProtectedSliceManifestV2) -> datasheet_core::Sha256Digest {
     split.recompute_digest()
 }

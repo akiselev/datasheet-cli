@@ -1,6 +1,7 @@
 # FDX4 protected corpus
 
-Status: protected-corpus contracts and physical persistence complete; model qualification blocked.
+Status: overlap-aware protected-corpus v2 and reviewed open-document expansion complete;
+model qualification remains blocked.
 
 FDX4 freezes the audited FDX3 examples into an immutable corpus manifest with
 six explicit partitions: train, development, template-held-out,
@@ -51,3 +52,52 @@ qualification gate is satisfied.
 Checked schemas live under `schemas/fdx4/`; adversarial tests cover every group
 kind, order-independent replay, missing splits, hidden-state misuse,
 trainability/restriction refusal, and exclusion/admission conflicts.
+
+## Additive v2 expansion
+
+`fdx4.protected-corpus-manifest/v2` remains additive to the unchanged v1
+contract. V2 projects members through slice tags, so evaluation tags may overlap
+with each other. Every non-train slice declares `held_out_from_train_by`, and
+validation compares that slice against train for exactly those dimensions.
+Exact-content, near-duplicate, revision, and synthetic-root separation are
+mandatory baselines; template-, document-family-, and manufacturer-held-out
+slices additionally declare their named grouping level. Publisher lineage and
+the other meaningful dimensions can be declared per slice. A member can never
+be tagged both train and evaluation.
+
+`evidence/fdx4-protected-corpus-manifest-v2.json` contains 266 members:
+
+- 210 audited NASA examples remain train-only;
+- 55 independently reviewed TPX00242 source-native electrical/operating cells
+  carry overlapping development, template-held-out, document-family-held-out,
+  and manufacturer-held-out tags, all train-disjoint at every declared level;
+- one independently rooted minimized synthetic case populates final-blind-test
+  for contract plumbing only.
+
+The NASA rows carry the truthful template grouping
+`nasa-nepp-npsl.html-table.lp-npt` and the explicit grouping cohort
+`nasa-npsl:unresolved-manufacturer-cohort`. The latter is not a manufacturer
+identity or authority assertion; it prevents unknown source rows from silently
+bypassing manufacturer-level disjointness. V2 refuses any slice that declares
+template, manufacturer, or revision separation while either its members or the
+train members lack that grouping metadata.
+
+The TPX source is Arduino `docs-content` commit `ad72210c...`; exact Markdown,
+repository license, rendered-PDF, Foundry row-export, policy, authority, and
+Artifactum identities are pinned. The 55 admitted cells are enumerated in
+`evidence/fdx4-tpx00242-independent-review.json`. The deterministic builder
+emits 31 vocabulary maps, 55 reviewed-development examples, 165 votes including
+55 explicit shape abstentions, 55 combined labels, and 55 training examples.
+No regime is inferred and no authority for underlying component manufacturers
+is claimed.
+
+Foundry source/profile semantics are pinned at `d4e35dd`; the resulting corpus,
+TPX supervision bundle, six slice artifacts, and hidden synthetic bytes are
+physically retained by Foundry commit `02733f3` under Artifactum collection
+`sha256:35bbc0a8db37d34ba9d21fcf0198288854981e375db0168d76b1e5fc14e2c1bf`.
+
+`contract_plumbing_ready` is true, but every evaluation slice deliberately sets
+`supports_real_world_generalization` false. The same single real Arduino
+document backs four declared evaluation views, and final-blind-test is synthetic.
+Therefore `model_qualification_ready` remains false and FDX5 training must not
+begin.
