@@ -1,6 +1,6 @@
 {
   "schema_version": "fdx3-production-readiness/1",
-  "manifest_digest": "f7d6425b3b19e704deb410ddc33598e3546e4b246db2cdc46f1a7fe8e78600a4",
+  "manifest_digest": "f40cfa0395b2510f00d3b4133e94d82dfad712091711e586c5af21ca6d5a9c9f",
   "audited_at_utc": "2026-08-22",
   "datasheet_revision": "8272515c9bfb33242944d39e70dd17c4c4735f60",
   "foundry_revision": "5ec50e46e224c49b141a668ca831bab286b81d24",
@@ -168,6 +168,23 @@
           "content_sha256": "825dbf8825795fc02d3ca04f191f1beaaa280514cfeca836d58f840f4464fae4",
           "schema_id": "source-vocabulary-map/1",
           "row_count": 6
+        },
+        {
+          "role": "independent_source_row_review",
+          "content_sha256": "a1b0456e150a0c40d9bae51c8b63014eb72e3aaa2482bfb20799975135a5302b",
+          "schema_id": "fdx3-independent-source-row-review/1",
+          "row_count": 42
+        },
+        {
+          "role": "production_supervision_bundle",
+          "content_sha256": "5f859c8944f3306f5219f1aea8aa7f545c3e815100e88bd1e523dd66b63fb892",
+          "schema_id": "fdx3-nasa-production-bundle/1",
+          "row_count": 210
+        },
+        {
+          "role": "production_supervision_metrics",
+          "content_sha256": "b135a84a20dd6e3badf38f0fdda9adc11b07f0a5583807d9a249566e2fe5e7b1",
+          "schema_id": "fdx3-production-metrics/1"
         }
       ],
       "selected_labelers": [
@@ -342,7 +359,7 @@
   "calibration_digest": "72558d93b74ffdd9c85bf7013261a4b01aa15fdaf22ddbf758f3719bf9101040",
   "documented_second_family_blocker": {
     "role": "documented_second_family_access_or_rights_blocker",
-    "content_sha256": "9ca958f561997cc8e84534101989d9aa8ce7e2753d0563aadfb141a486c3953e",
+    "content_sha256": "e7c2f64d32b81e6357311effdfd585d5cc2d166a654ba24c0b163bb0edb6b7f7",
     "schema_id": "fdx3-documented-second-family-blocker/1"
   },
   "eligible_family_count": 1,

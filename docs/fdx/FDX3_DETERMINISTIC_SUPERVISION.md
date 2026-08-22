@@ -24,7 +24,9 @@ rights policy, source lineage, and frozen datasets.
   boundary contracts. Corpus family/split assignments remain outside
   `DatasheetSketch` identity.
 - Reviewed development sets and calibration snapshots are immutable, ontology
-  bound, fixed-point interfaces. There is no floating-point weight identity.
+  bound, fixed-point interfaces. Declared precision must equal the conservative
+  integer-millionths quotient of reviewed-correct over reviewed-total; it cannot
+  drift from the retained counts. There is no floating-point weight identity.
 
 Checked schemas are under `schemas/fdx3/`. Datasheet semantic IDs are not
 physical Foundry lake record IDs; Foundry assigns its own provenance-bound row
@@ -127,7 +129,9 @@ spread rows and all six admitted fields produced 42 reviewed development
 examples. The immutable calibration records 42/42 vocabulary, 42/42 dimension,
 35/35 scalar-alignment, and 7/7 range-alignment precision. Cell and part text is
 represented by review hashes in `evidence/fdx3-nasa-independent-row-review.json`;
-the policy-controlled raw page is not republished here.
+the policy-controlled raw page is not republished here. That independent review
+also pins the logical reviewed-development-set digest, and production readiness
+pins the review, supervision bundle, and metrics file hashes.
 
 `evidence/fdx3-nasa-production-bundle.json` retains all 210 structured facts,
 840 labeler outcomes (630 votes and 210 explicit shape-mismatch abstentions),

@@ -3,6 +3,7 @@
   "source_artifact_sha256": "916fcf4561f6961c78c686421abe8922f2845d9e9946c59ea742199374192c43",
   "method": "python_stdlib_htmlparser_latin1_independent_of_foundry_scraper",
   "reviewer": "codex_assistant_manual_semantic_review",
+  "reviewed_development_set_digest": "f9cf81db5cf356748a8b535a4a05ec6d910a0e9b4d81fa252424968e42823576",
   "reviewed_fields": ["I_C", "V_CBO", "V_CEO", "V_EBO", "h_FE_min_max", "h_FE_at_I_C"],
   "rows": [
     {"data_row_index": 0, "part_through_condition_cells_sha256": "2eee347dbc83fbdba04bcb16b5d30f192a5b8d3b7d3c8151140ff062e96fb0fd"},

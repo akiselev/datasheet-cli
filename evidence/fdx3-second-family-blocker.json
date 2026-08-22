@@ -32,6 +32,21 @@
       "family": "government.nasa.ntrs.nepp",
       "decision": "blocked",
       "reasons": ["no_committed_source_profile", "no_committed_evidence_bearing_fls5_cells"]
+    },
+    {
+      "family": "government.dla.qpd_qpl_qml_smd",
+      "decision": "blocked",
+      "reasons": ["qualification_identity_is_not_source_native_electrical_parametrics", "linked_drawings_require_artifact_specific_rights_and_fls5_review"]
+    },
+    {
+      "family": "open.eda.retained_sources",
+      "decision": "ineligible",
+      "reasons": ["identity_package_symbol_pin_or_device_metadata_only", "no_analog_power_electrical_facts"]
+    },
+    {
+      "family": "commercial.api.restricted_parametrics",
+      "decision": "blocked",
+      "reasons": ["committed_policy_denies_durable_training", "prohibited_substitute_data_not_acquired"]
     }
   ],
   "acceptance_branch": "one_eligible_family_plus_documented_access_or_rights_blocker",

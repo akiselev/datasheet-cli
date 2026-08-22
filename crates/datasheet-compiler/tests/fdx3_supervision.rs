@@ -1,8 +1,8 @@
 use datasheet_compiler::supervision::{
     CombinationAbstentionReason, CombinationResult, LABELER_CATALOG, LabelVoteInput,
     SourceVocabularyMapInput, build_label_vote, combine_votes, derive_source_vocabulary_map,
-    freeze_calibration_snapshot, freeze_reviewed_development_set, frozen_labeler_catalog,
-    validate_source_vocabulary_map, validate_training_label,
+    calibration_snapshot_digest, freeze_calibration_snapshot, freeze_reviewed_development_set,
+    frozen_labeler_catalog, validate_source_vocabulary_map, validate_training_label,
 };
 use datasheet_core::supervision::{
     CalibrationSnapshot, LabelVote, LabelerCalibration, LabelerRef, ProductionReadinessManifest,
@@ -205,6 +205,20 @@ fn reviewed_development_and_calibration_are_frozen_order_independently() {
     )
     .unwrap();
     assert_eq!(calibration.reviewed_development_set_digest, first.digest);
+}
+
+#[test]
+fn calibration_precision_must_match_review_counts_exactly() {
+    let mut calibration = calibration(&["quantity.dimension.v1"], 1);
+    calibration.entries[0].reviewed_correct = 1;
+    calibration.entries[0].reviewed_total = 3;
+    calibration.entries[0].precision_millionths = 333_334;
+    calibration.digest = calibration_snapshot_digest(&calibration).unwrap();
+    assert!(calibration.validate_structure().is_err());
+
+    calibration.entries[0].precision_millionths = 333_333;
+    calibration.digest = calibration_snapshot_digest(&calibration).unwrap();
+    calibration.validate_structure().unwrap();
 }
 
 #[test]
@@ -436,6 +450,7 @@ fn real_nasa_bundle_retains_every_vote_abstention_label_and_source_identity() {
     }
     for vote in &votes {
         datasheet_compiler::supervision::validate_label_vote(vote).unwrap();
+        assert!(!vote.reason_codes.iter().any(|reason| reason == "exact_reviewed_source_field"));
         assert!(vote.observations.iter().all(|observation| {
             observation
                 .rights_snapshots
@@ -456,6 +471,93 @@ fn real_nasa_bundle_retains_every_vote_abstention_label_and_source_identity() {
         labels
             .iter()
             .all(|label| label.target_json["regime"].is_null())
+    );
+}
+
+#[test]
+fn production_readiness_binds_the_independent_review_bundle_and_metrics() {
+    let manifest: ProductionReadinessManifest = serde_json::from_str(include_str!(
+        "../../../evidence/fdx3-production-readiness-2026-08-22.json"
+    ))
+    .unwrap();
+    let nasa = manifest
+        .families
+        .iter()
+        .find(|family| family.family_id == "government.nasa.nepp.npsl.lp_npt")
+        .unwrap();
+    let expected = [
+        (
+            "independent_source_row_review",
+            Sha256Digest::of_bytes(include_bytes!(
+                "../../../evidence/fdx3-nasa-independent-row-review.json"
+            )),
+        ),
+        (
+            "production_supervision_bundle",
+            Sha256Digest::of_bytes(include_bytes!(
+                "../../../evidence/fdx3-nasa-production-bundle.json"
+            )),
+        ),
+        (
+            "production_supervision_metrics",
+            Sha256Digest::of_bytes(include_bytes!(
+                "../../../evidence/fdx3-nasa-production-metrics.json"
+            )),
+        ),
+    ];
+    for (role, digest) in expected {
+        assert_eq!(
+            nasa.artifacts
+                .iter()
+                .find(|artifact| artifact.role == role)
+                .unwrap()
+                .content_sha256,
+            digest
+        );
+    }
+    assert_eq!(
+        manifest
+            .documented_second_family_blocker
+            .as_ref()
+            .unwrap()
+            .content_sha256,
+        Sha256Digest::of_bytes(include_bytes!(
+            "../../../evidence/fdx3-second-family-blocker.json"
+        ))
+    );
+    let blocker: serde_json::Value = serde_json::from_str(include_str!(
+        "../../../evidence/fdx3-second-family-blocker.json"
+    ))
+    .unwrap();
+    let candidates = blocker["candidates"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .map(|candidate| candidate["family"].as_str().unwrap())
+        .collect::<std::collections::BTreeSet<_>>();
+    for required in [
+        "government.dla.publog.characteristics",
+        "government.dla.qpd_qpl_qml_smd",
+        "government.nasa.ntrs.nepp",
+        "manufacturer.microchip.samd21.cmsis",
+        "manufacturer.microchip.samd21.datasheet",
+        "manufacturer.raspberrypi.rp2040.datasheet",
+        "open.eda.retained_sources",
+        "commercial.api.restricted_parametrics",
+    ] {
+        assert!(candidates.contains(required));
+    }
+    let review: serde_json::Value = serde_json::from_str(include_str!(
+        "../../../evidence/fdx3-nasa-independent-row-review.json"
+    ))
+    .unwrap();
+    let development: ReviewedDevelopmentSet = serde_json::from_str(include_str!(
+        "../../../evidence/fdx3-nasa-reviewed-development-set.json"
+    ))
+    .unwrap();
+    assert_eq!(
+        review["reviewed_development_set_digest"].as_str().unwrap(),
+        development.digest.0
     );
 }
 

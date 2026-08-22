@@ -15,7 +15,7 @@ use serde::Serialize;
 use serde_json::{Value, json};
 
 const SOURCE_SHA: &str = "916fcf4561f6961c78c686421abe8922f2845d9e9946c59ea742199374192c43";
-const REVIEW_SHA: &str = "cad3028fac1fa5d7f3534df2ae969fb159987905ddac0802da568c5f46034bd2";
+const REVIEW_SHA: &str = "a1b0456e150a0c40d9bae51c8b63014eb72e3aaa2482bfb20799975135a5302b";
 const REVIEWED_ROWS: [usize; 7] = [0, 5, 11, 19, 24, 30, 34];
 
 #[derive(Clone)]
@@ -275,22 +275,42 @@ fn main() {
         producer(),
     )
     .expect("development set");
+    assert_eq!(
+        development.digest.0,
+        review["reviewed_development_set_digest"]
+            .as_str()
+            .expect("reviewed development-set digest"),
+        "independent review is not bound to the generated development set"
+    );
+    let measurements = review["labeler_measurements"]
+        .as_object()
+        .expect("labeler measurements");
+    let measured_labelers = [
+        "quantity.dimension.v1",
+        "source.range_align.v1",
+        "source.value_align_unique.v1",
+        "source.vocabulary_map.v1",
+    ];
+    assert_eq!(measurements.len(), measured_labelers.len());
     let calibration = freeze_calibration_snapshot(
         development.digest.clone(),
         development.ontology_snapshot_digest.clone(),
-        vec![
-            ("quantity.dimension.v1", 42),
-            ("source.range_align.v1", 7),
-            ("source.value_align_unique.v1", 35),
-            ("source.vocabulary_map.v1", 42),
-        ]
+        measured_labelers
         .into_iter()
-        .map(|(id, total)| LabelerCalibration {
+        .map(|id| {
+            let measurement = measurements.get(id).expect("named labeler measurement");
+            let correct = u32::try_from(measurement["correct"].as_u64().expect("correct count"))
+                .expect("correct count fits u32");
+            let total = u32::try_from(measurement["total"].as_u64().expect("total count"))
+                .expect("total count fits u32");
+            LabelerCalibration {
             labeler: labeler(id),
-            reviewed_correct: total,
+            reviewed_correct: correct,
             reviewed_total: total,
-            precision_millionths: 1_000_000,
+            precision_millionths: u32::try_from(u64::from(correct) * 1_000_000 / u64::from(total))
+                .expect("precision fits u32"),
             weight_millionths: 1_000_000,
+            }
         })
         .collect(),
         1_000_000,
@@ -340,7 +360,7 @@ fn main() {
                 outcome,
                 observations: vec![observation.clone()],
                 reason_codes: vec![if applicable {
-                    "exact_reviewed_source_field".into()
+                    "exact_source_field_under_reviewed_mapping".into()
                 } else {
                     "shape_mismatch_abstention".into()
                 }],
