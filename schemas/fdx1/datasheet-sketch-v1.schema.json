@@ -340,6 +340,7 @@
         "inequality",
         "tolerance",
         "set",
+        "symbolic",
         "text_unparsed"
       ]
     },

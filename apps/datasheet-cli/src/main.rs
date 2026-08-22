@@ -55,6 +55,8 @@ enum Command {
     ExtractPages(extract_pages::ExtractPagesArgs),
     /// Build a deterministic FDX1 sketch from a minimized DocumentIR fixture
     Sketch(fdx::SketchArgs),
+    /// Compile the frozen FDX2 deterministic analog/power fixture baseline
+    Baseline(fdx::BaselineArgs),
 }
 
 fn main() -> Result<()> {
@@ -80,6 +82,7 @@ fn main() -> Result<()> {
         Command::FootprintImage(args) => footprint_image::run(&args),
         Command::ExtractPages(args) => extract_pages::run(&args),
         Command::Sketch(args) => fdx::run_sketch(&args),
+        Command::Baseline(args) => fdx::run_baseline(&args),
     }
 }
 
@@ -116,5 +119,22 @@ mod tests {
         ])
         .unwrap();
         assert!(matches!(cli.command, Command::Sketch(_)));
+    }
+
+    #[test]
+    fn deterministic_baseline_command_is_explicit() {
+        let digest = "0".repeat(64);
+        let cli = Cli::try_parse_from([
+            "datasheet",
+            "baseline",
+            "document.json",
+            "vocabulary.json",
+            "--code-revision",
+            "revision",
+            "--configuration-digest",
+            &digest,
+        ])
+        .unwrap();
+        assert!(matches!(cli.command, Command::Baseline(_)));
     }
 }

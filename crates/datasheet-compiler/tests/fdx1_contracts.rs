@@ -6,7 +6,7 @@ use datasheet_compiler::{
 };
 use datasheet_core::{
     CandidateId, ClaimBundle, EvidenceAnchor, ParsedQuantityShape, PredicateTerm,
-    PredicateVocabularySnapshot, ProducerIdentity, Sha256Digest, SpecificationRegime,
+    PredicateVocabularySnapshot, ProducerIdentity, Sha256Digest, SpecificationRegime, ValueRole,
 };
 
 const FIXTURE: &str = include_str!("../../../tests/fixtures/fdx1_synthetic_document_ir.json");
@@ -47,6 +47,7 @@ fn vocabulary() -> PredicateVocabularySnapshot {
             aliases: vec!["Input voltage".into()],
             symbol_aliases: vec!["VIN".into()],
             expected_quantity_kind: Some("voltage".into()),
+            expected_dimensionality: None,
             expected_shapes: vec![ParsedQuantityShape::Scalar],
             regime_constraints: vec![SpecificationRegime::RecommendedOperating],
             category_scope: vec!["analog_power".into()],
@@ -59,6 +60,7 @@ fn selection(sketch: &DatasheetSketch) -> ClaimSelection {
         subject_candidate_id: sketch.subjects[0].id.clone(),
         predicate_term_id: "electrical.input_voltage.operating".into(),
         regime: SpecificationRegime::RecommendedOperating,
+        value_role: ValueRole::Minimum,
         value_candidate_id: sketch.quantities[0].id.clone(),
         condition_candidate_ids: vec![sketch.conditions[0].id.clone()],
         package_variant_candidate_ids: vec![sketch.packages[0].id.clone()],

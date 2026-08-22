@@ -75,7 +75,8 @@
         "predicate_term_id",
         "regime",
         "subject_candidate_id",
-        "value_candidate_id"
+        "value_candidate_id",
+        "value_role"
       ],
       "properties": {
         "condition_candidate_ids": {
@@ -117,6 +118,9 @@
         },
         "value_candidate_id": {
           "type": "string"
+        },
+        "value_role": {
+          "$ref": "#/definitions/ValueRole"
         }
       }
     },
@@ -302,6 +306,7 @@
         "inequality",
         "tolerance",
         "set",
+        "symbolic",
         "text_unparsed"
       ]
     },
@@ -465,6 +470,16 @@
           "type": "string"
         }
       }
+    },
+    "ValueRole": {
+      "description": "Semantic role of a selected value within its source table row.",
+      "type": "string",
+      "enum": [
+        "minimum",
+        "typical",
+        "maximum",
+        "rating"
+      ]
     }
   }
 }

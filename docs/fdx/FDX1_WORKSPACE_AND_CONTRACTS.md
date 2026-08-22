@@ -61,6 +61,6 @@ The core boundary test rejects accidental HTTP, PDF, model-runtime, or Foundry d
 ## Deferred gates
 
 - A production Ferrodoc adapter and real FDX0 state are deferred; FDX1 uses only the pinned synthetic fixture permitted by the coordination plan.
-- Quantitas is represented by a producer/normalized-value identity contract; an actual registry dependency is deferred until production candidate parsing.
-- Deterministic analog/power extraction quality is FDX2.
+- Quantitas was represented by an identity contract at the FDX1 boundary; the pinned registry integration is documented by FDX2.
+- Deterministic analog/power extraction quality beyond the bounded synthetic FDX2 conformance baseline remains unqualified on a production corpus.
 - Production supervision/corpus/model work remains blocked on the Foundry FLS2/FLS4/FLS5 gates and FDX3-FDX5.

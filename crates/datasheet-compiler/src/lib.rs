@@ -1,6 +1,10 @@
 // SPDX-License-Identifier: MIT OR Apache-2.0
 //! Deterministic candidate indexing and fail-closed claim assembly.
 
+pub mod baseline;
+pub mod evaluation;
+pub mod quantity;
+
 use std::collections::{BTreeMap, BTreeSet};
 
 use datasheet_core::{
@@ -8,7 +12,7 @@ use datasheet_core::{
     ContentSelector, ContractError, EVIDENCE_ANCHOR_SCHEMA, EvidenceAnchor, GeometryQuality,
     GroundingStatus, NormalizedQuantity, ParsedConditionCandidate, ParsedQuantityShape,
     PredicateVocabularySnapshot, ProducerIdentity, QuantityCandidate, Sha256Digest, SketchId,
-    SourceGeometry, SpecificationRegime, SubjectCandidate, SubjectHint, SubjectKind,
+    SourceGeometry, SpecificationRegime, SubjectCandidate, SubjectHint, SubjectKind, ValueRole,
     tagged_content_id,
 };
 use schemars::JsonSchema;
@@ -579,7 +583,7 @@ fn normalize_search_key(value: &str) -> String {
         .collect()
 }
 
-fn sort_sketch(sketch: &mut DatasheetSketch) {
+pub(crate) fn sort_sketch(sketch: &mut DatasheetSketch) {
     sketch
         .subjects
         .sort_by(|left, right| left.id.cmp(&right.id));
@@ -606,6 +610,7 @@ pub struct ClaimSelection {
     pub subject_candidate_id: CandidateId,
     pub predicate_term_id: String,
     pub regime: SpecificationRegime,
+    pub value_role: ValueRole,
     pub value_candidate_id: CandidateId,
     pub condition_candidate_ids: Vec<CandidateId>,
     pub package_variant_candidate_ids: Vec<CandidateId>,
@@ -698,6 +703,7 @@ pub fn assemble_claim_bundle(
             subject_candidate_id: selection.subject_candidate_id,
             predicate_term_id: selection.predicate_term_id,
             regime: selection.regime,
+            value_role: selection.value_role,
             value_candidate_id: selection.value_candidate_id,
             condition_candidate_ids: selection.condition_candidate_ids,
             package_variant_candidate_ids: selection.package_variant_candidate_ids,

@@ -1,0 +1,28 @@
+{
+  "schema_version": "datasheet-fdx2-truth/1",
+  "sections": [
+    {"heading":"Recommended Operating Conditions","regime":"recommended_operating"},
+    {"heading":"Electrical Characteristics","regime":"guaranteed"},
+    {"heading":"Absolute Maximum Ratings","regime":"absolute_maximum"},
+    {"heading":"Thermal Information","regime":"informative"}
+  ],
+  "headers": [
+    {"signature":"parameter|symbol|conditions|min|typ|max|unit","roles":["parameter","symbol","condition","minimum","typical","maximum","unit"],"abstained":false},
+    {"signature":"parameter|symbol|test conditions|typ|unit","roles":["parameter","symbol","condition","typical","unit"],"abstained":false},
+    {"signature":"parameter|symbol|rating|unit","roles":["parameter","symbol","rating","unit"],"abstained":false},
+    {"signature":"parameter|symbol|package|rating|unit","roles":["parameter","symbol","package","rating","unit"],"abstained":false},
+    {"signature":"parameter|value|unit","roles":["parameter","unknown","unit"],"abstained":true}
+  ],
+  "rows": [
+    {"parameter_text":"Input voltage","regime":"recommended_operating","value_role":"minimum","raw_quantity":"1.8","parsed_shape":"scalar","canonical_value":"1.8","predicate_term_id":"analog.input_voltage.operating","condition_texts":["TA = 25 °C","Valid for the QFN-8 package only."],"accepted":true},
+    {"parameter_text":"Input voltage","regime":"recommended_operating","value_role":"typical","raw_quantity":"3.3","parsed_shape":"scalar","canonical_value":"3.3","predicate_term_id":"analog.input_voltage.operating","condition_texts":["TA = 25 °C","Valid for the QFN-8 package only."],"accepted":true},
+    {"parameter_text":"Input voltage","regime":"recommended_operating","value_role":"maximum","raw_quantity":"5.5","parsed_shape":"scalar","canonical_value":"5.5","predicate_term_id":"analog.input_voltage.operating","condition_texts":["TA = 25 °C","Valid for the QFN-8 package only."],"accepted":true},
+    {"parameter_text":"Output accuracy","regime":"recommended_operating","value_role":"minimum","raw_quantity":"-","parsed_shape":"text_unparsed","canonical_value":null,"predicate_term_id":null,"condition_texts":[],"accepted":false},
+    {"parameter_text":"Output accuracy","regime":"recommended_operating","value_role":"typical","raw_quantity":"±2 %","parsed_shape":"tolerance","canonical_value":"0.02","predicate_term_id":"analog.output_accuracy","condition_texts":[],"accepted":true},
+    {"parameter_text":"Output accuracy","regime":"recommended_operating","value_role":"maximum","raw_quantity":"N/A","parsed_shape":"text_unparsed","canonical_value":null,"predicate_term_id":null,"condition_texts":[],"accepted":false},
+    {"parameter_text":"Quiescent current","regime":"guaranteed","value_role":"typical","raw_quantity":"60","parsed_shape":"scalar","canonical_value":"0.00000006","predicate_term_id":"analog.quiescent_current","condition_texts":["VIN = 3.3 V"],"accepted":true},
+    {"parameter_text":"Input voltage","regime":"absolute_maximum","value_role":"rating","raw_quantity":"VDD + 0.3 V","parsed_shape":"symbolic","canonical_value":null,"predicate_term_id":null,"condition_texts":[],"accepted":false},
+    {"parameter_text":"Storage temperature","regime":"absolute_maximum","value_role":"rating","raw_quantity":"-40 °C to 125 °C","parsed_shape":"range","canonical_value":"233.15..398.15","predicate_term_id":"analog.storage_temperature","condition_texts":[],"accepted":true},
+    {"parameter_text":"Junction-to-ambient thermal resistance","regime":"informative","value_role":"rating","raw_quantity":"180","parsed_shape":"scalar","canonical_value":"180","predicate_term_id":"analog.thermal_resistance.ja","condition_texts":[],"accepted":true}
+  ]
+}

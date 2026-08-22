@@ -1,0 +1,60 @@
+{
+  "schema_version": "datasheet-fdx2-evaluation/1",
+  "section_precision": {
+    "numerator": 4,
+    "denominator": 4,
+    "value": 1.0
+  },
+  "section_recall": {
+    "numerator": 4,
+    "denominator": 4,
+    "value": 1.0
+  },
+  "header_role_accuracy": {
+    "numerator": 5,
+    "denominator": 5,
+    "value": 1.0
+  },
+  "quantity_parse_accuracy": {
+    "numerator": 10,
+    "denominator": 10,
+    "value": 1.0
+  },
+  "predicate_top1_accuracy": {
+    "numerator": 7,
+    "denominator": 7,
+    "value": 1.0
+  },
+  "predicate_top5_accuracy": {
+    "numerator": 7,
+    "denominator": 7,
+    "value": 1.0
+  },
+  "condition_span_accuracy": {
+    "numerator": 10,
+    "denominator": 10,
+    "value": 1.0
+  },
+  "exact_claim_accuracy": {
+    "numerator": 7,
+    "denominator": 7,
+    "value": 1.0
+  },
+  "claim_anchor_validity": {
+    "numerator": 7,
+    "denominator": 7,
+    "value": 1.0
+  },
+  "ungrounded_output_count": 0,
+  "abstention_count": 4,
+  "coverage": {
+    "numerator": 7,
+    "denominator": 10,
+    "value": 0.7
+  },
+  "resources": {
+    "wall_time_milliseconds": null,
+    "peak_resident_bytes": null,
+    "note": "not frozen: host-dependent observations belong in CI artifacts"
+  }
+}

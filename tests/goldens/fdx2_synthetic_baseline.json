@@ -1,0 +1,3733 @@
+{
+  "schema_version": "datasheet-deterministic-baseline/1",
+  "ruleset_version": "datasheet-analog-power-rules/1",
+  "sketch": {
+    "schema_version": "datasheet-sketch/1",
+    "sketch_id": "datasheet-sketch:e074e7ec5556e59e214162da6018269a954abbb285f63adaf7b0591f4cd20600",
+    "source_pdf_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+    "document_state_id": "document-state:synthetic-fdx2-v1",
+    "document_ir_logical_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+    "producer": {
+      "name": "datasheet-compiler",
+      "version": "0.1.8",
+      "code_revision": "fdx2-frozen-baseline-v1",
+      "configuration_digest": "4444444444444444444444444444444444444444444444444444444444444444",
+      "document_ir_schema": "ferrodoc-document-ir/1",
+      "ontology_snapshot_digest": "3333333333333333333333333333333333333333333333333333333333333333",
+      "quantitas_registry_identity": "datasheet-fdx2-analog-power-units/1"
+    },
+    "subjects": [
+      {
+        "id": "subject:7f6814b179430581252946054148fbea4758586b11460474b90d623d79192c3c",
+        "kind": "part",
+        "raw_designation": "SYNTH1000",
+        "manufacturer_hint": "Synthetic Semiconductor",
+        "normalized_search_key": "SYNTH1000",
+        "evidence_anchor": {
+          "schema_version": "evidence-anchor/2",
+          "source_pdf_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+          "document_state_id": "document-state:synthetic-fdx2-v1",
+          "document_ir_logical_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+          "evidence_ids": [
+            "title-1"
+          ],
+          "page_id": "page-1",
+          "region_id": "title",
+          "source_geometry": [
+            {
+              "left": 0.1,
+              "top": 0.05,
+              "right": 0.8,
+              "bottom": 0.1
+            }
+          ],
+          "geometry_quality": "exact_region",
+          "content_selector": {
+            "kind": "whole_evidence"
+          }
+        }
+      }
+    ],
+    "sections": [
+      {
+        "id": "section:01484257a3d8506e0d02c4c9cf4d1d9687e58c9cf5d2fed18b8aa0e774acae93",
+        "heading_text": "Thermal Information",
+        "heading_anchor": {
+          "schema_version": "evidence-anchor/2",
+          "source_pdf_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+          "document_state_id": "document-state:synthetic-fdx2-v1",
+          "document_ir_logical_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+          "evidence_ids": [
+            "heading-thermal"
+          ],
+          "page_id": "page-1",
+          "region_id": "heading-thermal",
+          "source_geometry": [],
+          "geometry_quality": "exact_region",
+          "content_selector": {
+            "kind": "whole_evidence"
+          }
+        },
+        "block_ids": [],
+        "table_ids": [
+          "table:1b95db532c13ff8c10c09851473bd52d0a578d55ac1a400f9507f968abfa68a0"
+        ],
+        "deterministic_regime_candidates": [
+          "informative"
+        ]
+      },
+      {
+        "id": "section:0605eae591c73debcfaa681d225a5f86bf6017a39160289b4c35d357981fc35b",
+        "heading_text": "Recommended Operating Conditions",
+        "heading_anchor": {
+          "schema_version": "evidence-anchor/2",
+          "source_pdf_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+          "document_state_id": "document-state:synthetic-fdx2-v1",
+          "document_ir_logical_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+          "evidence_ids": [
+            "heading-rec"
+          ],
+          "page_id": "page-1",
+          "region_id": "heading-rec",
+          "source_geometry": [],
+          "geometry_quality": "page_only",
+          "content_selector": {
+            "kind": "whole_evidence"
+          }
+        },
+        "block_ids": [],
+        "table_ids": [
+          "table:9b891df08f7c0f2f8ba8954748479f8f05cf5e0e222d923491b74148fc27d4ff"
+        ],
+        "deterministic_regime_candidates": [
+          "recommended_operating"
+        ]
+      },
+      {
+        "id": "section:b97aba16ac6d129ac9cea66f2eef83938c640dd929669baee33cd8f03e79b677",
+        "heading_text": "Absolute Maximum Ratings",
+        "heading_anchor": {
+          "schema_version": "evidence-anchor/2",
+          "source_pdf_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+          "document_state_id": "document-state:synthetic-fdx2-v1",
+          "document_ir_logical_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+          "evidence_ids": [
+            "heading-abs"
+          ],
+          "page_id": "page-1",
+          "region_id": "heading-abs",
+          "source_geometry": [],
+          "geometry_quality": "exact_region",
+          "content_selector": {
+            "kind": "whole_evidence"
+          }
+        },
+        "block_ids": [],
+        "table_ids": [
+          "table:94426aa693757e8cedd3ef811710ced4ec62dbdc3c8c00c0caa3b3a77bfc559e"
+        ],
+        "deterministic_regime_candidates": [
+          "absolute_maximum"
+        ]
+      },
+      {
+        "id": "section:fa0c6df0cb4f373ceb11127863a13c889c87efd4f5523679f2d9f00410b475c6",
+        "heading_text": "Electrical Characteristics",
+        "heading_anchor": {
+          "schema_version": "evidence-anchor/2",
+          "source_pdf_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+          "document_state_id": "document-state:synthetic-fdx2-v1",
+          "document_ir_logical_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+          "evidence_ids": [
+            "heading-elec"
+          ],
+          "page_id": "page-1",
+          "region_id": "heading-elec",
+          "source_geometry": [],
+          "geometry_quality": "exact_region",
+          "content_selector": {
+            "kind": "whole_evidence"
+          }
+        },
+        "block_ids": [],
+        "table_ids": [
+          "table:9e0c09c7e908b4129a8fd00cbadee0528465539b213ef43b0498a674ce6db398"
+        ],
+        "deterministic_regime_candidates": [
+          "guaranteed"
+        ]
+      }
+    ],
+    "blocks": [
+      {
+        "id": "block:01484257a3d8506e0d02c4c9cf4d1d9687e58c9cf5d2fed18b8aa0e774acae93",
+        "raw_text": "Thermal Information",
+        "anchor": {
+          "schema_version": "evidence-anchor/2",
+          "source_pdf_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+          "document_state_id": "document-state:synthetic-fdx2-v1",
+          "document_ir_logical_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+          "evidence_ids": [
+            "heading-thermal"
+          ],
+          "page_id": "page-1",
+          "region_id": "heading-thermal",
+          "source_geometry": [],
+          "geometry_quality": "exact_region",
+          "content_selector": {
+            "kind": "whole_evidence"
+          }
+        }
+      },
+      {
+        "id": "block:0605eae591c73debcfaa681d225a5f86bf6017a39160289b4c35d357981fc35b",
+        "raw_text": "Recommended Operating Conditions",
+        "anchor": {
+          "schema_version": "evidence-anchor/2",
+          "source_pdf_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+          "document_state_id": "document-state:synthetic-fdx2-v1",
+          "document_ir_logical_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+          "evidence_ids": [
+            "heading-rec"
+          ],
+          "page_id": "page-1",
+          "region_id": "heading-rec",
+          "source_geometry": [],
+          "geometry_quality": "page_only",
+          "content_selector": {
+            "kind": "whole_evidence"
+          }
+        }
+      },
+      {
+        "id": "block:3bd9e3060768f6f1aec1b7c61233412dd16934086d01a7ed4a8d44c09fae54e9",
+        "raw_text": "Synthetic Semiconductor SYNTH1000",
+        "anchor": {
+          "schema_version": "evidence-anchor/2",
+          "source_pdf_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+          "document_state_id": "document-state:synthetic-fdx2-v1",
+          "document_ir_logical_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+          "evidence_ids": [
+            "title-1"
+          ],
+          "page_id": "page-1",
+          "region_id": "title",
+          "source_geometry": [
+            {
+              "left": 0.1,
+              "top": 0.05,
+              "right": 0.8,
+              "bottom": 0.1
+            }
+          ],
+          "geometry_quality": "exact_region",
+          "content_selector": {
+            "kind": "whole_evidence"
+          }
+        }
+      },
+      {
+        "id": "block:b97aba16ac6d129ac9cea66f2eef83938c640dd929669baee33cd8f03e79b677",
+        "raw_text": "Absolute Maximum Ratings",
+        "anchor": {
+          "schema_version": "evidence-anchor/2",
+          "source_pdf_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+          "document_state_id": "document-state:synthetic-fdx2-v1",
+          "document_ir_logical_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+          "evidence_ids": [
+            "heading-abs"
+          ],
+          "page_id": "page-1",
+          "region_id": "heading-abs",
+          "source_geometry": [],
+          "geometry_quality": "exact_region",
+          "content_selector": {
+            "kind": "whole_evidence"
+          }
+        }
+      },
+      {
+        "id": "block:eba4fbc9a30a7800f5c4457f71c82be99b656170429987a80ebe5d05097fd90f",
+        "raw_text": "Characteristics",
+        "anchor": {
+          "schema_version": "evidence-anchor/2",
+          "source_pdf_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+          "document_state_id": "document-state:synthetic-fdx2-v1",
+          "document_ir_logical_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+          "evidence_ids": [
+            "heading-generic"
+          ],
+          "page_id": "page-1",
+          "region_id": "heading-generic",
+          "source_geometry": [],
+          "geometry_quality": "page_only",
+          "content_selector": {
+            "kind": "whole_evidence"
+          }
+        }
+      },
+      {
+        "id": "block:fa0c6df0cb4f373ceb11127863a13c889c87efd4f5523679f2d9f00410b475c6",
+        "raw_text": "Electrical Characteristics",
+        "anchor": {
+          "schema_version": "evidence-anchor/2",
+          "source_pdf_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+          "document_state_id": "document-state:synthetic-fdx2-v1",
+          "document_ir_logical_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+          "evidence_ids": [
+            "heading-elec"
+          ],
+          "page_id": "page-1",
+          "region_id": "heading-elec",
+          "source_geometry": [],
+          "geometry_quality": "exact_region",
+          "content_selector": {
+            "kind": "whole_evidence"
+          }
+        }
+      }
+    ],
+    "tables": [
+      {
+        "id": "table:1b95db532c13ff8c10c09851473bd52d0a578d55ac1a400f9507f968abfa68a0",
+        "source_region_id": "table-thermal",
+        "heading_path": [
+          "Thermal Information"
+        ],
+        "rows": 2,
+        "columns": 5,
+        "cells": [
+          {
+            "row": 0,
+            "column": 0,
+            "raw_text": "Parameter",
+            "source_evidence_ids": [
+              "th-h0"
+            ],
+            "anchor": {
+              "schema_version": "evidence-anchor/2",
+              "source_pdf_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+              "document_state_id": "document-state:synthetic-fdx2-v1",
+              "document_ir_logical_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+              "evidence_ids": [
+                "th-h0"
+              ],
+              "page_id": "page-1",
+              "region_id": "table-thermal",
+              "source_geometry": [],
+              "geometry_quality": "exact_region",
+              "content_selector": {
+                "kind": "table_cell",
+                "table_region_id": "table-thermal",
+                "row": 0,
+                "column": 0
+              }
+            }
+          },
+          {
+            "row": 0,
+            "column": 1,
+            "raw_text": "Symbol",
+            "source_evidence_ids": [
+              "th-h1"
+            ],
+            "anchor": {
+              "schema_version": "evidence-anchor/2",
+              "source_pdf_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+              "document_state_id": "document-state:synthetic-fdx2-v1",
+              "document_ir_logical_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+              "evidence_ids": [
+                "th-h1"
+              ],
+              "page_id": "page-1",
+              "region_id": "table-thermal",
+              "source_geometry": [],
+              "geometry_quality": "exact_region",
+              "content_selector": {
+                "kind": "table_cell",
+                "table_region_id": "table-thermal",
+                "row": 0,
+                "column": 1
+              }
+            }
+          },
+          {
+            "row": 0,
+            "column": 2,
+            "raw_text": "Package",
+            "source_evidence_ids": [
+              "th-h2"
+            ],
+            "anchor": {
+              "schema_version": "evidence-anchor/2",
+              "source_pdf_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+              "document_state_id": "document-state:synthetic-fdx2-v1",
+              "document_ir_logical_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+              "evidence_ids": [
+                "th-h2"
+              ],
+              "page_id": "page-1",
+              "region_id": "table-thermal",
+              "source_geometry": [],
+              "geometry_quality": "exact_region",
+              "content_selector": {
+                "kind": "table_cell",
+                "table_region_id": "table-thermal",
+                "row": 0,
+                "column": 2
+              }
+            }
+          },
+          {
+            "row": 0,
+            "column": 3,
+            "raw_text": "Rating",
+            "source_evidence_ids": [
+              "th-h3"
+            ],
+            "anchor": {
+              "schema_version": "evidence-anchor/2",
+              "source_pdf_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+              "document_state_id": "document-state:synthetic-fdx2-v1",
+              "document_ir_logical_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+              "evidence_ids": [
+                "th-h3"
+              ],
+              "page_id": "page-1",
+              "region_id": "table-thermal",
+              "source_geometry": [],
+              "geometry_quality": "exact_region",
+              "content_selector": {
+                "kind": "table_cell",
+                "table_region_id": "table-thermal",
+                "row": 0,
+                "column": 3
+              }
+            }
+          },
+          {
+            "row": 0,
+            "column": 4,
+            "raw_text": "Unit",
+            "source_evidence_ids": [
+              "th-h4"
+            ],
+            "anchor": {
+              "schema_version": "evidence-anchor/2",
+              "source_pdf_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+              "document_state_id": "document-state:synthetic-fdx2-v1",
+              "document_ir_logical_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+              "evidence_ids": [
+                "th-h4"
+              ],
+              "page_id": "page-1",
+              "region_id": "table-thermal",
+              "source_geometry": [],
+              "geometry_quality": "exact_region",
+              "content_selector": {
+                "kind": "table_cell",
+                "table_region_id": "table-thermal",
+                "row": 0,
+                "column": 4
+              }
+            }
+          },
+          {
+            "row": 1,
+            "column": 0,
+            "raw_text": "Junction-to-ambient thermal resistance",
+            "source_evidence_ids": [
+              "th-10"
+            ],
+            "anchor": {
+              "schema_version": "evidence-anchor/2",
+              "source_pdf_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+              "document_state_id": "document-state:synthetic-fdx2-v1",
+              "document_ir_logical_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+              "evidence_ids": [
+                "th-10"
+              ],
+              "page_id": "page-1",
+              "region_id": "table-thermal",
+              "source_geometry": [],
+              "geometry_quality": "exact_region",
+              "content_selector": {
+                "kind": "table_cell",
+                "table_region_id": "table-thermal",
+                "row": 1,
+                "column": 0
+              }
+            }
+          },
+          {
+            "row": 1,
+            "column": 1,
+            "raw_text": "θJA",
+            "source_evidence_ids": [
+              "th-11"
+            ],
+            "anchor": {
+              "schema_version": "evidence-anchor/2",
+              "source_pdf_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+              "document_state_id": "document-state:synthetic-fdx2-v1",
+              "document_ir_logical_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+              "evidence_ids": [
+                "th-11"
+              ],
+              "page_id": "page-1",
+              "region_id": "table-thermal",
+              "source_geometry": [],
+              "geometry_quality": "exact_region",
+              "content_selector": {
+                "kind": "table_cell",
+                "table_region_id": "table-thermal",
+                "row": 1,
+                "column": 1
+              }
+            }
+          },
+          {
+            "row": 1,
+            "column": 2,
+            "raw_text": "QFN-8",
+            "source_evidence_ids": [
+              "th-12"
+            ],
+            "anchor": {
+              "schema_version": "evidence-anchor/2",
+              "source_pdf_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+              "document_state_id": "document-state:synthetic-fdx2-v1",
+              "document_ir_logical_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+              "evidence_ids": [
+                "th-12"
+              ],
+              "page_id": "page-1",
+              "region_id": "table-thermal",
+              "source_geometry": [],
+              "geometry_quality": "exact_region",
+              "content_selector": {
+                "kind": "table_cell",
+                "table_region_id": "table-thermal",
+                "row": 1,
+                "column": 2
+              }
+            }
+          },
+          {
+            "row": 1,
+            "column": 3,
+            "raw_text": "180",
+            "source_evidence_ids": [
+              "th-13"
+            ],
+            "anchor": {
+              "schema_version": "evidence-anchor/2",
+              "source_pdf_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+              "document_state_id": "document-state:synthetic-fdx2-v1",
+              "document_ir_logical_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+              "evidence_ids": [
+                "th-13"
+              ],
+              "page_id": "page-1",
+              "region_id": "table-thermal",
+              "source_geometry": [],
+              "geometry_quality": "exact_region",
+              "content_selector": {
+                "kind": "table_cell",
+                "table_region_id": "table-thermal",
+                "row": 1,
+                "column": 3
+              }
+            }
+          },
+          {
+            "row": 1,
+            "column": 4,
+            "raw_text": "°C/W",
+            "source_evidence_ids": [
+              "th-14"
+            ],
+            "anchor": {
+              "schema_version": "evidence-anchor/2",
+              "source_pdf_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+              "document_state_id": "document-state:synthetic-fdx2-v1",
+              "document_ir_logical_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+              "evidence_ids": [
+                "th-14"
+              ],
+              "page_id": "page-1",
+              "region_id": "table-thermal",
+              "source_geometry": [],
+              "geometry_quality": "exact_region",
+              "content_selector": {
+                "kind": "table_cell",
+                "table_region_id": "table-thermal",
+                "row": 1,
+                "column": 4
+              }
+            }
+          }
+        ],
+        "structural_signature": "5f7eacaaf1e570f1308e185c7defccabc9e7741ac87d3948f7352c6706ea1859",
+        "reconstruction_quality": "exact_region"
+      },
+      {
+        "id": "table:43e956ce44f669e8c8af01a5c611ea44bcc3160cbbea45414f185b1069632c94",
+        "source_region_id": "table-ambiguous",
+        "heading_path": [
+          "Characteristics"
+        ],
+        "rows": 2,
+        "columns": 3,
+        "cells": [
+          {
+            "row": 0,
+            "column": 0,
+            "raw_text": "Parameter",
+            "source_evidence_ids": [
+              "am-h0"
+            ],
+            "anchor": {
+              "schema_version": "evidence-anchor/2",
+              "source_pdf_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+              "document_state_id": "document-state:synthetic-fdx2-v1",
+              "document_ir_logical_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+              "evidence_ids": [
+                "am-h0"
+              ],
+              "page_id": "page-1",
+              "region_id": "table-ambiguous",
+              "source_geometry": [],
+              "geometry_quality": "page_only",
+              "content_selector": {
+                "kind": "table_cell",
+                "table_region_id": "table-ambiguous",
+                "row": 0,
+                "column": 0
+              }
+            }
+          },
+          {
+            "row": 0,
+            "column": 1,
+            "raw_text": "Value",
+            "source_evidence_ids": [
+              "am-h1"
+            ],
+            "anchor": {
+              "schema_version": "evidence-anchor/2",
+              "source_pdf_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+              "document_state_id": "document-state:synthetic-fdx2-v1",
+              "document_ir_logical_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+              "evidence_ids": [
+                "am-h1"
+              ],
+              "page_id": "page-1",
+              "region_id": "table-ambiguous",
+              "source_geometry": [],
+              "geometry_quality": "page_only",
+              "content_selector": {
+                "kind": "table_cell",
+                "table_region_id": "table-ambiguous",
+                "row": 0,
+                "column": 1
+              }
+            }
+          },
+          {
+            "row": 0,
+            "column": 2,
+            "raw_text": "Unit",
+            "source_evidence_ids": [
+              "am-h2"
+            ],
+            "anchor": {
+              "schema_version": "evidence-anchor/2",
+              "source_pdf_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+              "document_state_id": "document-state:synthetic-fdx2-v1",
+              "document_ir_logical_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+              "evidence_ids": [
+                "am-h2"
+              ],
+              "page_id": "page-1",
+              "region_id": "table-ambiguous",
+              "source_geometry": [],
+              "geometry_quality": "page_only",
+              "content_selector": {
+                "kind": "table_cell",
+                "table_region_id": "table-ambiguous",
+                "row": 0,
+                "column": 2
+              }
+            }
+          },
+          {
+            "row": 1,
+            "column": 0,
+            "raw_text": "Unknown property",
+            "source_evidence_ids": [
+              "am-10"
+            ],
+            "anchor": {
+              "schema_version": "evidence-anchor/2",
+              "source_pdf_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+              "document_state_id": "document-state:synthetic-fdx2-v1",
+              "document_ir_logical_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+              "evidence_ids": [
+                "am-10"
+              ],
+              "page_id": "page-1",
+              "region_id": "table-ambiguous",
+              "source_geometry": [],
+              "geometry_quality": "page_only",
+              "content_selector": {
+                "kind": "table_cell",
+                "table_region_id": "table-ambiguous",
+                "row": 1,
+                "column": 0
+              }
+            }
+          },
+          {
+            "row": 1,
+            "column": 1,
+            "raw_text": "5",
+            "source_evidence_ids": [
+              "am-11"
+            ],
+            "anchor": {
+              "schema_version": "evidence-anchor/2",
+              "source_pdf_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+              "document_state_id": "document-state:synthetic-fdx2-v1",
+              "document_ir_logical_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+              "evidence_ids": [
+                "am-11"
+              ],
+              "page_id": "page-1",
+              "region_id": "table-ambiguous",
+              "source_geometry": [],
+              "geometry_quality": "page_only",
+              "content_selector": {
+                "kind": "table_cell",
+                "table_region_id": "table-ambiguous",
+                "row": 1,
+                "column": 1
+              }
+            }
+          },
+          {
+            "row": 1,
+            "column": 2,
+            "raw_text": "V",
+            "source_evidence_ids": [
+              "am-12"
+            ],
+            "anchor": {
+              "schema_version": "evidence-anchor/2",
+              "source_pdf_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+              "document_state_id": "document-state:synthetic-fdx2-v1",
+              "document_ir_logical_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+              "evidence_ids": [
+                "am-12"
+              ],
+              "page_id": "page-1",
+              "region_id": "table-ambiguous",
+              "source_geometry": [],
+              "geometry_quality": "page_only",
+              "content_selector": {
+                "kind": "table_cell",
+                "table_region_id": "table-ambiguous",
+                "row": 1,
+                "column": 2
+              }
+            }
+          }
+        ],
+        "structural_signature": "021b8c44a913aa32e23ce306d11eae51cccb1cf027b17d5be97c257523aabf13",
+        "reconstruction_quality": "page_only"
+      },
+      {
+        "id": "table:94426aa693757e8cedd3ef811710ced4ec62dbdc3c8c00c0caa3b3a77bfc559e",
+        "source_region_id": "table-abs",
+        "heading_path": [
+          "Absolute Maximum Ratings"
+        ],
+        "rows": 3,
+        "columns": 4,
+        "cells": [
+          {
+            "row": 0,
+            "column": 0,
+            "raw_text": "Parameter",
+            "source_evidence_ids": [
+              "abs-h0"
+            ],
+            "anchor": {
+              "schema_version": "evidence-anchor/2",
+              "source_pdf_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+              "document_state_id": "document-state:synthetic-fdx2-v1",
+              "document_ir_logical_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+              "evidence_ids": [
+                "abs-h0"
+              ],
+              "page_id": "page-1",
+              "region_id": "table-abs",
+              "source_geometry": [],
+              "geometry_quality": "exact_region",
+              "content_selector": {
+                "kind": "table_cell",
+                "table_region_id": "table-abs",
+                "row": 0,
+                "column": 0
+              }
+            }
+          },
+          {
+            "row": 0,
+            "column": 1,
+            "raw_text": "Symbol",
+            "source_evidence_ids": [
+              "abs-h1"
+            ],
+            "anchor": {
+              "schema_version": "evidence-anchor/2",
+              "source_pdf_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+              "document_state_id": "document-state:synthetic-fdx2-v1",
+              "document_ir_logical_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+              "evidence_ids": [
+                "abs-h1"
+              ],
+              "page_id": "page-1",
+              "region_id": "table-abs",
+              "source_geometry": [],
+              "geometry_quality": "exact_region",
+              "content_selector": {
+                "kind": "table_cell",
+                "table_region_id": "table-abs",
+                "row": 0,
+                "column": 1
+              }
+            }
+          },
+          {
+            "row": 0,
+            "column": 2,
+            "raw_text": "Rating",
+            "source_evidence_ids": [
+              "abs-h2"
+            ],
+            "anchor": {
+              "schema_version": "evidence-anchor/2",
+              "source_pdf_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+              "document_state_id": "document-state:synthetic-fdx2-v1",
+              "document_ir_logical_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+              "evidence_ids": [
+                "abs-h2"
+              ],
+              "page_id": "page-1",
+              "region_id": "table-abs",
+              "source_geometry": [],
+              "geometry_quality": "exact_region",
+              "content_selector": {
+                "kind": "table_cell",
+                "table_region_id": "table-abs",
+                "row": 0,
+                "column": 2
+              }
+            }
+          },
+          {
+            "row": 0,
+            "column": 3,
+            "raw_text": "Unit",
+            "source_evidence_ids": [
+              "abs-h3"
+            ],
+            "anchor": {
+              "schema_version": "evidence-anchor/2",
+              "source_pdf_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+              "document_state_id": "document-state:synthetic-fdx2-v1",
+              "document_ir_logical_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+              "evidence_ids": [
+                "abs-h3"
+              ],
+              "page_id": "page-1",
+              "region_id": "table-abs",
+              "source_geometry": [],
+              "geometry_quality": "exact_region",
+              "content_selector": {
+                "kind": "table_cell",
+                "table_region_id": "table-abs",
+                "row": 0,
+                "column": 3
+              }
+            }
+          },
+          {
+            "row": 1,
+            "column": 0,
+            "raw_text": "Input voltage",
+            "source_evidence_ids": [
+              "abs-10"
+            ],
+            "anchor": {
+              "schema_version": "evidence-anchor/2",
+              "source_pdf_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+              "document_state_id": "document-state:synthetic-fdx2-v1",
+              "document_ir_logical_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+              "evidence_ids": [
+                "abs-10"
+              ],
+              "page_id": "page-1",
+              "region_id": "table-abs",
+              "source_geometry": [],
+              "geometry_quality": "exact_region",
+              "content_selector": {
+                "kind": "table_cell",
+                "table_region_id": "table-abs",
+                "row": 1,
+                "column": 0
+              }
+            }
+          },
+          {
+            "row": 1,
+            "column": 1,
+            "raw_text": "VIN",
+            "source_evidence_ids": [
+              "abs-11"
+            ],
+            "anchor": {
+              "schema_version": "evidence-anchor/2",
+              "source_pdf_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+              "document_state_id": "document-state:synthetic-fdx2-v1",
+              "document_ir_logical_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+              "evidence_ids": [
+                "abs-11"
+              ],
+              "page_id": "page-1",
+              "region_id": "table-abs",
+              "source_geometry": [],
+              "geometry_quality": "exact_region",
+              "content_selector": {
+                "kind": "table_cell",
+                "table_region_id": "table-abs",
+                "row": 1,
+                "column": 1
+              }
+            }
+          },
+          {
+            "row": 1,
+            "column": 2,
+            "raw_text": "VDD + 0.3 V",
+            "source_evidence_ids": [
+              "abs-12"
+            ],
+            "anchor": {
+              "schema_version": "evidence-anchor/2",
+              "source_pdf_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+              "document_state_id": "document-state:synthetic-fdx2-v1",
+              "document_ir_logical_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+              "evidence_ids": [
+                "abs-12"
+              ],
+              "page_id": "page-1",
+              "region_id": "table-abs",
+              "source_geometry": [],
+              "geometry_quality": "exact_region",
+              "content_selector": {
+                "kind": "table_cell",
+                "table_region_id": "table-abs",
+                "row": 1,
+                "column": 2
+              }
+            }
+          },
+          {
+            "row": 1,
+            "column": 3,
+            "raw_text": "V",
+            "source_evidence_ids": [
+              "abs-13"
+            ],
+            "anchor": {
+              "schema_version": "evidence-anchor/2",
+              "source_pdf_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+              "document_state_id": "document-state:synthetic-fdx2-v1",
+              "document_ir_logical_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+              "evidence_ids": [
+                "abs-13"
+              ],
+              "page_id": "page-1",
+              "region_id": "table-abs",
+              "source_geometry": [],
+              "geometry_quality": "exact_region",
+              "content_selector": {
+                "kind": "table_cell",
+                "table_region_id": "table-abs",
+                "row": 1,
+                "column": 3
+              }
+            }
+          },
+          {
+            "row": 2,
+            "column": 0,
+            "raw_text": "Storage temperature",
+            "source_evidence_ids": [
+              "abs-20"
+            ],
+            "anchor": {
+              "schema_version": "evidence-anchor/2",
+              "source_pdf_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+              "document_state_id": "document-state:synthetic-fdx2-v1",
+              "document_ir_logical_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+              "evidence_ids": [
+                "abs-20"
+              ],
+              "page_id": "page-1",
+              "region_id": "table-abs",
+              "source_geometry": [],
+              "geometry_quality": "exact_region",
+              "content_selector": {
+                "kind": "table_cell",
+                "table_region_id": "table-abs",
+                "row": 2,
+                "column": 0
+              }
+            }
+          },
+          {
+            "row": 2,
+            "column": 1,
+            "raw_text": "TSTG",
+            "source_evidence_ids": [
+              "abs-21"
+            ],
+            "anchor": {
+              "schema_version": "evidence-anchor/2",
+              "source_pdf_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+              "document_state_id": "document-state:synthetic-fdx2-v1",
+              "document_ir_logical_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+              "evidence_ids": [
+                "abs-21"
+              ],
+              "page_id": "page-1",
+              "region_id": "table-abs",
+              "source_geometry": [],
+              "geometry_quality": "exact_region",
+              "content_selector": {
+                "kind": "table_cell",
+                "table_region_id": "table-abs",
+                "row": 2,
+                "column": 1
+              }
+            }
+          },
+          {
+            "row": 2,
+            "column": 2,
+            "raw_text": "-40 °C to 125 °C",
+            "source_evidence_ids": [
+              "abs-22"
+            ],
+            "anchor": {
+              "schema_version": "evidence-anchor/2",
+              "source_pdf_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+              "document_state_id": "document-state:synthetic-fdx2-v1",
+              "document_ir_logical_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+              "evidence_ids": [
+                "abs-22"
+              ],
+              "page_id": "page-1",
+              "region_id": "table-abs",
+              "source_geometry": [],
+              "geometry_quality": "exact_region",
+              "content_selector": {
+                "kind": "table_cell",
+                "table_region_id": "table-abs",
+                "row": 2,
+                "column": 2
+              }
+            }
+          },
+          {
+            "row": 2,
+            "column": 3,
+            "raw_text": "°C",
+            "source_evidence_ids": [
+              "abs-23"
+            ],
+            "anchor": {
+              "schema_version": "evidence-anchor/2",
+              "source_pdf_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+              "document_state_id": "document-state:synthetic-fdx2-v1",
+              "document_ir_logical_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+              "evidence_ids": [
+                "abs-23"
+              ],
+              "page_id": "page-1",
+              "region_id": "table-abs",
+              "source_geometry": [],
+              "geometry_quality": "exact_region",
+              "content_selector": {
+                "kind": "table_cell",
+                "table_region_id": "table-abs",
+                "row": 2,
+                "column": 3
+              }
+            }
+          }
+        ],
+        "structural_signature": "6f2aa17ce6456a5473df66a897dbda05bafb0cdfc77179a4b28351dd3b38a374",
+        "reconstruction_quality": "exact_region"
+      },
+      {
+        "id": "table:9b891df08f7c0f2f8ba8954748479f8f05cf5e0e222d923491b74148fc27d4ff",
+        "source_region_id": "table-rec",
+        "heading_path": [
+          "Recommended Operating Conditions"
+        ],
+        "rows": 3,
+        "columns": 7,
+        "cells": [
+          {
+            "row": 0,
+            "column": 0,
+            "raw_text": "Parameter",
+            "source_evidence_ids": [
+              "rec-h0"
+            ],
+            "anchor": {
+              "schema_version": "evidence-anchor/2",
+              "source_pdf_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+              "document_state_id": "document-state:synthetic-fdx2-v1",
+              "document_ir_logical_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+              "evidence_ids": [
+                "rec-h0"
+              ],
+              "page_id": "page-1",
+              "region_id": "table-rec",
+              "source_geometry": [],
+              "geometry_quality": "exact_region",
+              "content_selector": {
+                "kind": "table_cell",
+                "table_region_id": "table-rec",
+                "row": 0,
+                "column": 0
+              }
+            }
+          },
+          {
+            "row": 0,
+            "column": 1,
+            "raw_text": "Symbol",
+            "source_evidence_ids": [
+              "rec-h1"
+            ],
+            "anchor": {
+              "schema_version": "evidence-anchor/2",
+              "source_pdf_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+              "document_state_id": "document-state:synthetic-fdx2-v1",
+              "document_ir_logical_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+              "evidence_ids": [
+                "rec-h1"
+              ],
+              "page_id": "page-1",
+              "region_id": "table-rec",
+              "source_geometry": [],
+              "geometry_quality": "exact_region",
+              "content_selector": {
+                "kind": "table_cell",
+                "table_region_id": "table-rec",
+                "row": 0,
+                "column": 1
+              }
+            }
+          },
+          {
+            "row": 0,
+            "column": 2,
+            "raw_text": "Conditions",
+            "source_evidence_ids": [
+              "rec-h2"
+            ],
+            "anchor": {
+              "schema_version": "evidence-anchor/2",
+              "source_pdf_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+              "document_state_id": "document-state:synthetic-fdx2-v1",
+              "document_ir_logical_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+              "evidence_ids": [
+                "rec-h2"
+              ],
+              "page_id": "page-1",
+              "region_id": "table-rec",
+              "source_geometry": [],
+              "geometry_quality": "exact_region",
+              "content_selector": {
+                "kind": "table_cell",
+                "table_region_id": "table-rec",
+                "row": 0,
+                "column": 2
+              }
+            }
+          },
+          {
+            "row": 0,
+            "column": 3,
+            "raw_text": "Min",
+            "source_evidence_ids": [
+              "rec-h3"
+            ],
+            "anchor": {
+              "schema_version": "evidence-anchor/2",
+              "source_pdf_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+              "document_state_id": "document-state:synthetic-fdx2-v1",
+              "document_ir_logical_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+              "evidence_ids": [
+                "rec-h3"
+              ],
+              "page_id": "page-1",
+              "region_id": "table-rec",
+              "source_geometry": [],
+              "geometry_quality": "exact_region",
+              "content_selector": {
+                "kind": "table_cell",
+                "table_region_id": "table-rec",
+                "row": 0,
+                "column": 3
+              }
+            }
+          },
+          {
+            "row": 0,
+            "column": 4,
+            "raw_text": "Typ",
+            "source_evidence_ids": [
+              "rec-h4"
+            ],
+            "anchor": {
+              "schema_version": "evidence-anchor/2",
+              "source_pdf_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+              "document_state_id": "document-state:synthetic-fdx2-v1",
+              "document_ir_logical_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+              "evidence_ids": [
+                "rec-h4"
+              ],
+              "page_id": "page-1",
+              "region_id": "table-rec",
+              "source_geometry": [],
+              "geometry_quality": "exact_region",
+              "content_selector": {
+                "kind": "table_cell",
+                "table_region_id": "table-rec",
+                "row": 0,
+                "column": 4
+              }
+            }
+          },
+          {
+            "row": 0,
+            "column": 5,
+            "raw_text": "Max",
+            "source_evidence_ids": [
+              "rec-h5"
+            ],
+            "anchor": {
+              "schema_version": "evidence-anchor/2",
+              "source_pdf_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+              "document_state_id": "document-state:synthetic-fdx2-v1",
+              "document_ir_logical_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+              "evidence_ids": [
+                "rec-h5"
+              ],
+              "page_id": "page-1",
+              "region_id": "table-rec",
+              "source_geometry": [],
+              "geometry_quality": "exact_region",
+              "content_selector": {
+                "kind": "table_cell",
+                "table_region_id": "table-rec",
+                "row": 0,
+                "column": 5
+              }
+            }
+          },
+          {
+            "row": 0,
+            "column": 6,
+            "raw_text": "Unit",
+            "source_evidence_ids": [
+              "rec-h6"
+            ],
+            "anchor": {
+              "schema_version": "evidence-anchor/2",
+              "source_pdf_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+              "document_state_id": "document-state:synthetic-fdx2-v1",
+              "document_ir_logical_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+              "evidence_ids": [
+                "rec-h6"
+              ],
+              "page_id": "page-1",
+              "region_id": "table-rec",
+              "source_geometry": [],
+              "geometry_quality": "exact_region",
+              "content_selector": {
+                "kind": "table_cell",
+                "table_region_id": "table-rec",
+                "row": 0,
+                "column": 6
+              }
+            }
+          },
+          {
+            "row": 1,
+            "column": 0,
+            "raw_text": "Input voltage",
+            "source_evidence_ids": [
+              "rec-10"
+            ],
+            "anchor": {
+              "schema_version": "evidence-anchor/2",
+              "source_pdf_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+              "document_state_id": "document-state:synthetic-fdx2-v1",
+              "document_ir_logical_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+              "evidence_ids": [
+                "rec-10"
+              ],
+              "page_id": "page-1",
+              "region_id": "table-rec",
+              "source_geometry": [],
+              "geometry_quality": "exact_region",
+              "content_selector": {
+                "kind": "table_cell",
+                "table_region_id": "table-rec",
+                "row": 1,
+                "column": 0
+              }
+            }
+          },
+          {
+            "row": 1,
+            "column": 1,
+            "raw_text": "VIN",
+            "source_evidence_ids": [
+              "rec-11"
+            ],
+            "anchor": {
+              "schema_version": "evidence-anchor/2",
+              "source_pdf_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+              "document_state_id": "document-state:synthetic-fdx2-v1",
+              "document_ir_logical_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+              "evidence_ids": [
+                "rec-11"
+              ],
+              "page_id": "page-1",
+              "region_id": "table-rec",
+              "source_geometry": [],
+              "geometry_quality": "exact_region",
+              "content_selector": {
+                "kind": "table_cell",
+                "table_region_id": "table-rec",
+                "row": 1,
+                "column": 1
+              }
+            }
+          },
+          {
+            "row": 1,
+            "column": 2,
+            "raw_text": "TA = 25 °C",
+            "source_evidence_ids": [
+              "rec-12"
+            ],
+            "anchor": {
+              "schema_version": "evidence-anchor/2",
+              "source_pdf_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+              "document_state_id": "document-state:synthetic-fdx2-v1",
+              "document_ir_logical_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+              "evidence_ids": [
+                "rec-12"
+              ],
+              "page_id": "page-1",
+              "region_id": "table-rec",
+              "source_geometry": [],
+              "geometry_quality": "exact_region",
+              "content_selector": {
+                "kind": "table_cell",
+                "table_region_id": "table-rec",
+                "row": 1,
+                "column": 2
+              }
+            }
+          },
+          {
+            "row": 1,
+            "column": 3,
+            "raw_text": "1.8",
+            "source_evidence_ids": [
+              "rec-13"
+            ],
+            "anchor": {
+              "schema_version": "evidence-anchor/2",
+              "source_pdf_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+              "document_state_id": "document-state:synthetic-fdx2-v1",
+              "document_ir_logical_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+              "evidence_ids": [
+                "rec-13"
+              ],
+              "page_id": "page-1",
+              "region_id": "table-rec",
+              "source_geometry": [],
+              "geometry_quality": "exact_region",
+              "content_selector": {
+                "kind": "table_cell",
+                "table_region_id": "table-rec",
+                "row": 1,
+                "column": 3
+              }
+            }
+          },
+          {
+            "row": 1,
+            "column": 4,
+            "raw_text": "3.3",
+            "source_evidence_ids": [
+              "rec-14"
+            ],
+            "anchor": {
+              "schema_version": "evidence-anchor/2",
+              "source_pdf_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+              "document_state_id": "document-state:synthetic-fdx2-v1",
+              "document_ir_logical_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+              "evidence_ids": [
+                "rec-14"
+              ],
+              "page_id": "page-1",
+              "region_id": "table-rec",
+              "source_geometry": [],
+              "geometry_quality": "exact_region",
+              "content_selector": {
+                "kind": "table_cell",
+                "table_region_id": "table-rec",
+                "row": 1,
+                "column": 4
+              }
+            }
+          },
+          {
+            "row": 1,
+            "column": 5,
+            "raw_text": "5.5",
+            "source_evidence_ids": [
+              "rec-15"
+            ],
+            "anchor": {
+              "schema_version": "evidence-anchor/2",
+              "source_pdf_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+              "document_state_id": "document-state:synthetic-fdx2-v1",
+              "document_ir_logical_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+              "evidence_ids": [
+                "rec-15"
+              ],
+              "page_id": "page-1",
+              "region_id": "table-rec",
+              "source_geometry": [],
+              "geometry_quality": "exact_region",
+              "content_selector": {
+                "kind": "table_cell",
+                "table_region_id": "table-rec",
+                "row": 1,
+                "column": 5
+              }
+            }
+          },
+          {
+            "row": 1,
+            "column": 6,
+            "raw_text": "V",
+            "source_evidence_ids": [
+              "rec-16"
+            ],
+            "anchor": {
+              "schema_version": "evidence-anchor/2",
+              "source_pdf_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+              "document_state_id": "document-state:synthetic-fdx2-v1",
+              "document_ir_logical_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+              "evidence_ids": [
+                "rec-16"
+              ],
+              "page_id": "page-1",
+              "region_id": "table-rec",
+              "source_geometry": [],
+              "geometry_quality": "exact_region",
+              "content_selector": {
+                "kind": "table_cell",
+                "table_region_id": "table-rec",
+                "row": 1,
+                "column": 6
+              }
+            }
+          },
+          {
+            "row": 2,
+            "column": 0,
+            "raw_text": "Output accuracy",
+            "source_evidence_ids": [
+              "rec-20"
+            ],
+            "anchor": {
+              "schema_version": "evidence-anchor/2",
+              "source_pdf_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+              "document_state_id": "document-state:synthetic-fdx2-v1",
+              "document_ir_logical_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+              "evidence_ids": [
+                "rec-20"
+              ],
+              "page_id": "page-1",
+              "region_id": "table-rec",
+              "source_geometry": [],
+              "geometry_quality": "page_only",
+              "content_selector": {
+                "kind": "table_cell",
+                "table_region_id": "table-rec",
+                "row": 2,
+                "column": 0
+              }
+            }
+          },
+          {
+            "row": 2,
+            "column": 1,
+            "raw_text": "ACC",
+            "source_evidence_ids": [
+              "rec-21"
+            ],
+            "anchor": {
+              "schema_version": "evidence-anchor/2",
+              "source_pdf_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+              "document_state_id": "document-state:synthetic-fdx2-v1",
+              "document_ir_logical_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+              "evidence_ids": [
+                "rec-21"
+              ],
+              "page_id": "page-1",
+              "region_id": "table-rec",
+              "source_geometry": [],
+              "geometry_quality": "page_only",
+              "content_selector": {
+                "kind": "table_cell",
+                "table_region_id": "table-rec",
+                "row": 2,
+                "column": 1
+              }
+            }
+          },
+          {
+            "row": 2,
+            "column": 2,
+            "raw_text": "",
+            "source_evidence_ids": [
+              "rec-22"
+            ],
+            "anchor": {
+              "schema_version": "evidence-anchor/2",
+              "source_pdf_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+              "document_state_id": "document-state:synthetic-fdx2-v1",
+              "document_ir_logical_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+              "evidence_ids": [
+                "rec-22"
+              ],
+              "page_id": "page-1",
+              "region_id": "table-rec",
+              "source_geometry": [],
+              "geometry_quality": "page_only",
+              "content_selector": {
+                "kind": "table_cell",
+                "table_region_id": "table-rec",
+                "row": 2,
+                "column": 2
+              }
+            }
+          },
+          {
+            "row": 2,
+            "column": 3,
+            "raw_text": "-",
+            "source_evidence_ids": [
+              "rec-23"
+            ],
+            "anchor": {
+              "schema_version": "evidence-anchor/2",
+              "source_pdf_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+              "document_state_id": "document-state:synthetic-fdx2-v1",
+              "document_ir_logical_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+              "evidence_ids": [
+                "rec-23"
+              ],
+              "page_id": "page-1",
+              "region_id": "table-rec",
+              "source_geometry": [],
+              "geometry_quality": "page_only",
+              "content_selector": {
+                "kind": "table_cell",
+                "table_region_id": "table-rec",
+                "row": 2,
+                "column": 3
+              }
+            }
+          },
+          {
+            "row": 2,
+            "column": 4,
+            "raw_text": "±2 %",
+            "source_evidence_ids": [
+              "rec-24"
+            ],
+            "anchor": {
+              "schema_version": "evidence-anchor/2",
+              "source_pdf_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+              "document_state_id": "document-state:synthetic-fdx2-v1",
+              "document_ir_logical_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+              "evidence_ids": [
+                "rec-24"
+              ],
+              "page_id": "page-1",
+              "region_id": "table-rec",
+              "source_geometry": [],
+              "geometry_quality": "page_only",
+              "content_selector": {
+                "kind": "table_cell",
+                "table_region_id": "table-rec",
+                "row": 2,
+                "column": 4
+              }
+            }
+          },
+          {
+            "row": 2,
+            "column": 5,
+            "raw_text": "N/A",
+            "source_evidence_ids": [
+              "rec-25"
+            ],
+            "anchor": {
+              "schema_version": "evidence-anchor/2",
+              "source_pdf_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+              "document_state_id": "document-state:synthetic-fdx2-v1",
+              "document_ir_logical_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+              "evidence_ids": [
+                "rec-25"
+              ],
+              "page_id": "page-1",
+              "region_id": "table-rec",
+              "source_geometry": [],
+              "geometry_quality": "page_only",
+              "content_selector": {
+                "kind": "table_cell",
+                "table_region_id": "table-rec",
+                "row": 2,
+                "column": 5
+              }
+            }
+          },
+          {
+            "row": 2,
+            "column": 6,
+            "raw_text": "%",
+            "source_evidence_ids": [
+              "rec-26"
+            ],
+            "anchor": {
+              "schema_version": "evidence-anchor/2",
+              "source_pdf_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+              "document_state_id": "document-state:synthetic-fdx2-v1",
+              "document_ir_logical_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+              "evidence_ids": [
+                "rec-26"
+              ],
+              "page_id": "page-1",
+              "region_id": "table-rec",
+              "source_geometry": [],
+              "geometry_quality": "page_only",
+              "content_selector": {
+                "kind": "table_cell",
+                "table_region_id": "table-rec",
+                "row": 2,
+                "column": 6
+              }
+            }
+          }
+        ],
+        "structural_signature": "3c7ccef25120cdfd3f23e1dd946a0003f26ad1307a2916b31b86115630571310",
+        "reconstruction_quality": "exact_region"
+      },
+      {
+        "id": "table:9e0c09c7e908b4129a8fd00cbadee0528465539b213ef43b0498a674ce6db398",
+        "source_region_id": "table-elec",
+        "heading_path": [
+          "Electrical Characteristics"
+        ],
+        "rows": 2,
+        "columns": 5,
+        "cells": [
+          {
+            "row": 0,
+            "column": 0,
+            "raw_text": "Parameter",
+            "source_evidence_ids": [
+              "el-h0"
+            ],
+            "anchor": {
+              "schema_version": "evidence-anchor/2",
+              "source_pdf_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+              "document_state_id": "document-state:synthetic-fdx2-v1",
+              "document_ir_logical_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+              "evidence_ids": [
+                "el-h0"
+              ],
+              "page_id": "page-1",
+              "region_id": "table-elec",
+              "source_geometry": [],
+              "geometry_quality": "exact_region",
+              "content_selector": {
+                "kind": "table_cell",
+                "table_region_id": "table-elec",
+                "row": 0,
+                "column": 0
+              }
+            }
+          },
+          {
+            "row": 0,
+            "column": 1,
+            "raw_text": "Symbol",
+            "source_evidence_ids": [
+              "el-h1"
+            ],
+            "anchor": {
+              "schema_version": "evidence-anchor/2",
+              "source_pdf_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+              "document_state_id": "document-state:synthetic-fdx2-v1",
+              "document_ir_logical_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+              "evidence_ids": [
+                "el-h1"
+              ],
+              "page_id": "page-1",
+              "region_id": "table-elec",
+              "source_geometry": [],
+              "geometry_quality": "exact_region",
+              "content_selector": {
+                "kind": "table_cell",
+                "table_region_id": "table-elec",
+                "row": 0,
+                "column": 1
+              }
+            }
+          },
+          {
+            "row": 0,
+            "column": 2,
+            "raw_text": "Test Conditions",
+            "source_evidence_ids": [
+              "el-h2"
+            ],
+            "anchor": {
+              "schema_version": "evidence-anchor/2",
+              "source_pdf_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+              "document_state_id": "document-state:synthetic-fdx2-v1",
+              "document_ir_logical_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+              "evidence_ids": [
+                "el-h2"
+              ],
+              "page_id": "page-1",
+              "region_id": "table-elec",
+              "source_geometry": [],
+              "geometry_quality": "exact_region",
+              "content_selector": {
+                "kind": "table_cell",
+                "table_region_id": "table-elec",
+                "row": 0,
+                "column": 2
+              }
+            }
+          },
+          {
+            "row": 0,
+            "column": 3,
+            "raw_text": "Typ",
+            "source_evidence_ids": [
+              "el-h3"
+            ],
+            "anchor": {
+              "schema_version": "evidence-anchor/2",
+              "source_pdf_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+              "document_state_id": "document-state:synthetic-fdx2-v1",
+              "document_ir_logical_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+              "evidence_ids": [
+                "el-h3"
+              ],
+              "page_id": "page-1",
+              "region_id": "table-elec",
+              "source_geometry": [],
+              "geometry_quality": "exact_region",
+              "content_selector": {
+                "kind": "table_cell",
+                "table_region_id": "table-elec",
+                "row": 0,
+                "column": 3
+              }
+            }
+          },
+          {
+            "row": 0,
+            "column": 4,
+            "raw_text": "Unit",
+            "source_evidence_ids": [
+              "el-h4"
+            ],
+            "anchor": {
+              "schema_version": "evidence-anchor/2",
+              "source_pdf_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+              "document_state_id": "document-state:synthetic-fdx2-v1",
+              "document_ir_logical_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+              "evidence_ids": [
+                "el-h4"
+              ],
+              "page_id": "page-1",
+              "region_id": "table-elec",
+              "source_geometry": [],
+              "geometry_quality": "exact_region",
+              "content_selector": {
+                "kind": "table_cell",
+                "table_region_id": "table-elec",
+                "row": 0,
+                "column": 4
+              }
+            }
+          },
+          {
+            "row": 1,
+            "column": 0,
+            "raw_text": "Quiescent current",
+            "source_evidence_ids": [
+              "el-10"
+            ],
+            "anchor": {
+              "schema_version": "evidence-anchor/2",
+              "source_pdf_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+              "document_state_id": "document-state:synthetic-fdx2-v1",
+              "document_ir_logical_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+              "evidence_ids": [
+                "el-10"
+              ],
+              "page_id": "page-1",
+              "region_id": "table-elec",
+              "source_geometry": [],
+              "geometry_quality": "exact_region",
+              "content_selector": {
+                "kind": "table_cell",
+                "table_region_id": "table-elec",
+                "row": 1,
+                "column": 0
+              }
+            }
+          },
+          {
+            "row": 1,
+            "column": 1,
+            "raw_text": "IQ",
+            "source_evidence_ids": [
+              "el-11"
+            ],
+            "anchor": {
+              "schema_version": "evidence-anchor/2",
+              "source_pdf_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+              "document_state_id": "document-state:synthetic-fdx2-v1",
+              "document_ir_logical_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+              "evidence_ids": [
+                "el-11"
+              ],
+              "page_id": "page-1",
+              "region_id": "table-elec",
+              "source_geometry": [],
+              "geometry_quality": "exact_region",
+              "content_selector": {
+                "kind": "table_cell",
+                "table_region_id": "table-elec",
+                "row": 1,
+                "column": 1
+              }
+            }
+          },
+          {
+            "row": 1,
+            "column": 2,
+            "raw_text": "VIN = 3.3 V",
+            "source_evidence_ids": [
+              "el-12"
+            ],
+            "anchor": {
+              "schema_version": "evidence-anchor/2",
+              "source_pdf_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+              "document_state_id": "document-state:synthetic-fdx2-v1",
+              "document_ir_logical_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+              "evidence_ids": [
+                "el-12"
+              ],
+              "page_id": "page-1",
+              "region_id": "table-elec",
+              "source_geometry": [],
+              "geometry_quality": "exact_region",
+              "content_selector": {
+                "kind": "table_cell",
+                "table_region_id": "table-elec",
+                "row": 1,
+                "column": 2
+              }
+            }
+          },
+          {
+            "row": 1,
+            "column": 3,
+            "raw_text": "60",
+            "source_evidence_ids": [
+              "el-13"
+            ],
+            "anchor": {
+              "schema_version": "evidence-anchor/2",
+              "source_pdf_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+              "document_state_id": "document-state:synthetic-fdx2-v1",
+              "document_ir_logical_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+              "evidence_ids": [
+                "el-13"
+              ],
+              "page_id": "page-1",
+              "region_id": "table-elec",
+              "source_geometry": [],
+              "geometry_quality": "exact_region",
+              "content_selector": {
+                "kind": "table_cell",
+                "table_region_id": "table-elec",
+                "row": 1,
+                "column": 3
+              }
+            }
+          },
+          {
+            "row": 1,
+            "column": 4,
+            "raw_text": "nA",
+            "source_evidence_ids": [
+              "el-14"
+            ],
+            "anchor": {
+              "schema_version": "evidence-anchor/2",
+              "source_pdf_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+              "document_state_id": "document-state:synthetic-fdx2-v1",
+              "document_ir_logical_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+              "evidence_ids": [
+                "el-14"
+              ],
+              "page_id": "page-1",
+              "region_id": "table-elec",
+              "source_geometry": [],
+              "geometry_quality": "exact_region",
+              "content_selector": {
+                "kind": "table_cell",
+                "table_region_id": "table-elec",
+                "row": 1,
+                "column": 4
+              }
+            }
+          }
+        ],
+        "structural_signature": "45e95fe67d17224838c72fb7375a7f5d49d5acca85fcbdaae441a4ab18341964",
+        "reconstruction_quality": "exact_region"
+      }
+    ],
+    "quantities": [
+      {
+        "id": "quantity:28c9e0c223a6af1ccab3472a0497c8e935a1a8b112eb4e89dabc3b3afd963cc1",
+        "raw_text": "60",
+        "parsed_shape": "scalar",
+        "raw_unit": "nA",
+        "normalized_quantity": {
+          "canonical_value": "0.00000006",
+          "canonical_unit": "A",
+          "registry_identity": "datasheet-fdx2-analog-power-units/1"
+        },
+        "quantity_kind_hint": "si:ElectricCurrent",
+        "dimensionality": "A",
+        "anchor": {
+          "schema_version": "evidence-anchor/2",
+          "source_pdf_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+          "document_state_id": "document-state:synthetic-fdx2-v1",
+          "document_ir_logical_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+          "evidence_ids": [
+            "el-13"
+          ],
+          "page_id": "page-1",
+          "region_id": "table-elec",
+          "source_geometry": [],
+          "geometry_quality": "exact_region",
+          "content_selector": {
+            "kind": "table_cell",
+            "table_region_id": "table-elec",
+            "row": 1,
+            "column": 3
+          }
+        },
+        "parse_warnings": []
+      },
+      {
+        "id": "quantity:49346045baedda7fa2f676aa0bd28d7f5e730a30a225809b27a43d75160f78e2",
+        "raw_text": "1.8",
+        "parsed_shape": "scalar",
+        "raw_unit": "V",
+        "normalized_quantity": {
+          "canonical_value": "1.8",
+          "canonical_unit": "V",
+          "registry_identity": "datasheet-fdx2-analog-power-units/1"
+        },
+        "quantity_kind_hint": "electronics:ElectricPotential",
+        "dimensionality": "kg m^2 s^-3 A^-1",
+        "anchor": {
+          "schema_version": "evidence-anchor/2",
+          "source_pdf_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+          "document_state_id": "document-state:synthetic-fdx2-v1",
+          "document_ir_logical_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+          "evidence_ids": [
+            "rec-13"
+          ],
+          "page_id": "page-1",
+          "region_id": "table-rec",
+          "source_geometry": [],
+          "geometry_quality": "exact_region",
+          "content_selector": {
+            "kind": "table_cell",
+            "table_region_id": "table-rec",
+            "row": 1,
+            "column": 3
+          }
+        },
+        "parse_warnings": []
+      },
+      {
+        "id": "quantity:49aca08621b484d7f21245ba526a7168a8743047588ee418e679f7a4328e69b5",
+        "raw_text": "VDD + 0.3 V",
+        "parsed_shape": "symbolic",
+        "anchor": {
+          "schema_version": "evidence-anchor/2",
+          "source_pdf_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+          "document_state_id": "document-state:synthetic-fdx2-v1",
+          "document_ir_logical_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+          "evidence_ids": [
+            "abs-12"
+          ],
+          "page_id": "page-1",
+          "region_id": "table-abs",
+          "source_geometry": [],
+          "geometry_quality": "exact_region",
+          "content_selector": {
+            "kind": "table_cell",
+            "table_region_id": "table-abs",
+            "row": 1,
+            "column": 2
+          }
+        },
+        "parse_warnings": [
+          "symbolic_relative_not_scalarized"
+        ]
+      },
+      {
+        "id": "quantity:4a841d8b9b2d2c48316cf863f547b17d8123cb201aa4b240a5732bb8a890b406",
+        "raw_text": "±2 %",
+        "parsed_shape": "tolerance",
+        "raw_unit": "%",
+        "normalized_quantity": {
+          "canonical_value": "0.02",
+          "canonical_unit": "1",
+          "registry_identity": "datasheet-fdx2-analog-power-units/1"
+        },
+        "quantity_kind_hint": "datasheet:RelativeTolerance",
+        "dimensionality": "1",
+        "anchor": {
+          "schema_version": "evidence-anchor/2",
+          "source_pdf_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+          "document_state_id": "document-state:synthetic-fdx2-v1",
+          "document_ir_logical_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+          "evidence_ids": [
+            "rec-24"
+          ],
+          "page_id": "page-1",
+          "region_id": "table-rec",
+          "source_geometry": [],
+          "geometry_quality": "page_only",
+          "content_selector": {
+            "kind": "table_cell",
+            "table_region_id": "table-rec",
+            "row": 2,
+            "column": 4
+          }
+        },
+        "parse_warnings": []
+      },
+      {
+        "id": "quantity:9827a5e979d5310a5094e42b3b27c8444659bd6e4a178a56c581f60fa62bb8f9",
+        "raw_text": "3.3",
+        "parsed_shape": "scalar",
+        "raw_unit": "V",
+        "normalized_quantity": {
+          "canonical_value": "3.3",
+          "canonical_unit": "V",
+          "registry_identity": "datasheet-fdx2-analog-power-units/1"
+        },
+        "quantity_kind_hint": "electronics:ElectricPotential",
+        "dimensionality": "kg m^2 s^-3 A^-1",
+        "anchor": {
+          "schema_version": "evidence-anchor/2",
+          "source_pdf_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+          "document_state_id": "document-state:synthetic-fdx2-v1",
+          "document_ir_logical_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+          "evidence_ids": [
+            "rec-14"
+          ],
+          "page_id": "page-1",
+          "region_id": "table-rec",
+          "source_geometry": [],
+          "geometry_quality": "exact_region",
+          "content_selector": {
+            "kind": "table_cell",
+            "table_region_id": "table-rec",
+            "row": 1,
+            "column": 4
+          }
+        },
+        "parse_warnings": []
+      },
+      {
+        "id": "quantity:bf3176ca14c7b44539b6d86f5c7242b15c149b48c709b560e33c45e922095913",
+        "raw_text": "5.5",
+        "parsed_shape": "scalar",
+        "raw_unit": "V",
+        "normalized_quantity": {
+          "canonical_value": "5.5",
+          "canonical_unit": "V",
+          "registry_identity": "datasheet-fdx2-analog-power-units/1"
+        },
+        "quantity_kind_hint": "electronics:ElectricPotential",
+        "dimensionality": "kg m^2 s^-3 A^-1",
+        "anchor": {
+          "schema_version": "evidence-anchor/2",
+          "source_pdf_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+          "document_state_id": "document-state:synthetic-fdx2-v1",
+          "document_ir_logical_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+          "evidence_ids": [
+            "rec-15"
+          ],
+          "page_id": "page-1",
+          "region_id": "table-rec",
+          "source_geometry": [],
+          "geometry_quality": "exact_region",
+          "content_selector": {
+            "kind": "table_cell",
+            "table_region_id": "table-rec",
+            "row": 1,
+            "column": 5
+          }
+        },
+        "parse_warnings": []
+      },
+      {
+        "id": "quantity:d45a2b46b19a1f01a6306be8cb677736f07f5cee0b7ca0819be3ae4b98d1145d",
+        "raw_text": "180",
+        "parsed_shape": "scalar",
+        "raw_unit": "°C/W",
+        "normalized_quantity": {
+          "canonical_value": "180",
+          "canonical_unit": "K/W",
+          "registry_identity": "datasheet-fdx2-analog-power-units/1"
+        },
+        "quantity_kind_hint": "electronics:ThermalResistance",
+        "dimensionality": "kg^-1 m^-2 s^3 K",
+        "anchor": {
+          "schema_version": "evidence-anchor/2",
+          "source_pdf_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+          "document_state_id": "document-state:synthetic-fdx2-v1",
+          "document_ir_logical_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+          "evidence_ids": [
+            "th-13"
+          ],
+          "page_id": "page-1",
+          "region_id": "table-thermal",
+          "source_geometry": [],
+          "geometry_quality": "exact_region",
+          "content_selector": {
+            "kind": "table_cell",
+            "table_region_id": "table-thermal",
+            "row": 1,
+            "column": 3
+          }
+        },
+        "parse_warnings": []
+      },
+      {
+        "id": "quantity:e1a20d4cc63eac320ae163a725e20613e26814c6b4ab5f1be16ae755a05cc542",
+        "raw_text": "-40 °C to 125 °C",
+        "parsed_shape": "range",
+        "raw_unit": "°C",
+        "normalized_quantity": {
+          "canonical_value": "233.15..398.15",
+          "canonical_unit": "K",
+          "registry_identity": "datasheet-fdx2-analog-power-units/1"
+        },
+        "quantity_kind_hint": "si:ThermodynamicTemperature",
+        "dimensionality": "K",
+        "anchor": {
+          "schema_version": "evidence-anchor/2",
+          "source_pdf_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+          "document_state_id": "document-state:synthetic-fdx2-v1",
+          "document_ir_logical_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+          "evidence_ids": [
+            "abs-22"
+          ],
+          "page_id": "page-1",
+          "region_id": "table-abs",
+          "source_geometry": [],
+          "geometry_quality": "exact_region",
+          "content_selector": {
+            "kind": "table_cell",
+            "table_region_id": "table-abs",
+            "row": 2,
+            "column": 2
+          }
+        },
+        "parse_warnings": []
+      }
+    ],
+    "symbols": [
+      {
+        "id": "symbol:211ca6a846f25b37adaabd24bc49b0a83cb4cc644b835946fce4d63d8377ae50",
+        "raw_text": "VIN",
+        "normalized_symbol": "VIN",
+        "anchor": {
+          "schema_version": "evidence-anchor/2",
+          "source_pdf_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+          "document_state_id": "document-state:synthetic-fdx2-v1",
+          "document_ir_logical_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+          "evidence_ids": [
+            "abs-11"
+          ],
+          "page_id": "page-1",
+          "region_id": "table-abs",
+          "source_geometry": [],
+          "geometry_quality": "exact_region",
+          "content_selector": {
+            "kind": "table_cell",
+            "table_region_id": "table-abs",
+            "row": 1,
+            "column": 1
+          }
+        }
+      },
+      {
+        "id": "symbol:2510213e177c7a6969cc2d5beb7079c39f87eed837f8dba7d7b53f771a79e7b8",
+        "raw_text": "θJA",
+        "normalized_symbol": "JA",
+        "anchor": {
+          "schema_version": "evidence-anchor/2",
+          "source_pdf_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+          "document_state_id": "document-state:synthetic-fdx2-v1",
+          "document_ir_logical_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+          "evidence_ids": [
+            "th-11"
+          ],
+          "page_id": "page-1",
+          "region_id": "table-thermal",
+          "source_geometry": [],
+          "geometry_quality": "exact_region",
+          "content_selector": {
+            "kind": "table_cell",
+            "table_region_id": "table-thermal",
+            "row": 1,
+            "column": 1
+          }
+        }
+      },
+      {
+        "id": "symbol:38318f62f03dbbb865f0b034e2ee44ea3e2d939d4cc69766178a78eec24b5009",
+        "raw_text": "VIN",
+        "normalized_symbol": "VIN",
+        "anchor": {
+          "schema_version": "evidence-anchor/2",
+          "source_pdf_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+          "document_state_id": "document-state:synthetic-fdx2-v1",
+          "document_ir_logical_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+          "evidence_ids": [
+            "rec-11"
+          ],
+          "page_id": "page-1",
+          "region_id": "table-rec",
+          "source_geometry": [],
+          "geometry_quality": "exact_region",
+          "content_selector": {
+            "kind": "table_cell",
+            "table_region_id": "table-rec",
+            "row": 1,
+            "column": 1
+          }
+        }
+      },
+      {
+        "id": "symbol:422c32258d33ac090f23a9999a9f0caf43693d6eff8689b27b4c648f33df273d",
+        "raw_text": "TSTG",
+        "normalized_symbol": "TSTG",
+        "anchor": {
+          "schema_version": "evidence-anchor/2",
+          "source_pdf_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+          "document_state_id": "document-state:synthetic-fdx2-v1",
+          "document_ir_logical_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+          "evidence_ids": [
+            "abs-21"
+          ],
+          "page_id": "page-1",
+          "region_id": "table-abs",
+          "source_geometry": [],
+          "geometry_quality": "exact_region",
+          "content_selector": {
+            "kind": "table_cell",
+            "table_region_id": "table-abs",
+            "row": 2,
+            "column": 1
+          }
+        }
+      },
+      {
+        "id": "symbol:5b6e8c3507fb796dbc3413ffddbb92bdf9cc1a288f075084feb2f05daa13a9cc",
+        "raw_text": "ACC",
+        "normalized_symbol": "ACC",
+        "anchor": {
+          "schema_version": "evidence-anchor/2",
+          "source_pdf_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+          "document_state_id": "document-state:synthetic-fdx2-v1",
+          "document_ir_logical_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+          "evidence_ids": [
+            "rec-21"
+          ],
+          "page_id": "page-1",
+          "region_id": "table-rec",
+          "source_geometry": [],
+          "geometry_quality": "page_only",
+          "content_selector": {
+            "kind": "table_cell",
+            "table_region_id": "table-rec",
+            "row": 2,
+            "column": 1
+          }
+        }
+      },
+      {
+        "id": "symbol:b1793793d9b84d12b7834b09e3252b83707a391f27f74c80c24ae5f0cfa777cd",
+        "raw_text": "IQ",
+        "normalized_symbol": "IQ",
+        "anchor": {
+          "schema_version": "evidence-anchor/2",
+          "source_pdf_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+          "document_state_id": "document-state:synthetic-fdx2-v1",
+          "document_ir_logical_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+          "evidence_ids": [
+            "el-11"
+          ],
+          "page_id": "page-1",
+          "region_id": "table-elec",
+          "source_geometry": [],
+          "geometry_quality": "exact_region",
+          "content_selector": {
+            "kind": "table_cell",
+            "table_region_id": "table-elec",
+            "row": 1,
+            "column": 1
+          }
+        }
+      }
+    ],
+    "packages": [
+      {
+        "id": "package:90cbe6812ccae8ba853c4885fb5f6be7c0673ea6d9813bc64b8450a7b2acb059",
+        "raw_text": "QFN-8",
+        "anchor": {
+          "schema_version": "evidence-anchor/2",
+          "source_pdf_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+          "document_state_id": "document-state:synthetic-fdx2-v1",
+          "document_ir_logical_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+          "evidence_ids": [
+            "th-12"
+          ],
+          "page_id": "page-1",
+          "region_id": "table-thermal",
+          "source_geometry": [],
+          "geometry_quality": "exact_region",
+          "content_selector": {
+            "kind": "table_cell",
+            "table_region_id": "table-thermal",
+            "row": 1,
+            "column": 2
+          }
+        }
+      }
+    ],
+    "conditions": [
+      {
+        "id": "condition:71b76d1cac63246767c8a064cf8cd57534ea3c4ce7335be35788b0084663b666",
+        "raw_text": "TA = 25 °C",
+        "parsed_candidate": {
+          "fields": {
+            "source_role": "condition_cell"
+          }
+        },
+        "evidence_anchors": [
+          {
+            "schema_version": "evidence-anchor/2",
+            "source_pdf_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+            "document_state_id": "document-state:synthetic-fdx2-v1",
+            "document_ir_logical_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+            "evidence_ids": [
+              "rec-12"
+            ],
+            "page_id": "page-1",
+            "region_id": "table-rec",
+            "source_geometry": [],
+            "geometry_quality": "exact_region",
+            "content_selector": {
+              "kind": "table_cell",
+              "table_region_id": "table-rec",
+              "row": 1,
+              "column": 2
+            }
+          }
+        ]
+      },
+      {
+        "id": "condition:875870d0044d5ef99ca02b2540fa913560f829d6cdad20ffbe18b959db209545",
+        "raw_text": "Valid for the QFN-8 package only.",
+        "parsed_candidate": {
+          "fields": {
+            "footnote_marker": "1"
+          }
+        },
+        "evidence_anchors": [
+          {
+            "schema_version": "evidence-anchor/2",
+            "source_pdf_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+            "document_state_id": "document-state:synthetic-fdx2-v1",
+            "document_ir_logical_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+            "evidence_ids": [
+              "rec-foot-1"
+            ],
+            "page_id": "page-1",
+            "region_id": "table-rec",
+            "source_geometry": [],
+            "geometry_quality": "exact_region",
+            "content_selector": {
+              "kind": "whole_evidence"
+            }
+          }
+        ]
+      },
+      {
+        "id": "condition:924fea6436b53a14d47cb2f5f91f556ecceac2c384a590ba4db1ff094650ea5a",
+        "raw_text": "VIN = 3.3 V",
+        "parsed_candidate": {
+          "fields": {
+            "source_role": "condition_cell"
+          }
+        },
+        "evidence_anchors": [
+          {
+            "schema_version": "evidence-anchor/2",
+            "source_pdf_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+            "document_state_id": "document-state:synthetic-fdx2-v1",
+            "document_ir_logical_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+            "evidence_ids": [
+              "el-12"
+            ],
+            "page_id": "page-1",
+            "region_id": "table-elec",
+            "source_geometry": [],
+            "geometry_quality": "exact_region",
+            "content_selector": {
+              "kind": "table_cell",
+              "table_region_id": "table-elec",
+              "row": 1,
+              "column": 2
+            }
+          }
+        ]
+      }
+    ],
+    "template_signatures": [
+      "021b8c44a913aa32e23ce306d11eae51cccb1cf027b17d5be97c257523aabf13",
+      "3c7ccef25120cdfd3f23e1dd946a0003f26ad1307a2916b31b86115630571310",
+      "45e95fe67d17224838c72fb7375a7f5d49d5acca85fcbdaae441a4ab18341964",
+      "5f7eacaaf1e570f1308e185c7defccabc9e7741ac87d3948f7352c6706ea1859",
+      "6f2aa17ce6456a5473df66a897dbda05bafb0cdfc77179a4b28351dd3b38a374"
+    ]
+  },
+  "claim_bundle": {
+    "schema_version": "claim-bundle/1",
+    "sketch_id": "datasheet-sketch:e074e7ec5556e59e214162da6018269a954abbb285f63adaf7b0591f4cd20600",
+    "source_pdf_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+    "document_state_id": "document-state:synthetic-fdx2-v1",
+    "document_ir_logical_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+    "producer": {
+      "name": "datasheet-compiler",
+      "version": "0.1.8",
+      "code_revision": "fdx2-frozen-baseline-v1",
+      "configuration_digest": "4444444444444444444444444444444444444444444444444444444444444444",
+      "document_ir_schema": "ferrodoc-document-ir/1",
+      "ontology_snapshot_digest": "3333333333333333333333333333333333333333333333333333333333333333",
+      "quantitas_registry_identity": "datasheet-fdx2-analog-power-units/1"
+    },
+    "subject_hints": [
+      {
+        "manufacturer_raw": "Synthetic Semiconductor",
+        "mpn_raw": "SYNTH1000"
+      }
+    ],
+    "selected_values": [
+      {
+        "id": "quantity:28c9e0c223a6af1ccab3472a0497c8e935a1a8b112eb4e89dabc3b3afd963cc1",
+        "raw_text": "60",
+        "parsed_shape": "scalar",
+        "raw_unit": "nA",
+        "normalized_quantity": {
+          "canonical_value": "0.00000006",
+          "canonical_unit": "A",
+          "registry_identity": "datasheet-fdx2-analog-power-units/1"
+        },
+        "quantity_kind_hint": "si:ElectricCurrent",
+        "dimensionality": "A",
+        "anchor": {
+          "schema_version": "evidence-anchor/2",
+          "source_pdf_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+          "document_state_id": "document-state:synthetic-fdx2-v1",
+          "document_ir_logical_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+          "evidence_ids": [
+            "el-13"
+          ],
+          "page_id": "page-1",
+          "region_id": "table-elec",
+          "source_geometry": [],
+          "geometry_quality": "exact_region",
+          "content_selector": {
+            "kind": "table_cell",
+            "table_region_id": "table-elec",
+            "row": 1,
+            "column": 3
+          }
+        },
+        "parse_warnings": []
+      },
+      {
+        "id": "quantity:49346045baedda7fa2f676aa0bd28d7f5e730a30a225809b27a43d75160f78e2",
+        "raw_text": "1.8",
+        "parsed_shape": "scalar",
+        "raw_unit": "V",
+        "normalized_quantity": {
+          "canonical_value": "1.8",
+          "canonical_unit": "V",
+          "registry_identity": "datasheet-fdx2-analog-power-units/1"
+        },
+        "quantity_kind_hint": "electronics:ElectricPotential",
+        "dimensionality": "kg m^2 s^-3 A^-1",
+        "anchor": {
+          "schema_version": "evidence-anchor/2",
+          "source_pdf_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+          "document_state_id": "document-state:synthetic-fdx2-v1",
+          "document_ir_logical_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+          "evidence_ids": [
+            "rec-13"
+          ],
+          "page_id": "page-1",
+          "region_id": "table-rec",
+          "source_geometry": [],
+          "geometry_quality": "exact_region",
+          "content_selector": {
+            "kind": "table_cell",
+            "table_region_id": "table-rec",
+            "row": 1,
+            "column": 3
+          }
+        },
+        "parse_warnings": []
+      },
+      {
+        "id": "quantity:4a841d8b9b2d2c48316cf863f547b17d8123cb201aa4b240a5732bb8a890b406",
+        "raw_text": "±2 %",
+        "parsed_shape": "tolerance",
+        "raw_unit": "%",
+        "normalized_quantity": {
+          "canonical_value": "0.02",
+          "canonical_unit": "1",
+          "registry_identity": "datasheet-fdx2-analog-power-units/1"
+        },
+        "quantity_kind_hint": "datasheet:RelativeTolerance",
+        "dimensionality": "1",
+        "anchor": {
+          "schema_version": "evidence-anchor/2",
+          "source_pdf_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+          "document_state_id": "document-state:synthetic-fdx2-v1",
+          "document_ir_logical_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+          "evidence_ids": [
+            "rec-24"
+          ],
+          "page_id": "page-1",
+          "region_id": "table-rec",
+          "source_geometry": [],
+          "geometry_quality": "page_only",
+          "content_selector": {
+            "kind": "table_cell",
+            "table_region_id": "table-rec",
+            "row": 2,
+            "column": 4
+          }
+        },
+        "parse_warnings": []
+      },
+      {
+        "id": "quantity:9827a5e979d5310a5094e42b3b27c8444659bd6e4a178a56c581f60fa62bb8f9",
+        "raw_text": "3.3",
+        "parsed_shape": "scalar",
+        "raw_unit": "V",
+        "normalized_quantity": {
+          "canonical_value": "3.3",
+          "canonical_unit": "V",
+          "registry_identity": "datasheet-fdx2-analog-power-units/1"
+        },
+        "quantity_kind_hint": "electronics:ElectricPotential",
+        "dimensionality": "kg m^2 s^-3 A^-1",
+        "anchor": {
+          "schema_version": "evidence-anchor/2",
+          "source_pdf_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+          "document_state_id": "document-state:synthetic-fdx2-v1",
+          "document_ir_logical_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+          "evidence_ids": [
+            "rec-14"
+          ],
+          "page_id": "page-1",
+          "region_id": "table-rec",
+          "source_geometry": [],
+          "geometry_quality": "exact_region",
+          "content_selector": {
+            "kind": "table_cell",
+            "table_region_id": "table-rec",
+            "row": 1,
+            "column": 4
+          }
+        },
+        "parse_warnings": []
+      },
+      {
+        "id": "quantity:bf3176ca14c7b44539b6d86f5c7242b15c149b48c709b560e33c45e922095913",
+        "raw_text": "5.5",
+        "parsed_shape": "scalar",
+        "raw_unit": "V",
+        "normalized_quantity": {
+          "canonical_value": "5.5",
+          "canonical_unit": "V",
+          "registry_identity": "datasheet-fdx2-analog-power-units/1"
+        },
+        "quantity_kind_hint": "electronics:ElectricPotential",
+        "dimensionality": "kg m^2 s^-3 A^-1",
+        "anchor": {
+          "schema_version": "evidence-anchor/2",
+          "source_pdf_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+          "document_state_id": "document-state:synthetic-fdx2-v1",
+          "document_ir_logical_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+          "evidence_ids": [
+            "rec-15"
+          ],
+          "page_id": "page-1",
+          "region_id": "table-rec",
+          "source_geometry": [],
+          "geometry_quality": "exact_region",
+          "content_selector": {
+            "kind": "table_cell",
+            "table_region_id": "table-rec",
+            "row": 1,
+            "column": 5
+          }
+        },
+        "parse_warnings": []
+      },
+      {
+        "id": "quantity:d45a2b46b19a1f01a6306be8cb677736f07f5cee0b7ca0819be3ae4b98d1145d",
+        "raw_text": "180",
+        "parsed_shape": "scalar",
+        "raw_unit": "°C/W",
+        "normalized_quantity": {
+          "canonical_value": "180",
+          "canonical_unit": "K/W",
+          "registry_identity": "datasheet-fdx2-analog-power-units/1"
+        },
+        "quantity_kind_hint": "electronics:ThermalResistance",
+        "dimensionality": "kg^-1 m^-2 s^3 K",
+        "anchor": {
+          "schema_version": "evidence-anchor/2",
+          "source_pdf_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+          "document_state_id": "document-state:synthetic-fdx2-v1",
+          "document_ir_logical_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+          "evidence_ids": [
+            "th-13"
+          ],
+          "page_id": "page-1",
+          "region_id": "table-thermal",
+          "source_geometry": [],
+          "geometry_quality": "exact_region",
+          "content_selector": {
+            "kind": "table_cell",
+            "table_region_id": "table-thermal",
+            "row": 1,
+            "column": 3
+          }
+        },
+        "parse_warnings": []
+      },
+      {
+        "id": "quantity:e1a20d4cc63eac320ae163a725e20613e26814c6b4ab5f1be16ae755a05cc542",
+        "raw_text": "-40 °C to 125 °C",
+        "parsed_shape": "range",
+        "raw_unit": "°C",
+        "normalized_quantity": {
+          "canonical_value": "233.15..398.15",
+          "canonical_unit": "K",
+          "registry_identity": "datasheet-fdx2-analog-power-units/1"
+        },
+        "quantity_kind_hint": "si:ThermodynamicTemperature",
+        "dimensionality": "K",
+        "anchor": {
+          "schema_version": "evidence-anchor/2",
+          "source_pdf_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+          "document_state_id": "document-state:synthetic-fdx2-v1",
+          "document_ir_logical_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+          "evidence_ids": [
+            "abs-22"
+          ],
+          "page_id": "page-1",
+          "region_id": "table-abs",
+          "source_geometry": [],
+          "geometry_quality": "exact_region",
+          "content_selector": {
+            "kind": "table_cell",
+            "table_region_id": "table-abs",
+            "row": 2,
+            "column": 2
+          }
+        },
+        "parse_warnings": []
+      }
+    ],
+    "claims": [
+      {
+        "local_id": "claim:094d5aa5af1fc1d17dfed86072e2db9cc82cc952e75b2925e53ac66e0bf2c81f",
+        "subject_candidate_id": "subject:7f6814b179430581252946054148fbea4758586b11460474b90d623d79192c3c",
+        "predicate_term_id": "analog.output_accuracy",
+        "regime": "recommended_operating",
+        "value_role": "typical",
+        "value_candidate_id": "quantity:4a841d8b9b2d2c48316cf863f547b17d8123cb201aa4b240a5732bb8a890b406",
+        "condition_candidate_ids": [],
+        "package_variant_candidate_ids": [],
+        "evidence_anchors": [
+          {
+            "schema_version": "evidence-anchor/2",
+            "source_pdf_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+            "document_state_id": "document-state:synthetic-fdx2-v1",
+            "document_ir_logical_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+            "evidence_ids": [
+              "rec-24"
+            ],
+            "page_id": "page-1",
+            "region_id": "table-rec",
+            "source_geometry": [],
+            "geometry_quality": "page_only",
+            "content_selector": {
+              "kind": "table_cell",
+              "table_region_id": "table-rec",
+              "row": 2,
+              "column": 4
+            }
+          },
+          {
+            "schema_version": "evidence-anchor/2",
+            "source_pdf_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+            "document_state_id": "document-state:synthetic-fdx2-v1",
+            "document_ir_logical_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+            "evidence_ids": [
+              "title-1"
+            ],
+            "page_id": "page-1",
+            "region_id": "title",
+            "source_geometry": [
+              {
+                "left": 0.1,
+                "top": 0.05,
+                "right": 0.8,
+                "bottom": 0.1
+              }
+            ],
+            "geometry_quality": "exact_region",
+            "content_selector": {
+              "kind": "whole_evidence"
+            }
+          }
+        ],
+        "extraction_confidence": 1.0,
+        "grounding_status": "grounded"
+      },
+      {
+        "local_id": "claim:234955e03a1d04019fda34cfb8dfecae8ab417abe2a9c71ce071d860dddab3ea",
+        "subject_candidate_id": "subject:7f6814b179430581252946054148fbea4758586b11460474b90d623d79192c3c",
+        "predicate_term_id": "analog.quiescent_current",
+        "regime": "guaranteed",
+        "value_role": "typical",
+        "value_candidate_id": "quantity:28c9e0c223a6af1ccab3472a0497c8e935a1a8b112eb4e89dabc3b3afd963cc1",
+        "condition_candidate_ids": [
+          "condition:924fea6436b53a14d47cb2f5f91f556ecceac2c384a590ba4db1ff094650ea5a"
+        ],
+        "package_variant_candidate_ids": [],
+        "evidence_anchors": [
+          {
+            "schema_version": "evidence-anchor/2",
+            "source_pdf_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+            "document_state_id": "document-state:synthetic-fdx2-v1",
+            "document_ir_logical_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+            "evidence_ids": [
+              "el-12"
+            ],
+            "page_id": "page-1",
+            "region_id": "table-elec",
+            "source_geometry": [],
+            "geometry_quality": "exact_region",
+            "content_selector": {
+              "kind": "table_cell",
+              "table_region_id": "table-elec",
+              "row": 1,
+              "column": 2
+            }
+          },
+          {
+            "schema_version": "evidence-anchor/2",
+            "source_pdf_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+            "document_state_id": "document-state:synthetic-fdx2-v1",
+            "document_ir_logical_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+            "evidence_ids": [
+              "el-13"
+            ],
+            "page_id": "page-1",
+            "region_id": "table-elec",
+            "source_geometry": [],
+            "geometry_quality": "exact_region",
+            "content_selector": {
+              "kind": "table_cell",
+              "table_region_id": "table-elec",
+              "row": 1,
+              "column": 3
+            }
+          },
+          {
+            "schema_version": "evidence-anchor/2",
+            "source_pdf_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+            "document_state_id": "document-state:synthetic-fdx2-v1",
+            "document_ir_logical_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+            "evidence_ids": [
+              "title-1"
+            ],
+            "page_id": "page-1",
+            "region_id": "title",
+            "source_geometry": [
+              {
+                "left": 0.1,
+                "top": 0.05,
+                "right": 0.8,
+                "bottom": 0.1
+              }
+            ],
+            "geometry_quality": "exact_region",
+            "content_selector": {
+              "kind": "whole_evidence"
+            }
+          }
+        ],
+        "extraction_confidence": 1.0,
+        "grounding_status": "grounded"
+      },
+      {
+        "local_id": "claim:79bba6a9bb90fbe17195479e744913033d11c832f963fb912be229ae6949b2f9",
+        "subject_candidate_id": "subject:7f6814b179430581252946054148fbea4758586b11460474b90d623d79192c3c",
+        "predicate_term_id": "analog.thermal_resistance.ja",
+        "regime": "informative",
+        "value_role": "rating",
+        "value_candidate_id": "quantity:d45a2b46b19a1f01a6306be8cb677736f07f5cee0b7ca0819be3ae4b98d1145d",
+        "condition_candidate_ids": [],
+        "package_variant_candidate_ids": [
+          "package:90cbe6812ccae8ba853c4885fb5f6be7c0673ea6d9813bc64b8450a7b2acb059"
+        ],
+        "evidence_anchors": [
+          {
+            "schema_version": "evidence-anchor/2",
+            "source_pdf_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+            "document_state_id": "document-state:synthetic-fdx2-v1",
+            "document_ir_logical_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+            "evidence_ids": [
+              "th-13"
+            ],
+            "page_id": "page-1",
+            "region_id": "table-thermal",
+            "source_geometry": [],
+            "geometry_quality": "exact_region",
+            "content_selector": {
+              "kind": "table_cell",
+              "table_region_id": "table-thermal",
+              "row": 1,
+              "column": 3
+            }
+          },
+          {
+            "schema_version": "evidence-anchor/2",
+            "source_pdf_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+            "document_state_id": "document-state:synthetic-fdx2-v1",
+            "document_ir_logical_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+            "evidence_ids": [
+              "title-1"
+            ],
+            "page_id": "page-1",
+            "region_id": "title",
+            "source_geometry": [
+              {
+                "left": 0.1,
+                "top": 0.05,
+                "right": 0.8,
+                "bottom": 0.1
+              }
+            ],
+            "geometry_quality": "exact_region",
+            "content_selector": {
+              "kind": "whole_evidence"
+            }
+          }
+        ],
+        "extraction_confidence": 1.0,
+        "grounding_status": "grounded"
+      },
+      {
+        "local_id": "claim:83dc2d8e3d8c71b7bbecb2821df1c64c9a1f49161067da816293192eb22d4dda",
+        "subject_candidate_id": "subject:7f6814b179430581252946054148fbea4758586b11460474b90d623d79192c3c",
+        "predicate_term_id": "analog.input_voltage.operating",
+        "regime": "recommended_operating",
+        "value_role": "minimum",
+        "value_candidate_id": "quantity:49346045baedda7fa2f676aa0bd28d7f5e730a30a225809b27a43d75160f78e2",
+        "condition_candidate_ids": [
+          "condition:71b76d1cac63246767c8a064cf8cd57534ea3c4ce7335be35788b0084663b666",
+          "condition:875870d0044d5ef99ca02b2540fa913560f829d6cdad20ffbe18b959db209545"
+        ],
+        "package_variant_candidate_ids": [],
+        "evidence_anchors": [
+          {
+            "schema_version": "evidence-anchor/2",
+            "source_pdf_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+            "document_state_id": "document-state:synthetic-fdx2-v1",
+            "document_ir_logical_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+            "evidence_ids": [
+              "rec-12"
+            ],
+            "page_id": "page-1",
+            "region_id": "table-rec",
+            "source_geometry": [],
+            "geometry_quality": "exact_region",
+            "content_selector": {
+              "kind": "table_cell",
+              "table_region_id": "table-rec",
+              "row": 1,
+              "column": 2
+            }
+          },
+          {
+            "schema_version": "evidence-anchor/2",
+            "source_pdf_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+            "document_state_id": "document-state:synthetic-fdx2-v1",
+            "document_ir_logical_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+            "evidence_ids": [
+              "rec-13"
+            ],
+            "page_id": "page-1",
+            "region_id": "table-rec",
+            "source_geometry": [],
+            "geometry_quality": "exact_region",
+            "content_selector": {
+              "kind": "table_cell",
+              "table_region_id": "table-rec",
+              "row": 1,
+              "column": 3
+            }
+          },
+          {
+            "schema_version": "evidence-anchor/2",
+            "source_pdf_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+            "document_state_id": "document-state:synthetic-fdx2-v1",
+            "document_ir_logical_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+            "evidence_ids": [
+              "rec-foot-1"
+            ],
+            "page_id": "page-1",
+            "region_id": "table-rec",
+            "source_geometry": [],
+            "geometry_quality": "exact_region",
+            "content_selector": {
+              "kind": "whole_evidence"
+            }
+          },
+          {
+            "schema_version": "evidence-anchor/2",
+            "source_pdf_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+            "document_state_id": "document-state:synthetic-fdx2-v1",
+            "document_ir_logical_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+            "evidence_ids": [
+              "title-1"
+            ],
+            "page_id": "page-1",
+            "region_id": "title",
+            "source_geometry": [
+              {
+                "left": 0.1,
+                "top": 0.05,
+                "right": 0.8,
+                "bottom": 0.1
+              }
+            ],
+            "geometry_quality": "exact_region",
+            "content_selector": {
+              "kind": "whole_evidence"
+            }
+          }
+        ],
+        "extraction_confidence": 1.0,
+        "grounding_status": "grounded"
+      },
+      {
+        "local_id": "claim:a50f1c00c496cd6fbb4c100ca880d69765bf16a67f14cf143c16b874ec8dc277",
+        "subject_candidate_id": "subject:7f6814b179430581252946054148fbea4758586b11460474b90d623d79192c3c",
+        "predicate_term_id": "analog.input_voltage.operating",
+        "regime": "recommended_operating",
+        "value_role": "typical",
+        "value_candidate_id": "quantity:9827a5e979d5310a5094e42b3b27c8444659bd6e4a178a56c581f60fa62bb8f9",
+        "condition_candidate_ids": [
+          "condition:71b76d1cac63246767c8a064cf8cd57534ea3c4ce7335be35788b0084663b666",
+          "condition:875870d0044d5ef99ca02b2540fa913560f829d6cdad20ffbe18b959db209545"
+        ],
+        "package_variant_candidate_ids": [],
+        "evidence_anchors": [
+          {
+            "schema_version": "evidence-anchor/2",
+            "source_pdf_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+            "document_state_id": "document-state:synthetic-fdx2-v1",
+            "document_ir_logical_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+            "evidence_ids": [
+              "rec-12"
+            ],
+            "page_id": "page-1",
+            "region_id": "table-rec",
+            "source_geometry": [],
+            "geometry_quality": "exact_region",
+            "content_selector": {
+              "kind": "table_cell",
+              "table_region_id": "table-rec",
+              "row": 1,
+              "column": 2
+            }
+          },
+          {
+            "schema_version": "evidence-anchor/2",
+            "source_pdf_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+            "document_state_id": "document-state:synthetic-fdx2-v1",
+            "document_ir_logical_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+            "evidence_ids": [
+              "rec-14"
+            ],
+            "page_id": "page-1",
+            "region_id": "table-rec",
+            "source_geometry": [],
+            "geometry_quality": "exact_region",
+            "content_selector": {
+              "kind": "table_cell",
+              "table_region_id": "table-rec",
+              "row": 1,
+              "column": 4
+            }
+          },
+          {
+            "schema_version": "evidence-anchor/2",
+            "source_pdf_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+            "document_state_id": "document-state:synthetic-fdx2-v1",
+            "document_ir_logical_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+            "evidence_ids": [
+              "rec-foot-1"
+            ],
+            "page_id": "page-1",
+            "region_id": "table-rec",
+            "source_geometry": [],
+            "geometry_quality": "exact_region",
+            "content_selector": {
+              "kind": "whole_evidence"
+            }
+          },
+          {
+            "schema_version": "evidence-anchor/2",
+            "source_pdf_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+            "document_state_id": "document-state:synthetic-fdx2-v1",
+            "document_ir_logical_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+            "evidence_ids": [
+              "title-1"
+            ],
+            "page_id": "page-1",
+            "region_id": "title",
+            "source_geometry": [
+              {
+                "left": 0.1,
+                "top": 0.05,
+                "right": 0.8,
+                "bottom": 0.1
+              }
+            ],
+            "geometry_quality": "exact_region",
+            "content_selector": {
+              "kind": "whole_evidence"
+            }
+          }
+        ],
+        "extraction_confidence": 1.0,
+        "grounding_status": "grounded"
+      },
+      {
+        "local_id": "claim:d32c89e4847aa1d068e48911c7c832a5be44cad31b50e66469c3d74e8141ec94",
+        "subject_candidate_id": "subject:7f6814b179430581252946054148fbea4758586b11460474b90d623d79192c3c",
+        "predicate_term_id": "analog.input_voltage.operating",
+        "regime": "recommended_operating",
+        "value_role": "maximum",
+        "value_candidate_id": "quantity:bf3176ca14c7b44539b6d86f5c7242b15c149b48c709b560e33c45e922095913",
+        "condition_candidate_ids": [
+          "condition:71b76d1cac63246767c8a064cf8cd57534ea3c4ce7335be35788b0084663b666",
+          "condition:875870d0044d5ef99ca02b2540fa913560f829d6cdad20ffbe18b959db209545"
+        ],
+        "package_variant_candidate_ids": [],
+        "evidence_anchors": [
+          {
+            "schema_version": "evidence-anchor/2",
+            "source_pdf_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+            "document_state_id": "document-state:synthetic-fdx2-v1",
+            "document_ir_logical_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+            "evidence_ids": [
+              "rec-12"
+            ],
+            "page_id": "page-1",
+            "region_id": "table-rec",
+            "source_geometry": [],
+            "geometry_quality": "exact_region",
+            "content_selector": {
+              "kind": "table_cell",
+              "table_region_id": "table-rec",
+              "row": 1,
+              "column": 2
+            }
+          },
+          {
+            "schema_version": "evidence-anchor/2",
+            "source_pdf_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+            "document_state_id": "document-state:synthetic-fdx2-v1",
+            "document_ir_logical_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+            "evidence_ids": [
+              "rec-15"
+            ],
+            "page_id": "page-1",
+            "region_id": "table-rec",
+            "source_geometry": [],
+            "geometry_quality": "exact_region",
+            "content_selector": {
+              "kind": "table_cell",
+              "table_region_id": "table-rec",
+              "row": 1,
+              "column": 5
+            }
+          },
+          {
+            "schema_version": "evidence-anchor/2",
+            "source_pdf_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+            "document_state_id": "document-state:synthetic-fdx2-v1",
+            "document_ir_logical_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+            "evidence_ids": [
+              "rec-foot-1"
+            ],
+            "page_id": "page-1",
+            "region_id": "table-rec",
+            "source_geometry": [],
+            "geometry_quality": "exact_region",
+            "content_selector": {
+              "kind": "whole_evidence"
+            }
+          },
+          {
+            "schema_version": "evidence-anchor/2",
+            "source_pdf_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+            "document_state_id": "document-state:synthetic-fdx2-v1",
+            "document_ir_logical_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+            "evidence_ids": [
+              "title-1"
+            ],
+            "page_id": "page-1",
+            "region_id": "title",
+            "source_geometry": [
+              {
+                "left": 0.1,
+                "top": 0.05,
+                "right": 0.8,
+                "bottom": 0.1
+              }
+            ],
+            "geometry_quality": "exact_region",
+            "content_selector": {
+              "kind": "whole_evidence"
+            }
+          }
+        ],
+        "extraction_confidence": 1.0,
+        "grounding_status": "grounded"
+      },
+      {
+        "local_id": "claim:ea1730a88b4e764345feb7356bfa000fade1273780a1cf6e0fe8cc3032fd1b54",
+        "subject_candidate_id": "subject:7f6814b179430581252946054148fbea4758586b11460474b90d623d79192c3c",
+        "predicate_term_id": "analog.storage_temperature",
+        "regime": "absolute_maximum",
+        "value_role": "rating",
+        "value_candidate_id": "quantity:e1a20d4cc63eac320ae163a725e20613e26814c6b4ab5f1be16ae755a05cc542",
+        "condition_candidate_ids": [],
+        "package_variant_candidate_ids": [],
+        "evidence_anchors": [
+          {
+            "schema_version": "evidence-anchor/2",
+            "source_pdf_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+            "document_state_id": "document-state:synthetic-fdx2-v1",
+            "document_ir_logical_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+            "evidence_ids": [
+              "abs-22"
+            ],
+            "page_id": "page-1",
+            "region_id": "table-abs",
+            "source_geometry": [],
+            "geometry_quality": "exact_region",
+            "content_selector": {
+              "kind": "table_cell",
+              "table_region_id": "table-abs",
+              "row": 2,
+              "column": 2
+            }
+          },
+          {
+            "schema_version": "evidence-anchor/2",
+            "source_pdf_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+            "document_state_id": "document-state:synthetic-fdx2-v1",
+            "document_ir_logical_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+            "evidence_ids": [
+              "title-1"
+            ],
+            "page_id": "page-1",
+            "region_id": "title",
+            "source_geometry": [
+              {
+                "left": 0.1,
+                "top": 0.05,
+                "right": 0.8,
+                "bottom": 0.1
+              }
+            ],
+            "geometry_quality": "exact_region",
+            "content_selector": {
+              "kind": "whole_evidence"
+            }
+          }
+        ],
+        "extraction_confidence": 1.0,
+        "grounding_status": "grounded"
+      }
+    ],
+    "warnings": []
+  },
+  "header_inferences": [
+    {
+      "status": "matched",
+      "roles": [
+        "parameter",
+        "symbol",
+        "condition",
+        "minimum",
+        "typical",
+        "maximum",
+        "unit"
+      ],
+      "signature": "parameter|symbol|conditions|min|typ|max|unit",
+      "explanations": [
+        "header `Parameter` matched Parameter@datasheet-analog-power-rules/1",
+        "header `Symbol` matched Symbol@datasheet-analog-power-rules/1",
+        "header `Conditions` matched Condition@datasheet-analog-power-rules/1",
+        "header `Min` matched Minimum@datasheet-analog-power-rules/1",
+        "header `Typ` matched Typical@datasheet-analog-power-rules/1",
+        "header `Max` matched Maximum@datasheet-analog-power-rules/1",
+        "header `Unit` matched Unit@datasheet-analog-power-rules/1"
+      ]
+    },
+    {
+      "status": "matched",
+      "roles": [
+        "parameter",
+        "symbol",
+        "package",
+        "rating",
+        "unit"
+      ],
+      "signature": "parameter|symbol|package|rating|unit",
+      "explanations": [
+        "header `Parameter` matched Parameter@datasheet-analog-power-rules/1",
+        "header `Symbol` matched Symbol@datasheet-analog-power-rules/1",
+        "header `Package` matched Package@datasheet-analog-power-rules/1",
+        "header `Rating` matched Rating@datasheet-analog-power-rules/1",
+        "header `Unit` matched Unit@datasheet-analog-power-rules/1"
+      ]
+    },
+    {
+      "status": "matched",
+      "roles": [
+        "parameter",
+        "symbol",
+        "rating",
+        "unit"
+      ],
+      "signature": "parameter|symbol|rating|unit",
+      "explanations": [
+        "header `Parameter` matched Parameter@datasheet-analog-power-rules/1",
+        "header `Symbol` matched Symbol@datasheet-analog-power-rules/1",
+        "header `Rating` matched Rating@datasheet-analog-power-rules/1",
+        "header `Unit` matched Unit@datasheet-analog-power-rules/1"
+      ]
+    },
+    {
+      "status": "matched",
+      "roles": [
+        "parameter",
+        "symbol",
+        "condition",
+        "typical",
+        "unit"
+      ],
+      "signature": "parameter|symbol|test conditions|typ|unit",
+      "explanations": [
+        "header `Parameter` matched Parameter@datasheet-analog-power-rules/1",
+        "header `Symbol` matched Symbol@datasheet-analog-power-rules/1",
+        "header `Test Conditions` matched Condition@datasheet-analog-power-rules/1",
+        "header `Typ` matched Typical@datasheet-analog-power-rules/1",
+        "header `Unit` matched Unit@datasheet-analog-power-rules/1"
+      ]
+    },
+    {
+      "status": "abstained",
+      "roles": [
+        "parameter",
+        "unknown",
+        "unit"
+      ],
+      "signature": "parameter|value|unit",
+      "explanations": [
+        "header `Parameter` matched Parameter@datasheet-analog-power-rules/1",
+        "header `Value` did not have one defensible role",
+        "header `Unit` matched Unit@datasheet-analog-power-rules/1"
+      ]
+    }
+  ],
+  "row_results": [
+    {
+      "table_id": "table:1b95db532c13ff8c10c09851473bd52d0a578d55ac1a400f9507f968abfa68a0",
+      "row": 1,
+      "parameter_text": "Junction-to-ambient thermal resistance",
+      "symbol_text": "θJA",
+      "regime": "informative",
+      "value_role": "rating",
+      "value_candidate_id": "quantity:d45a2b46b19a1f01a6306be8cb677736f07f5cee0b7ca0819be3ae4b98d1145d",
+      "condition_candidate_ids": [],
+      "predicate_candidates": [
+        {
+          "predicate_term_id": "analog.thermal_resistance.ja",
+          "score": 145,
+          "reasons": [
+            "quantity kind matched electronics:ThermalResistance",
+            "dimensionality matched kg^-1 m^-2 s^3 K",
+            "parameter alias matched",
+            "symbol alias matched",
+            "regime constraint matched",
+            "category prior matched"
+          ]
+        }
+      ],
+      "status": "accepted_by_extractor",
+      "explanations": [
+        "section heading matched `thermal information`@datasheet-analog-power-rules/1",
+        "header `Parameter` matched Parameter@datasheet-analog-power-rules/1",
+        "header `Symbol` matched Symbol@datasheet-analog-power-rules/1",
+        "header `Package` matched Package@datasheet-analog-power-rules/1",
+        "header `Rating` matched Rating@datasheet-analog-power-rules/1",
+        "header `Unit` matched Unit@datasheet-analog-power-rules/1",
+        "value selected from table r=1,c=3 as Rating",
+        "unit `°C/W` inherited from explicit unit column",
+        "quantity kind matched electronics:ThermalResistance",
+        "dimensionality matched kg^-1 m^-2 s^3 K",
+        "parameter alias matched",
+        "symbol alias matched",
+        "regime constraint matched",
+        "category prior matched"
+      ]
+    },
+    {
+      "table_id": "table:94426aa693757e8cedd3ef811710ced4ec62dbdc3c8c00c0caa3b3a77bfc559e",
+      "row": 1,
+      "parameter_text": "Input voltage",
+      "symbol_text": "VIN",
+      "regime": "absolute_maximum",
+      "value_role": "rating",
+      "value_candidate_id": "quantity:49aca08621b484d7f21245ba526a7168a8743047588ee418e679f7a4328e69b5",
+      "condition_candidate_ids": [],
+      "predicate_candidates": [],
+      "status": "unsupported",
+      "explanations": [
+        "section heading matched `absolute maximum ratings`@datasheet-analog-power-rules/1",
+        "header `Parameter` matched Parameter@datasheet-analog-power-rules/1",
+        "header `Symbol` matched Symbol@datasheet-analog-power-rules/1",
+        "header `Rating` matched Rating@datasheet-analog-power-rules/1",
+        "header `Unit` matched Unit@datasheet-analog-power-rules/1",
+        "value selected from table r=1,c=2 as Rating"
+      ]
+    },
+    {
+      "table_id": "table:94426aa693757e8cedd3ef811710ced4ec62dbdc3c8c00c0caa3b3a77bfc559e",
+      "row": 2,
+      "parameter_text": "Storage temperature",
+      "symbol_text": "TSTG",
+      "regime": "absolute_maximum",
+      "value_role": "rating",
+      "value_candidate_id": "quantity:e1a20d4cc63eac320ae163a725e20613e26814c6b4ab5f1be16ae755a05cc542",
+      "condition_candidate_ids": [],
+      "predicate_candidates": [
+        {
+          "predicate_term_id": "analog.storage_temperature",
+          "score": 145,
+          "reasons": [
+            "quantity kind matched si:ThermodynamicTemperature",
+            "dimensionality matched K",
+            "parameter alias matched",
+            "symbol alias matched",
+            "regime constraint matched",
+            "category prior matched"
+          ]
+        }
+      ],
+      "status": "accepted_by_extractor",
+      "explanations": [
+        "section heading matched `absolute maximum ratings`@datasheet-analog-power-rules/1",
+        "header `Parameter` matched Parameter@datasheet-analog-power-rules/1",
+        "header `Symbol` matched Symbol@datasheet-analog-power-rules/1",
+        "header `Rating` matched Rating@datasheet-analog-power-rules/1",
+        "header `Unit` matched Unit@datasheet-analog-power-rules/1",
+        "value selected from table r=2,c=2 as Rating",
+        "quantity kind matched si:ThermodynamicTemperature",
+        "dimensionality matched K",
+        "parameter alias matched",
+        "symbol alias matched",
+        "regime constraint matched",
+        "category prior matched"
+      ]
+    },
+    {
+      "table_id": "table:9b891df08f7c0f2f8ba8954748479f8f05cf5e0e222d923491b74148fc27d4ff",
+      "row": 1,
+      "parameter_text": "Input voltage",
+      "symbol_text": "VIN",
+      "regime": "recommended_operating",
+      "value_role": "minimum",
+      "value_candidate_id": "quantity:49346045baedda7fa2f676aa0bd28d7f5e730a30a225809b27a43d75160f78e2",
+      "condition_candidate_ids": [
+        "condition:71b76d1cac63246767c8a064cf8cd57534ea3c4ce7335be35788b0084663b666",
+        "condition:875870d0044d5ef99ca02b2540fa913560f829d6cdad20ffbe18b959db209545"
+      ],
+      "predicate_candidates": [
+        {
+          "predicate_term_id": "analog.input_voltage.operating",
+          "score": 145,
+          "reasons": [
+            "quantity kind matched electronics:ElectricPotential",
+            "dimensionality matched kg m^2 s^-3 A^-1",
+            "parameter alias matched",
+            "symbol alias matched",
+            "regime constraint matched",
+            "category prior matched"
+          ]
+        }
+      ],
+      "status": "accepted_by_extractor",
+      "explanations": [
+        "section heading matched `recommended operating conditions`@datasheet-analog-power-rules/1",
+        "header `Parameter` matched Parameter@datasheet-analog-power-rules/1",
+        "header `Symbol` matched Symbol@datasheet-analog-power-rules/1",
+        "header `Conditions` matched Condition@datasheet-analog-power-rules/1",
+        "header `Min` matched Minimum@datasheet-analog-power-rules/1",
+        "header `Typ` matched Typical@datasheet-analog-power-rules/1",
+        "header `Max` matched Maximum@datasheet-analog-power-rules/1",
+        "header `Unit` matched Unit@datasheet-analog-power-rules/1",
+        "condition selected from r=1, condition column",
+        "footnote marker `1` resolved within table scope",
+        "value selected from table r=1,c=3 as Minimum",
+        "unit `V` inherited from explicit unit column",
+        "quantity kind matched electronics:ElectricPotential",
+        "dimensionality matched kg m^2 s^-3 A^-1",
+        "parameter alias matched",
+        "symbol alias matched",
+        "regime constraint matched",
+        "category prior matched"
+      ]
+    },
+    {
+      "table_id": "table:9b891df08f7c0f2f8ba8954748479f8f05cf5e0e222d923491b74148fc27d4ff",
+      "row": 1,
+      "parameter_text": "Input voltage",
+      "symbol_text": "VIN",
+      "regime": "recommended_operating",
+      "value_role": "typical",
+      "value_candidate_id": "quantity:9827a5e979d5310a5094e42b3b27c8444659bd6e4a178a56c581f60fa62bb8f9",
+      "condition_candidate_ids": [
+        "condition:71b76d1cac63246767c8a064cf8cd57534ea3c4ce7335be35788b0084663b666",
+        "condition:875870d0044d5ef99ca02b2540fa913560f829d6cdad20ffbe18b959db209545"
+      ],
+      "predicate_candidates": [
+        {
+          "predicate_term_id": "analog.input_voltage.operating",
+          "score": 145,
+          "reasons": [
+            "quantity kind matched electronics:ElectricPotential",
+            "dimensionality matched kg m^2 s^-3 A^-1",
+            "parameter alias matched",
+            "symbol alias matched",
+            "regime constraint matched",
+            "category prior matched"
+          ]
+        }
+      ],
+      "status": "accepted_by_extractor",
+      "explanations": [
+        "section heading matched `recommended operating conditions`@datasheet-analog-power-rules/1",
+        "header `Parameter` matched Parameter@datasheet-analog-power-rules/1",
+        "header `Symbol` matched Symbol@datasheet-analog-power-rules/1",
+        "header `Conditions` matched Condition@datasheet-analog-power-rules/1",
+        "header `Min` matched Minimum@datasheet-analog-power-rules/1",
+        "header `Typ` matched Typical@datasheet-analog-power-rules/1",
+        "header `Max` matched Maximum@datasheet-analog-power-rules/1",
+        "header `Unit` matched Unit@datasheet-analog-power-rules/1",
+        "condition selected from r=1, condition column",
+        "footnote marker `1` resolved within table scope",
+        "value selected from table r=1,c=4 as Typical",
+        "unit `V` inherited from explicit unit column",
+        "quantity kind matched electronics:ElectricPotential",
+        "dimensionality matched kg m^2 s^-3 A^-1",
+        "parameter alias matched",
+        "symbol alias matched",
+        "regime constraint matched",
+        "category prior matched"
+      ]
+    },
+    {
+      "table_id": "table:9b891df08f7c0f2f8ba8954748479f8f05cf5e0e222d923491b74148fc27d4ff",
+      "row": 1,
+      "parameter_text": "Input voltage",
+      "symbol_text": "VIN",
+      "regime": "recommended_operating",
+      "value_role": "maximum",
+      "value_candidate_id": "quantity:bf3176ca14c7b44539b6d86f5c7242b15c149b48c709b560e33c45e922095913",
+      "condition_candidate_ids": [
+        "condition:71b76d1cac63246767c8a064cf8cd57534ea3c4ce7335be35788b0084663b666",
+        "condition:875870d0044d5ef99ca02b2540fa913560f829d6cdad20ffbe18b959db209545"
+      ],
+      "predicate_candidates": [
+        {
+          "predicate_term_id": "analog.input_voltage.operating",
+          "score": 145,
+          "reasons": [
+            "quantity kind matched electronics:ElectricPotential",
+            "dimensionality matched kg m^2 s^-3 A^-1",
+            "parameter alias matched",
+            "symbol alias matched",
+            "regime constraint matched",
+            "category prior matched"
+          ]
+        }
+      ],
+      "status": "accepted_by_extractor",
+      "explanations": [
+        "section heading matched `recommended operating conditions`@datasheet-analog-power-rules/1",
+        "header `Parameter` matched Parameter@datasheet-analog-power-rules/1",
+        "header `Symbol` matched Symbol@datasheet-analog-power-rules/1",
+        "header `Conditions` matched Condition@datasheet-analog-power-rules/1",
+        "header `Min` matched Minimum@datasheet-analog-power-rules/1",
+        "header `Typ` matched Typical@datasheet-analog-power-rules/1",
+        "header `Max` matched Maximum@datasheet-analog-power-rules/1",
+        "header `Unit` matched Unit@datasheet-analog-power-rules/1",
+        "condition selected from r=1, condition column",
+        "footnote marker `1` resolved within table scope",
+        "value selected from table r=1,c=5 as Maximum",
+        "unit `V` inherited from explicit unit column",
+        "quantity kind matched electronics:ElectricPotential",
+        "dimensionality matched kg m^2 s^-3 A^-1",
+        "parameter alias matched",
+        "symbol alias matched",
+        "regime constraint matched",
+        "category prior matched"
+      ]
+    },
+    {
+      "table_id": "table:9b891df08f7c0f2f8ba8954748479f8f05cf5e0e222d923491b74148fc27d4ff",
+      "row": 2,
+      "parameter_text": "Output accuracy",
+      "symbol_text": "ACC",
+      "regime": "recommended_operating",
+      "value_role": "minimum",
+      "condition_candidate_ids": [],
+      "predicate_candidates": [],
+      "status": "unsupported",
+      "explanations": [
+        "section heading matched `recommended operating conditions`@datasheet-analog-power-rules/1",
+        "header `Parameter` matched Parameter@datasheet-analog-power-rules/1",
+        "header `Symbol` matched Symbol@datasheet-analog-power-rules/1",
+        "header `Conditions` matched Condition@datasheet-analog-power-rules/1",
+        "header `Min` matched Minimum@datasheet-analog-power-rules/1",
+        "header `Typ` matched Typical@datasheet-analog-power-rules/1",
+        "header `Max` matched Maximum@datasheet-analog-power-rules/1",
+        "header `Unit` matched Unit@datasheet-analog-power-rules/1",
+        "value r=2,c=3 is explicitly unspecified, never zero"
+      ]
+    },
+    {
+      "table_id": "table:9b891df08f7c0f2f8ba8954748479f8f05cf5e0e222d923491b74148fc27d4ff",
+      "row": 2,
+      "parameter_text": "Output accuracy",
+      "symbol_text": "ACC",
+      "regime": "recommended_operating",
+      "value_role": "typical",
+      "value_candidate_id": "quantity:4a841d8b9b2d2c48316cf863f547b17d8123cb201aa4b240a5732bb8a890b406",
+      "condition_candidate_ids": [],
+      "predicate_candidates": [
+        {
+          "predicate_term_id": "analog.output_accuracy",
+          "score": 145,
+          "reasons": [
+            "quantity kind matched datasheet:RelativeTolerance",
+            "dimensionality matched 1",
+            "parameter alias matched",
+            "symbol alias matched",
+            "regime constraint matched",
+            "category prior matched"
+          ]
+        }
+      ],
+      "status": "accepted_by_extractor",
+      "explanations": [
+        "section heading matched `recommended operating conditions`@datasheet-analog-power-rules/1",
+        "header `Parameter` matched Parameter@datasheet-analog-power-rules/1",
+        "header `Symbol` matched Symbol@datasheet-analog-power-rules/1",
+        "header `Conditions` matched Condition@datasheet-analog-power-rules/1",
+        "header `Min` matched Minimum@datasheet-analog-power-rules/1",
+        "header `Typ` matched Typical@datasheet-analog-power-rules/1",
+        "header `Max` matched Maximum@datasheet-analog-power-rules/1",
+        "header `Unit` matched Unit@datasheet-analog-power-rules/1",
+        "value selected from table r=2,c=4 as Typical",
+        "quantity kind matched datasheet:RelativeTolerance",
+        "dimensionality matched 1",
+        "parameter alias matched",
+        "symbol alias matched",
+        "regime constraint matched",
+        "category prior matched"
+      ]
+    },
+    {
+      "table_id": "table:9b891df08f7c0f2f8ba8954748479f8f05cf5e0e222d923491b74148fc27d4ff",
+      "row": 2,
+      "parameter_text": "Output accuracy",
+      "symbol_text": "ACC",
+      "regime": "recommended_operating",
+      "value_role": "maximum",
+      "condition_candidate_ids": [],
+      "predicate_candidates": [],
+      "status": "unsupported",
+      "explanations": [
+        "section heading matched `recommended operating conditions`@datasheet-analog-power-rules/1",
+        "header `Parameter` matched Parameter@datasheet-analog-power-rules/1",
+        "header `Symbol` matched Symbol@datasheet-analog-power-rules/1",
+        "header `Conditions` matched Condition@datasheet-analog-power-rules/1",
+        "header `Min` matched Minimum@datasheet-analog-power-rules/1",
+        "header `Typ` matched Typical@datasheet-analog-power-rules/1",
+        "header `Max` matched Maximum@datasheet-analog-power-rules/1",
+        "header `Unit` matched Unit@datasheet-analog-power-rules/1",
+        "value r=2,c=5 is explicitly unspecified, never zero"
+      ]
+    },
+    {
+      "table_id": "table:9e0c09c7e908b4129a8fd00cbadee0528465539b213ef43b0498a674ce6db398",
+      "row": 1,
+      "parameter_text": "Quiescent current",
+      "symbol_text": "IQ",
+      "regime": "guaranteed",
+      "value_role": "typical",
+      "value_candidate_id": "quantity:28c9e0c223a6af1ccab3472a0497c8e935a1a8b112eb4e89dabc3b3afd963cc1",
+      "condition_candidate_ids": [
+        "condition:924fea6436b53a14d47cb2f5f91f556ecceac2c384a590ba4db1ff094650ea5a"
+      ],
+      "predicate_candidates": [
+        {
+          "predicate_term_id": "analog.quiescent_current",
+          "score": 145,
+          "reasons": [
+            "quantity kind matched si:ElectricCurrent",
+            "dimensionality matched A",
+            "parameter alias matched",
+            "symbol alias matched",
+            "regime constraint matched",
+            "category prior matched"
+          ]
+        }
+      ],
+      "status": "accepted_by_extractor",
+      "explanations": [
+        "section heading matched `electrical characteristics`@datasheet-analog-power-rules/1",
+        "header `Parameter` matched Parameter@datasheet-analog-power-rules/1",
+        "header `Symbol` matched Symbol@datasheet-analog-power-rules/1",
+        "header `Test Conditions` matched Condition@datasheet-analog-power-rules/1",
+        "header `Typ` matched Typical@datasheet-analog-power-rules/1",
+        "header `Unit` matched Unit@datasheet-analog-power-rules/1",
+        "condition selected from r=1, condition column",
+        "value selected from table r=1,c=3 as Typical",
+        "unit `nA` inherited from explicit unit column",
+        "quantity kind matched si:ElectricCurrent",
+        "dimensionality matched A",
+        "parameter alias matched",
+        "symbol alias matched",
+        "regime constraint matched",
+        "category prior matched"
+      ]
+    }
+  ],
+  "abstained_tables": 1,
+  "warnings": []
+}

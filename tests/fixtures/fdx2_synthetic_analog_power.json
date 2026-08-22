@@ -1,0 +1,105 @@
+{
+  "schema_version": "ferrodoc-document-ir/1",
+  "source_pdf_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+  "document_state_id": "document-state:synthetic-fdx2-v1",
+  "document_ir_logical_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+  "pages": [{
+    "page_id": "page-1",
+    "title_blocks": [{"evidence_id":"title-1","region_id":"title","text":"Synthetic Semiconductor SYNTH1000","geometry":[{"left":0.1,"top":0.05,"right":0.8,"bottom":0.1}],"geometry_quality":"exact_region"}],
+    "headings": [
+      {"evidence_id":"heading-rec","region_id":"heading-rec","text":"Recommended Operating Conditions","geometry":[],"geometry_quality":"page_only"},
+      {"evidence_id":"heading-elec","region_id":"heading-elec","text":"Electrical Characteristics","geometry":[],"geometry_quality":"exact_region"},
+      {"evidence_id":"heading-abs","region_id":"heading-abs","text":"Absolute Maximum Ratings","geometry":[],"geometry_quality":"exact_region"},
+      {"evidence_id":"heading-thermal","region_id":"heading-thermal","text":"Thermal Information","geometry":[],"geometry_quality":"exact_region"},
+      {"evidence_id":"heading-generic","region_id":"heading-generic","text":"Characteristics","geometry":[],"geometry_quality":"page_only"}
+    ],
+    "paragraphs": [],
+    "tables": [
+      {
+        "region_id":"table-rec","heading_path":["Recommended Operating Conditions"],"rows":3,"columns":7,"header_rows":1,"reconstruction_quality":"exact_region",
+        "cells":[
+          {"evidence_id":"rec-h0","row":0,"column":0,"text":"Parameter","markers":[],"geometry":[],"geometry_quality":"exact_region"},
+          {"evidence_id":"rec-h1","row":0,"column":1,"text":"Symbol","markers":[],"geometry":[],"geometry_quality":"exact_region"},
+          {"evidence_id":"rec-h2","row":0,"column":2,"text":"Conditions","markers":[],"geometry":[],"geometry_quality":"exact_region"},
+          {"evidence_id":"rec-h3","row":0,"column":3,"text":"Min","markers":[],"geometry":[],"geometry_quality":"exact_region"},
+          {"evidence_id":"rec-h4","row":0,"column":4,"text":"Typ","markers":[],"geometry":[],"geometry_quality":"exact_region"},
+          {"evidence_id":"rec-h5","row":0,"column":5,"text":"Max","markers":[],"geometry":[],"geometry_quality":"exact_region"},
+          {"evidence_id":"rec-h6","row":0,"column":6,"text":"Unit","markers":[],"geometry":[],"geometry_quality":"exact_region"},
+          {"evidence_id":"rec-10","row":1,"column":0,"text":"Input voltage","markers":[],"geometry":[],"geometry_quality":"exact_region"},
+          {"evidence_id":"rec-11","row":1,"column":1,"text":"VIN","markers":[],"geometry":[],"geometry_quality":"exact_region"},
+          {"evidence_id":"rec-12","row":1,"column":2,"text":"TA = 25 °C","markers":["1"],"geometry":[],"geometry_quality":"exact_region"},
+          {"evidence_id":"rec-13","row":1,"column":3,"text":"1.8","markers":[],"geometry":[],"geometry_quality":"exact_region"},
+          {"evidence_id":"rec-14","row":1,"column":4,"text":"3.3","markers":[],"geometry":[],"geometry_quality":"exact_region"},
+          {"evidence_id":"rec-15","row":1,"column":5,"text":"5.5","markers":[],"geometry":[],"geometry_quality":"exact_region"},
+          {"evidence_id":"rec-16","row":1,"column":6,"text":"V","markers":[],"geometry":[],"geometry_quality":"exact_region"},
+          {"evidence_id":"rec-20","row":2,"column":0,"text":"Output accuracy","markers":[],"geometry":[],"geometry_quality":"page_only"},
+          {"evidence_id":"rec-21","row":2,"column":1,"text":"ACC","markers":[],"geometry":[],"geometry_quality":"page_only"},
+          {"evidence_id":"rec-22","row":2,"column":2,"text":"","markers":[],"geometry":[],"geometry_quality":"page_only"},
+          {"evidence_id":"rec-23","row":2,"column":3,"text":"-","markers":[],"geometry":[],"geometry_quality":"page_only"},
+          {"evidence_id":"rec-24","row":2,"column":4,"text":"±2 %","markers":[],"geometry":[],"geometry_quality":"page_only"},
+          {"evidence_id":"rec-25","row":2,"column":5,"text":"N/A","markers":[],"geometry":[],"geometry_quality":"page_only"},
+          {"evidence_id":"rec-26","row":2,"column":6,"text":"%","markers":[],"geometry":[],"geometry_quality":"page_only"}
+        ],
+        "footnotes":[{"marker":"1","evidence":{"evidence_id":"rec-foot-1","region_id":"table-rec","text":"Valid for the QFN-8 package only.","geometry":[],"geometry_quality":"exact_region"}}]
+      },
+      {
+        "region_id":"table-elec","heading_path":["Electrical Characteristics"],"rows":2,"columns":5,"header_rows":1,"reconstruction_quality":"exact_region",
+        "cells":[
+          {"evidence_id":"el-h0","row":0,"column":0,"text":"Parameter","markers":[],"geometry":[],"geometry_quality":"exact_region"},
+          {"evidence_id":"el-h1","row":0,"column":1,"text":"Symbol","markers":[],"geometry":[],"geometry_quality":"exact_region"},
+          {"evidence_id":"el-h2","row":0,"column":2,"text":"Test Conditions","markers":[],"geometry":[],"geometry_quality":"exact_region"},
+          {"evidence_id":"el-h3","row":0,"column":3,"text":"Typ","markers":[],"geometry":[],"geometry_quality":"exact_region"},
+          {"evidence_id":"el-h4","row":0,"column":4,"text":"Unit","markers":[],"geometry":[],"geometry_quality":"exact_region"},
+          {"evidence_id":"el-10","row":1,"column":0,"text":"Quiescent current","markers":[],"geometry":[],"geometry_quality":"exact_region"},
+          {"evidence_id":"el-11","row":1,"column":1,"text":"IQ","markers":[],"geometry":[],"geometry_quality":"exact_region"},
+          {"evidence_id":"el-12","row":1,"column":2,"text":"VIN = 3.3 V","markers":[],"geometry":[],"geometry_quality":"exact_region"},
+          {"evidence_id":"el-13","row":1,"column":3,"text":"60","markers":[],"geometry":[],"geometry_quality":"exact_region"},
+          {"evidence_id":"el-14","row":1,"column":4,"text":"nA","markers":[],"geometry":[],"geometry_quality":"exact_region"}
+        ],"footnotes":[]
+      },
+      {
+        "region_id":"table-abs","heading_path":["Absolute Maximum Ratings"],"rows":3,"columns":4,"header_rows":1,"reconstruction_quality":"exact_region",
+        "cells":[
+          {"evidence_id":"abs-h0","row":0,"column":0,"text":"Parameter","markers":[],"geometry":[],"geometry_quality":"exact_region"},
+          {"evidence_id":"abs-h1","row":0,"column":1,"text":"Symbol","markers":[],"geometry":[],"geometry_quality":"exact_region"},
+          {"evidence_id":"abs-h2","row":0,"column":2,"text":"Rating","markers":[],"geometry":[],"geometry_quality":"exact_region"},
+          {"evidence_id":"abs-h3","row":0,"column":3,"text":"Unit","markers":[],"geometry":[],"geometry_quality":"exact_region"},
+          {"evidence_id":"abs-10","row":1,"column":0,"text":"Input voltage","markers":[],"geometry":[],"geometry_quality":"exact_region"},
+          {"evidence_id":"abs-11","row":1,"column":1,"text":"VIN","markers":[],"geometry":[],"geometry_quality":"exact_region"},
+          {"evidence_id":"abs-12","row":1,"column":2,"text":"VDD + 0.3 V","markers":[],"geometry":[],"geometry_quality":"exact_region"},
+          {"evidence_id":"abs-13","row":1,"column":3,"text":"V","markers":[],"geometry":[],"geometry_quality":"exact_region"},
+          {"evidence_id":"abs-20","row":2,"column":0,"text":"Storage temperature","markers":[],"geometry":[],"geometry_quality":"exact_region"},
+          {"evidence_id":"abs-21","row":2,"column":1,"text":"TSTG","markers":[],"geometry":[],"geometry_quality":"exact_region"},
+          {"evidence_id":"abs-22","row":2,"column":2,"text":"-40 °C to 125 °C","markers":[],"geometry":[],"geometry_quality":"exact_region"},
+          {"evidence_id":"abs-23","row":2,"column":3,"text":"°C","markers":[],"geometry":[],"geometry_quality":"exact_region"}
+        ],"footnotes":[]
+      },
+      {
+        "region_id":"table-thermal","heading_path":["Thermal Information"],"rows":2,"columns":5,"header_rows":1,"reconstruction_quality":"exact_region",
+        "cells":[
+          {"evidence_id":"th-h0","row":0,"column":0,"text":"Parameter","markers":[],"geometry":[],"geometry_quality":"exact_region"},
+          {"evidence_id":"th-h1","row":0,"column":1,"text":"Symbol","markers":[],"geometry":[],"geometry_quality":"exact_region"},
+          {"evidence_id":"th-h2","row":0,"column":2,"text":"Package","markers":[],"geometry":[],"geometry_quality":"exact_region"},
+          {"evidence_id":"th-h3","row":0,"column":3,"text":"Rating","markers":[],"geometry":[],"geometry_quality":"exact_region"},
+          {"evidence_id":"th-h4","row":0,"column":4,"text":"Unit","markers":[],"geometry":[],"geometry_quality":"exact_region"},
+          {"evidence_id":"th-10","row":1,"column":0,"text":"Junction-to-ambient thermal resistance","markers":[],"geometry":[],"geometry_quality":"exact_region"},
+          {"evidence_id":"th-11","row":1,"column":1,"text":"θJA","markers":[],"geometry":[],"geometry_quality":"exact_region"},
+          {"evidence_id":"th-12","row":1,"column":2,"text":"QFN-8","markers":[],"geometry":[],"geometry_quality":"exact_region"},
+          {"evidence_id":"th-13","row":1,"column":3,"text":"180","markers":[],"geometry":[],"geometry_quality":"exact_region"},
+          {"evidence_id":"th-14","row":1,"column":4,"text":"°C/W","markers":[],"geometry":[],"geometry_quality":"exact_region"}
+        ],"footnotes":[]
+      },
+      {
+        "region_id":"table-ambiguous","heading_path":["Characteristics"],"rows":2,"columns":3,"header_rows":1,"reconstruction_quality":"page_only",
+        "cells":[
+          {"evidence_id":"am-h0","row":0,"column":0,"text":"Parameter","markers":[],"geometry":[],"geometry_quality":"page_only"},
+          {"evidence_id":"am-h1","row":0,"column":1,"text":"Value","markers":[],"geometry":[],"geometry_quality":"page_only"},
+          {"evidence_id":"am-h2","row":0,"column":2,"text":"Unit","markers":[],"geometry":[],"geometry_quality":"page_only"},
+          {"evidence_id":"am-10","row":1,"column":0,"text":"Unknown property","markers":[],"geometry":[],"geometry_quality":"page_only"},
+          {"evidence_id":"am-11","row":1,"column":1,"text":"5","markers":[],"geometry":[],"geometry_quality":"page_only"},
+          {"evidence_id":"am-12","row":1,"column":2,"text":"V","markers":[],"geometry":[],"geometry_quality":"page_only"}
+        ],"footnotes":[]
+      }
+    ]
+  }]
+}

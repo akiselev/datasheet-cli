@@ -569,6 +569,7 @@ name = "datasheet-compiler"
 version = "0.1.8"
 dependencies = [
  "datasheet-core",
+ "quantitas",
  "schemars",
  "serde",
  "serde_json",
@@ -1824,6 +1825,15 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "7f6d64c71eb498fe9eae14ce4ec935c555749aef511cca85b5568910d6e48001"
 dependencies = [
  "bytemuck",
+]
+
+[[package]]
+name = "quantitas"
+version = "0.1.0"
+source = "git+https://github.com/akiselev/quantitas.git?rev=734d78cd6ff516afee54201bc70cd59fd34e67e3#734d78cd6ff516afee54201bc70cd59fd34e67e3"
+dependencies = [
+ "serde",
+ "thiserror 2.0.18",
 ]
 
 [[package]]

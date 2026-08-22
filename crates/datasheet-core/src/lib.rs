@@ -210,7 +210,7 @@ pub struct ConditionCandidate {
     pub evidence_anchors: Vec<EvidenceAnchor>,
 }
 
-#[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize, JsonSchema)]
+#[derive(Clone, Debug, Eq, Ord, PartialEq, PartialOrd, Serialize, Deserialize, JsonSchema)]
 #[serde(rename_all = "snake_case")]
 pub enum ParsedQuantityShape {
     Scalar,
@@ -218,6 +218,7 @@ pub enum ParsedQuantityShape {
     Inequality,
     Tolerance,
     Set,
+    Symbolic,
     TextUnparsed,
 }
 
@@ -245,7 +246,7 @@ pub struct QuantityCandidate {
     pub parse_warnings: Vec<String>,
 }
 
-#[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize, JsonSchema)]
+#[derive(Clone, Debug, Eq, Ord, PartialEq, PartialOrd, Serialize, Deserialize, JsonSchema)]
 #[serde(rename_all = "snake_case")]
 pub enum SpecificationRegime {
     AbsoluteMaximum,
@@ -307,12 +308,23 @@ pub enum GroundingStatus {
     Rejected,
 }
 
+/// Semantic role of a selected value within its source table row.
+#[derive(Clone, Debug, Eq, Ord, PartialEq, PartialOrd, Serialize, Deserialize, JsonSchema)]
+#[serde(rename_all = "snake_case")]
+pub enum ValueRole {
+    Minimum,
+    Typical,
+    Maximum,
+    Rating,
+}
+
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize, JsonSchema)]
 pub struct ClaimCandidate {
     pub local_id: CandidateId,
     pub subject_candidate_id: CandidateId,
     pub predicate_term_id: String,
     pub regime: SpecificationRegime,
+    pub value_role: ValueRole,
     pub value_candidate_id: CandidateId,
     pub condition_candidate_ids: Vec<CandidateId>,
     pub package_variant_candidate_ids: Vec<CandidateId>,
@@ -401,6 +413,8 @@ pub struct PredicateTerm {
     pub symbol_aliases: Vec<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub expected_quantity_kind: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub expected_dimensionality: Option<String>,
     pub expected_shapes: Vec<ParsedQuantityShape>,
     pub regime_constraints: Vec<SpecificationRegime>,
     pub category_scope: Vec<String>,
@@ -463,6 +477,7 @@ mod tests {
             aliases: vec![],
             symbol_aliases: vec![],
             expected_quantity_kind: None,
+            expected_dimensionality: None,
             expected_shapes: vec![ParsedQuantityShape::Scalar],
             regime_constraints: vec![],
             category_scope: vec![],

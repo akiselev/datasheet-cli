@@ -1,0 +1,1076 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "DeterministicBaseline",
+  "type": "object",
+  "required": [
+    "abstained_tables",
+    "claim_bundle",
+    "header_inferences",
+    "row_results",
+    "ruleset_version",
+    "schema_version",
+    "sketch",
+    "warnings"
+  ],
+  "properties": {
+    "abstained_tables": {
+      "type": "integer",
+      "format": "uint32",
+      "minimum": 0.0
+    },
+    "claim_bundle": {
+      "$ref": "#/definitions/ClaimBundle"
+    },
+    "header_inferences": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/HeaderInference"
+      }
+    },
+    "row_results": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/RowValueResult"
+      }
+    },
+    "ruleset_version": {
+      "type": "string"
+    },
+    "schema_version": {
+      "type": "string"
+    },
+    "sketch": {
+      "$ref": "#/definitions/DatasheetSketch"
+    },
+    "warnings": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "additionalProperties": false,
+  "definitions": {
+    "ClaimBundle": {
+      "type": "object",
+      "required": [
+        "claims",
+        "document_state_id",
+        "producer",
+        "schema_version",
+        "selected_values",
+        "sketch_id",
+        "source_pdf_sha256",
+        "subject_hints",
+        "warnings"
+      ],
+      "properties": {
+        "claims": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ClaimCandidate"
+          }
+        },
+        "document_ir_logical_sha256": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "document_state_id": {
+          "type": "string"
+        },
+        "producer": {
+          "$ref": "#/definitions/ProducerIdentity"
+        },
+        "schema_version": {
+          "type": "string"
+        },
+        "selected_values": {
+          "description": "Exact selected value records preserve original source spelling and normalization.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/QuantityCandidate"
+          }
+        },
+        "sketch_id": {
+          "type": "string"
+        },
+        "source_pdf_sha256": {
+          "type": "string"
+        },
+        "subject_hints": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/SubjectHint"
+          }
+        },
+        "warnings": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "ClaimCandidate": {
+      "type": "object",
+      "required": [
+        "condition_candidate_ids",
+        "evidence_anchors",
+        "extraction_confidence",
+        "grounding_status",
+        "local_id",
+        "package_variant_candidate_ids",
+        "predicate_term_id",
+        "regime",
+        "subject_candidate_id",
+        "value_candidate_id",
+        "value_role"
+      ],
+      "properties": {
+        "condition_candidate_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "evidence_anchors": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/EvidenceAnchor"
+          }
+        },
+        "extraction_confidence": {
+          "type": "number",
+          "format": "double"
+        },
+        "grounding_status": {
+          "$ref": "#/definitions/GroundingStatus"
+        },
+        "local_id": {
+          "type": "string"
+        },
+        "package_variant_candidate_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "predicate_term_id": {
+          "type": "string"
+        },
+        "regime": {
+          "$ref": "#/definitions/SpecificationRegime"
+        },
+        "subject_candidate_id": {
+          "type": "string"
+        },
+        "value_candidate_id": {
+          "type": "string"
+        },
+        "value_role": {
+          "$ref": "#/definitions/ValueRole"
+        }
+      }
+    },
+    "ColumnRole": {
+      "type": "string",
+      "enum": [
+        "parameter",
+        "symbol",
+        "condition",
+        "minimum",
+        "typical",
+        "maximum",
+        "unit",
+        "rating",
+        "package",
+        "notes",
+        "unknown"
+      ]
+    },
+    "ConditionCandidate": {
+      "description": "A sketch-owned, anchored applicability or test-condition candidate.",
+      "type": "object",
+      "required": [
+        "evidence_anchors",
+        "id",
+        "raw_text"
+      ],
+      "properties": {
+        "evidence_anchors": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/EvidenceAnchor"
+          }
+        },
+        "id": {
+          "type": "string"
+        },
+        "parsed_candidate": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ParsedConditionCandidate"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "raw_text": {
+          "type": "string"
+        }
+      }
+    },
+    "ContentSelector": {
+      "oneOf": [
+        {
+          "type": "object",
+          "required": [
+            "kind"
+          ],
+          "properties": {
+            "kind": {
+              "type": "string",
+              "enum": [
+                "whole_evidence"
+              ]
+            }
+          }
+        },
+        {
+          "type": "object",
+          "required": [
+            "end",
+            "evidence_id",
+            "kind",
+            "start"
+          ],
+          "properties": {
+            "end": {
+              "type": "integer",
+              "format": "uint32",
+              "minimum": 0.0
+            },
+            "evidence_id": {
+              "type": "string"
+            },
+            "kind": {
+              "type": "string",
+              "enum": [
+                "text_range"
+              ]
+            },
+            "start": {
+              "type": "integer",
+              "format": "uint32",
+              "minimum": 0.0
+            }
+          }
+        },
+        {
+          "type": "object",
+          "required": [
+            "column",
+            "kind",
+            "row",
+            "table_region_id"
+          ],
+          "properties": {
+            "column": {
+              "type": "integer",
+              "format": "uint32",
+              "minimum": 0.0
+            },
+            "kind": {
+              "type": "string",
+              "enum": [
+                "table_cell"
+              ]
+            },
+            "row": {
+              "type": "integer",
+              "format": "uint32",
+              "minimum": 0.0
+            },
+            "table_region_id": {
+              "type": "string"
+            }
+          }
+        }
+      ]
+    },
+    "DatasheetSketch": {
+      "description": "Electronics candidate index. Corpus-derived family and split assignments are deliberately absent, so later clustering cannot mutate this artifact's identity.",
+      "type": "object",
+      "required": [
+        "blocks",
+        "conditions",
+        "document_state_id",
+        "packages",
+        "producer",
+        "quantities",
+        "schema_version",
+        "sections",
+        "sketch_id",
+        "source_pdf_sha256",
+        "subjects",
+        "symbols",
+        "tables",
+        "template_signatures"
+      ],
+      "properties": {
+        "blocks": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/SketchBlock"
+          }
+        },
+        "conditions": {
+          "description": "Explicit owner for every condition ID that claims may select.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ConditionCandidate"
+          }
+        },
+        "document_ir_logical_sha256": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "document_state_id": {
+          "type": "string"
+        },
+        "packages": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/PackageCandidate"
+          }
+        },
+        "producer": {
+          "$ref": "#/definitions/ProducerIdentity"
+        },
+        "quantities": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/QuantityCandidate"
+          }
+        },
+        "schema_version": {
+          "type": "string"
+        },
+        "sections": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/SectionCandidate"
+          }
+        },
+        "sketch_id": {
+          "type": "string"
+        },
+        "source_pdf_sha256": {
+          "type": "string"
+        },
+        "subjects": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/SubjectCandidate"
+          }
+        },
+        "symbols": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/SymbolCandidate"
+          }
+        },
+        "tables": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/SketchTable"
+          }
+        },
+        "template_signatures": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "EvidenceAnchor": {
+      "description": "State-aware reference to exact document evidence. Checkpoint identity is optional because logical state identity, rather than physical materialization, owns replay semantics.",
+      "type": "object",
+      "required": [
+        "content_selector",
+        "document_state_id",
+        "evidence_ids",
+        "geometry_quality",
+        "page_id",
+        "schema_version",
+        "source_geometry",
+        "source_pdf_sha256"
+      ],
+      "properties": {
+        "content_selector": {
+          "$ref": "#/definitions/ContentSelector"
+        },
+        "document_ir_logical_sha256": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "document_state_id": {
+          "type": "string"
+        },
+        "evidence_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "geometry_quality": {
+          "$ref": "#/definitions/GeometryQuality"
+        },
+        "page_id": {
+          "type": "string"
+        },
+        "region_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "schema_version": {
+          "type": "string"
+        },
+        "source_geometry": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/SourceGeometry"
+          }
+        },
+        "source_pdf_sha256": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "GeometryQuality": {
+      "type": "string",
+      "enum": [
+        "exact_glyph",
+        "exact_word",
+        "exact_line",
+        "exact_region",
+        "page_only",
+        "unknown"
+      ]
+    },
+    "GroundingStatus": {
+      "type": "string",
+      "enum": [
+        "grounded",
+        "rejected"
+      ]
+    },
+    "HeaderInference": {
+      "type": "object",
+      "required": [
+        "explanations",
+        "roles",
+        "signature",
+        "status"
+      ],
+      "properties": {
+        "explanations": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "roles": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ColumnRole"
+          }
+        },
+        "signature": {
+          "type": "string"
+        },
+        "status": {
+          "$ref": "#/definitions/InferenceStatus"
+        }
+      }
+    },
+    "InferenceStatus": {
+      "type": "string",
+      "enum": [
+        "matched",
+        "abstained"
+      ]
+    },
+    "NormalizedQuantity": {
+      "type": "object",
+      "required": [
+        "canonical_unit",
+        "canonical_value",
+        "registry_identity"
+      ],
+      "properties": {
+        "canonical_unit": {
+          "type": "string"
+        },
+        "canonical_value": {
+          "type": "string"
+        },
+        "registry_identity": {
+          "type": "string"
+        }
+      }
+    },
+    "PackageCandidate": {
+      "type": "object",
+      "required": [
+        "anchor",
+        "id",
+        "raw_text"
+      ],
+      "properties": {
+        "anchor": {
+          "$ref": "#/definitions/EvidenceAnchor"
+        },
+        "id": {
+          "type": "string"
+        },
+        "raw_text": {
+          "type": "string"
+        }
+      }
+    },
+    "ParsedConditionCandidate": {
+      "type": "object",
+      "required": [
+        "fields"
+      ],
+      "properties": {
+        "fields": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ParsedQuantityShape": {
+      "type": "string",
+      "enum": [
+        "scalar",
+        "range",
+        "inequality",
+        "tolerance",
+        "set",
+        "symbolic",
+        "text_unparsed"
+      ]
+    },
+    "PredicateScore": {
+      "type": "object",
+      "required": [
+        "predicate_term_id",
+        "reasons",
+        "score"
+      ],
+      "properties": {
+        "predicate_term_id": {
+          "type": "string"
+        },
+        "reasons": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "score": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "ProducerIdentity": {
+      "type": "object",
+      "required": [
+        "code_revision",
+        "configuration_digest",
+        "document_ir_schema",
+        "name",
+        "ontology_snapshot_digest",
+        "version"
+      ],
+      "properties": {
+        "code_revision": {
+          "type": "string"
+        },
+        "configuration_digest": {
+          "type": "string"
+        },
+        "document_ir_schema": {
+          "type": "string"
+        },
+        "model_digest": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "name": {
+          "type": "string"
+        },
+        "ontology_snapshot_digest": {
+          "type": "string"
+        },
+        "quantitas_registry_identity": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "version": {
+          "type": "string"
+        }
+      }
+    },
+    "QuantityCandidate": {
+      "type": "object",
+      "required": [
+        "anchor",
+        "id",
+        "parse_warnings",
+        "parsed_shape",
+        "raw_text"
+      ],
+      "properties": {
+        "anchor": {
+          "$ref": "#/definitions/EvidenceAnchor"
+        },
+        "dimensionality": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "id": {
+          "type": "string"
+        },
+        "normalized_quantity": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/NormalizedQuantity"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "parse_warnings": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "parsed_shape": {
+          "$ref": "#/definitions/ParsedQuantityShape"
+        },
+        "quantity_kind_hint": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "raw_text": {
+          "type": "string"
+        },
+        "raw_unit": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "RowExtractionStatus": {
+      "type": "string",
+      "enum": [
+        "accepted_by_extractor",
+        "ambiguous",
+        "unsupported",
+        "invalid_grounding"
+      ]
+    },
+    "RowValueResult": {
+      "type": "object",
+      "required": [
+        "condition_candidate_ids",
+        "explanations",
+        "parameter_text",
+        "predicate_candidates",
+        "regime",
+        "row",
+        "status",
+        "table_id",
+        "value_role"
+      ],
+      "properties": {
+        "condition_candidate_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "explanations": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "parameter_text": {
+          "type": "string"
+        },
+        "predicate_candidates": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/PredicateScore"
+          }
+        },
+        "regime": {
+          "$ref": "#/definitions/SpecificationRegime"
+        },
+        "row": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0.0
+        },
+        "status": {
+          "$ref": "#/definitions/RowExtractionStatus"
+        },
+        "symbol_text": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "table_id": {
+          "type": "string"
+        },
+        "value_candidate_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "value_role": {
+          "$ref": "#/definitions/ValueRole"
+        }
+      }
+    },
+    "SectionCandidate": {
+      "type": "object",
+      "required": [
+        "block_ids",
+        "deterministic_regime_candidates",
+        "id",
+        "table_ids"
+      ],
+      "properties": {
+        "block_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "deterministic_regime_candidates": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/SpecificationRegime"
+          }
+        },
+        "heading_anchor": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/EvidenceAnchor"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "heading_text": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "id": {
+          "type": "string"
+        },
+        "parent_section_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "table_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "SketchBlock": {
+      "type": "object",
+      "required": [
+        "anchor",
+        "id",
+        "raw_text"
+      ],
+      "properties": {
+        "anchor": {
+          "$ref": "#/definitions/EvidenceAnchor"
+        },
+        "id": {
+          "type": "string"
+        },
+        "raw_text": {
+          "type": "string"
+        }
+      }
+    },
+    "SketchTable": {
+      "type": "object",
+      "required": [
+        "cells",
+        "columns",
+        "heading_path",
+        "id",
+        "reconstruction_quality",
+        "rows",
+        "source_region_id",
+        "structural_signature"
+      ],
+      "properties": {
+        "cells": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/SketchTableCell"
+          }
+        },
+        "columns": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0.0
+        },
+        "heading_path": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "id": {
+          "type": "string"
+        },
+        "reconstruction_quality": {
+          "$ref": "#/definitions/GeometryQuality"
+        },
+        "rows": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0.0
+        },
+        "source_region_id": {
+          "type": "string"
+        },
+        "structural_signature": {
+          "type": "string"
+        }
+      }
+    },
+    "SketchTableCell": {
+      "type": "object",
+      "required": [
+        "anchor",
+        "column",
+        "raw_text",
+        "row",
+        "source_evidence_ids"
+      ],
+      "properties": {
+        "anchor": {
+          "$ref": "#/definitions/EvidenceAnchor"
+        },
+        "column": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0.0
+        },
+        "raw_text": {
+          "type": "string"
+        },
+        "row": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0.0
+        },
+        "source_evidence_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "SourceGeometry": {
+      "type": "object",
+      "required": [
+        "bottom",
+        "left",
+        "right",
+        "top"
+      ],
+      "properties": {
+        "bottom": {
+          "type": "number",
+          "format": "double"
+        },
+        "left": {
+          "type": "number",
+          "format": "double"
+        },
+        "right": {
+          "type": "number",
+          "format": "double"
+        },
+        "top": {
+          "type": "number",
+          "format": "double"
+        }
+      }
+    },
+    "SpecificationRegime": {
+      "type": "string",
+      "enum": [
+        "absolute_maximum",
+        "recommended_operating",
+        "guaranteed",
+        "tested",
+        "characterized_typical",
+        "application_guidance",
+        "informative",
+        "derived",
+        "inferred",
+        "measured",
+        "unknown"
+      ]
+    },
+    "SubjectCandidate": {
+      "type": "object",
+      "required": [
+        "evidence_anchor",
+        "id",
+        "kind",
+        "raw_designation"
+      ],
+      "properties": {
+        "evidence_anchor": {
+          "$ref": "#/definitions/EvidenceAnchor"
+        },
+        "id": {
+          "type": "string"
+        },
+        "kind": {
+          "$ref": "#/definitions/SubjectKind"
+        },
+        "manufacturer_hint": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "normalized_search_key": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "raw_designation": {
+          "type": "string"
+        }
+      }
+    },
+    "SubjectHint": {
+      "type": "object",
+      "required": [
+        "mpn_raw"
+      ],
+      "properties": {
+        "manufacturer_raw": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "mpn_raw": {
+          "type": "string"
+        }
+      }
+    },
+    "SubjectKind": {
+      "type": "string",
+      "enum": [
+        "part",
+        "family",
+        "package_variant",
+        "unknown"
+      ]
+    },
+    "SymbolCandidate": {
+      "type": "object",
+      "required": [
+        "anchor",
+        "id",
+        "raw_text"
+      ],
+      "properties": {
+        "anchor": {
+          "$ref": "#/definitions/EvidenceAnchor"
+        },
+        "id": {
+          "type": "string"
+        },
+        "normalized_symbol": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "raw_text": {
+          "type": "string"
+        }
+      }
+    },
+    "ValueRole": {
+      "description": "Semantic role of a selected value within its source table row.",
+      "type": "string",
+      "enum": [
+        "minimum",
+        "typical",
+        "maximum",
+        "rating"
+      ]
+    }
+  }
+}

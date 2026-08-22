@@ -1,0 +1,123 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "BaselineEvaluation",
+  "type": "object",
+  "required": [
+    "abstention_count",
+    "claim_anchor_validity",
+    "condition_span_accuracy",
+    "coverage",
+    "exact_claim_accuracy",
+    "header_role_accuracy",
+    "predicate_top1_accuracy",
+    "predicate_top5_accuracy",
+    "quantity_parse_accuracy",
+    "resources",
+    "schema_version",
+    "section_precision",
+    "section_recall",
+    "ungrounded_output_count"
+  ],
+  "properties": {
+    "abstention_count": {
+      "type": "integer",
+      "format": "uint32",
+      "minimum": 0.0
+    },
+    "claim_anchor_validity": {
+      "$ref": "#/definitions/RatioMetric"
+    },
+    "condition_span_accuracy": {
+      "$ref": "#/definitions/RatioMetric"
+    },
+    "coverage": {
+      "$ref": "#/definitions/RatioMetric"
+    },
+    "exact_claim_accuracy": {
+      "$ref": "#/definitions/RatioMetric"
+    },
+    "header_role_accuracy": {
+      "$ref": "#/definitions/RatioMetric"
+    },
+    "predicate_top1_accuracy": {
+      "$ref": "#/definitions/RatioMetric"
+    },
+    "predicate_top5_accuracy": {
+      "$ref": "#/definitions/RatioMetric"
+    },
+    "quantity_parse_accuracy": {
+      "$ref": "#/definitions/RatioMetric"
+    },
+    "resources": {
+      "$ref": "#/definitions/ResourceObservation"
+    },
+    "schema_version": {
+      "type": "string"
+    },
+    "section_precision": {
+      "$ref": "#/definitions/RatioMetric"
+    },
+    "section_recall": {
+      "$ref": "#/definitions/RatioMetric"
+    },
+    "ungrounded_output_count": {
+      "type": "integer",
+      "format": "uint32",
+      "minimum": 0.0
+    }
+  },
+  "additionalProperties": false,
+  "definitions": {
+    "RatioMetric": {
+      "type": "object",
+      "required": [
+        "denominator",
+        "numerator",
+        "value"
+      ],
+      "properties": {
+        "denominator": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0.0
+        },
+        "numerator": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0.0
+        },
+        "value": {
+          "type": "number",
+          "format": "double"
+        }
+      }
+    },
+    "ResourceObservation": {
+      "type": "object",
+      "required": [
+        "note"
+      ],
+      "properties": {
+        "note": {
+          "type": "string"
+        },
+        "peak_resident_bytes": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "format": "uint64",
+          "minimum": 0.0
+        },
+        "wall_time_milliseconds": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "format": "uint64",
+          "minimum": 0.0
+        }
+      }
+    }
+  }
+}
