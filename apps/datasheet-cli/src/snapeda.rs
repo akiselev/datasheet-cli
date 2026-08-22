@@ -224,6 +224,7 @@ struct EagleSmd {
     y: f64,
     dx: f64,
     dy: f64,
+    #[allow(dead_code)]
     layer: u32,
     cream: bool,
 }
@@ -259,6 +260,7 @@ struct EaglePin {
     #[allow(dead_code)]
     y: f64,
     direction: String,
+    #[allow(dead_code)]
     rotation: Option<String>,
     #[allow(dead_code)]
     length: String,
@@ -282,6 +284,7 @@ struct EagleSymbol {
 
 struct EagleDeviceSet {
     name: String,
+    #[allow(dead_code)]
     prefix: Option<String>,
     package_name: Option<String>,
     connects: Vec<EagleConnect>,

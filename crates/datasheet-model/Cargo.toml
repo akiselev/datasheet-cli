@@ -1,0 +1,17 @@
+[package]
+name = "datasheet-model"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+repository.workspace = true
+authors.workspace = true
+description = "Versioned model artifact contracts for datasheet candidate selection."
+license = "MIT OR Apache-2.0"
+
+[dependencies]
+datasheet-core.workspace = true
+schemars.workspace = true
+serde.workspace = true
+
+[lints]
+workspace = true

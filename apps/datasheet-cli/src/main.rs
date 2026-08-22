@@ -11,6 +11,7 @@ use clap::{Parser, Subcommand};
 mod digikey;
 mod extract;
 mod extract_pages;
+mod fdx;
 mod file_cache;
 mod footprint_image;
 mod jlcpcb;
@@ -52,6 +53,8 @@ enum Command {
     FootprintImage(footprint_image::FootprintImageArgs),
     /// Extract specific pages/regions from a PDF using LLM-guided detection
     ExtractPages(extract_pages::ExtractPagesArgs),
+    /// Build a deterministic FDX1 sketch from a minimized DocumentIR fixture
+    Sketch(fdx::SketchArgs),
 }
 
 fn main() -> Result<()> {
@@ -76,5 +79,42 @@ fn main() -> Result<()> {
         }
         Command::FootprintImage(args) => footprint_image::run(&args),
         Command::ExtractPages(args) => extract_pages::run(&args),
+        Command::Sketch(args) => fdx::run_sketch(&args),
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn existing_remote_extract_command_still_parses() {
+        let cli = Cli::try_parse_from([
+            "datasheet",
+            "extract",
+            "pinout",
+            "synthetic.pdf",
+            "--formatted",
+        ])
+        .unwrap();
+        assert!(matches!(cli.command, Command::Extract(_)));
+    }
+
+    #[test]
+    fn local_fixture_sketch_command_is_explicit() {
+        let digest = "0".repeat(64);
+        let cli = Cli::try_parse_from([
+            "datasheet",
+            "sketch",
+            "fixture.json",
+            "--code-revision",
+            "revision",
+            "--configuration-digest",
+            &digest,
+            "--ontology-snapshot-digest",
+            &digest,
+        ])
+        .unwrap();
+        assert!(matches!(cli.command, Command::Sketch(_)));
     }
 }

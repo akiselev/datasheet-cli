@@ -1,0 +1,22 @@
+[package]
+name = "datasheet-compiler"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+repository.workspace = true
+authors.workspace = true
+description = "Deterministic electronics candidate compiler over pinned document evidence."
+license = "MIT OR Apache-2.0"
+
+[dependencies]
+datasheet-core.workspace = true
+schemars.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+sha2.workspace = true
+
+[dev-dependencies]
+serde_json.workspace = true
+
+[lints]
+workspace = true

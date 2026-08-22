@@ -12,7 +12,7 @@ use anyhow::{Result, anyhow};
 use clap::Args;
 use std::path::PathBuf;
 
-const PROMPT_TEMPLATE: &str = include_str!("../prompts/extract-pages.md");
+const PROMPT_TEMPLATE: &str = include_str!("../../../prompts/extract-pages.md");
 const __DEFAULT__: &str = "__DEFAULT__";
 
 #[derive(Args, Debug)]

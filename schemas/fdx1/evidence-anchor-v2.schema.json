@@ -1,0 +1,179 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "EvidenceAnchor",
+  "description": "State-aware reference to exact document evidence. Checkpoint identity is optional because logical state identity, rather than physical materialization, owns replay semantics.",
+  "type": "object",
+  "required": [
+    "content_selector",
+    "document_state_id",
+    "evidence_ids",
+    "geometry_quality",
+    "page_id",
+    "schema_version",
+    "source_geometry",
+    "source_pdf_sha256"
+  ],
+  "properties": {
+    "content_selector": {
+      "$ref": "#/definitions/ContentSelector"
+    },
+    "document_ir_logical_sha256": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "document_state_id": {
+      "type": "string"
+    },
+    "evidence_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "geometry_quality": {
+      "$ref": "#/definitions/GeometryQuality"
+    },
+    "page_id": {
+      "type": "string"
+    },
+    "region_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "schema_version": {
+      "type": "string"
+    },
+    "source_geometry": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/SourceGeometry"
+      }
+    },
+    "source_pdf_sha256": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "definitions": {
+    "ContentSelector": {
+      "oneOf": [
+        {
+          "type": "object",
+          "required": [
+            "kind"
+          ],
+          "properties": {
+            "kind": {
+              "type": "string",
+              "enum": [
+                "whole_evidence"
+              ]
+            }
+          }
+        },
+        {
+          "type": "object",
+          "required": [
+            "end",
+            "evidence_id",
+            "kind",
+            "start"
+          ],
+          "properties": {
+            "end": {
+              "type": "integer",
+              "format": "uint32",
+              "minimum": 0.0
+            },
+            "evidence_id": {
+              "type": "string"
+            },
+            "kind": {
+              "type": "string",
+              "enum": [
+                "text_range"
+              ]
+            },
+            "start": {
+              "type": "integer",
+              "format": "uint32",
+              "minimum": 0.0
+            }
+          }
+        },
+        {
+          "type": "object",
+          "required": [
+            "column",
+            "kind",
+            "row",
+            "table_region_id"
+          ],
+          "properties": {
+            "column": {
+              "type": "integer",
+              "format": "uint32",
+              "minimum": 0.0
+            },
+            "kind": {
+              "type": "string",
+              "enum": [
+                "table_cell"
+              ]
+            },
+            "row": {
+              "type": "integer",
+              "format": "uint32",
+              "minimum": 0.0
+            },
+            "table_region_id": {
+              "type": "string"
+            }
+          }
+        }
+      ]
+    },
+    "GeometryQuality": {
+      "type": "string",
+      "enum": [
+        "exact_glyph",
+        "exact_word",
+        "exact_line",
+        "exact_region",
+        "page_only",
+        "unknown"
+      ]
+    },
+    "SourceGeometry": {
+      "type": "object",
+      "required": [
+        "bottom",
+        "left",
+        "right",
+        "top"
+      ],
+      "properties": {
+        "bottom": {
+          "type": "number",
+          "format": "double"
+        },
+        "left": {
+          "type": "number",
+          "format": "double"
+        },
+        "right": {
+          "type": "number",
+          "format": "double"
+        },
+        "top": {
+          "type": "number",
+          "format": "double"
+        }
+      }
+    }
+  }
+}

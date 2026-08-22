@@ -172,6 +172,7 @@ struct StockPriceBreak {
 // DigiKey API OAuth token types
 
 #[derive(Serialize)]
+#[allow(dead_code)]
 struct TokenRequest {
     client_id: String,
     client_secret: String,
@@ -181,7 +182,9 @@ struct TokenRequest {
 #[derive(Deserialize, Debug)]
 struct TokenResponse {
     access_token: String,
+    #[allow(dead_code)]
     token_type: String,
+    #[allow(dead_code)]
     expires_in: i32,
 }
 

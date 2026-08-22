@@ -1,0 +1,42 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [master]
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  fdx-contracts:
+    name: FDX contracts
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: 1.85.0
+          components: rustfmt, clippy
+      - uses: Swatinem/rust-cache@v2
+      - name: Check FDX Rust formatting
+        shell: bash
+        run: find crates tools -name '*.rs' -print0 | xargs -0 rustfmt --check --edition 2024 && rustfmt --check --edition 2024 apps/datasheet-cli/src/fdx.rs
+      - run: cargo test --locked -p datasheet-core -p datasheet-compiler -p datasheet-model -p datasheet-train
+      - run: cargo clippy --locked -p datasheet-core -p datasheet-compiler -p datasheet-model -p datasheet-train --all-targets -- -D warnings
+
+  workspace:
+    name: Workspace (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: 1.85.0
+      - uses: Swatinem/rust-cache@v2
+      - run: cargo check --locked --workspace --all-targets
+      - run: cargo test --locked --workspace

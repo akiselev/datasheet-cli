@@ -1,0 +1,470 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ClaimBundle",
+  "type": "object",
+  "required": [
+    "claims",
+    "document_state_id",
+    "producer",
+    "schema_version",
+    "selected_values",
+    "sketch_id",
+    "source_pdf_sha256",
+    "subject_hints",
+    "warnings"
+  ],
+  "properties": {
+    "claims": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/ClaimCandidate"
+      }
+    },
+    "document_ir_logical_sha256": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "document_state_id": {
+      "type": "string"
+    },
+    "producer": {
+      "$ref": "#/definitions/ProducerIdentity"
+    },
+    "schema_version": {
+      "type": "string"
+    },
+    "selected_values": {
+      "description": "Exact selected value records preserve original source spelling and normalization.",
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/QuantityCandidate"
+      }
+    },
+    "sketch_id": {
+      "type": "string"
+    },
+    "source_pdf_sha256": {
+      "type": "string"
+    },
+    "subject_hints": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/SubjectHint"
+      }
+    },
+    "warnings": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "additionalProperties": false,
+  "definitions": {
+    "ClaimCandidate": {
+      "type": "object",
+      "required": [
+        "condition_candidate_ids",
+        "evidence_anchors",
+        "extraction_confidence",
+        "grounding_status",
+        "local_id",
+        "package_variant_candidate_ids",
+        "predicate_term_id",
+        "regime",
+        "subject_candidate_id",
+        "value_candidate_id"
+      ],
+      "properties": {
+        "condition_candidate_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "evidence_anchors": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/EvidenceAnchor"
+          }
+        },
+        "extraction_confidence": {
+          "type": "number",
+          "format": "double"
+        },
+        "grounding_status": {
+          "$ref": "#/definitions/GroundingStatus"
+        },
+        "local_id": {
+          "type": "string"
+        },
+        "package_variant_candidate_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "predicate_term_id": {
+          "type": "string"
+        },
+        "regime": {
+          "$ref": "#/definitions/SpecificationRegime"
+        },
+        "subject_candidate_id": {
+          "type": "string"
+        },
+        "value_candidate_id": {
+          "type": "string"
+        }
+      }
+    },
+    "ContentSelector": {
+      "oneOf": [
+        {
+          "type": "object",
+          "required": [
+            "kind"
+          ],
+          "properties": {
+            "kind": {
+              "type": "string",
+              "enum": [
+                "whole_evidence"
+              ]
+            }
+          }
+        },
+        {
+          "type": "object",
+          "required": [
+            "end",
+            "evidence_id",
+            "kind",
+            "start"
+          ],
+          "properties": {
+            "end": {
+              "type": "integer",
+              "format": "uint32",
+              "minimum": 0.0
+            },
+            "evidence_id": {
+              "type": "string"
+            },
+            "kind": {
+              "type": "string",
+              "enum": [
+                "text_range"
+              ]
+            },
+            "start": {
+              "type": "integer",
+              "format": "uint32",
+              "minimum": 0.0
+            }
+          }
+        },
+        {
+          "type": "object",
+          "required": [
+            "column",
+            "kind",
+            "row",
+            "table_region_id"
+          ],
+          "properties": {
+            "column": {
+              "type": "integer",
+              "format": "uint32",
+              "minimum": 0.0
+            },
+            "kind": {
+              "type": "string",
+              "enum": [
+                "table_cell"
+              ]
+            },
+            "row": {
+              "type": "integer",
+              "format": "uint32",
+              "minimum": 0.0
+            },
+            "table_region_id": {
+              "type": "string"
+            }
+          }
+        }
+      ]
+    },
+    "EvidenceAnchor": {
+      "description": "State-aware reference to exact document evidence. Checkpoint identity is optional because logical state identity, rather than physical materialization, owns replay semantics.",
+      "type": "object",
+      "required": [
+        "content_selector",
+        "document_state_id",
+        "evidence_ids",
+        "geometry_quality",
+        "page_id",
+        "schema_version",
+        "source_geometry",
+        "source_pdf_sha256"
+      ],
+      "properties": {
+        "content_selector": {
+          "$ref": "#/definitions/ContentSelector"
+        },
+        "document_ir_logical_sha256": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "document_state_id": {
+          "type": "string"
+        },
+        "evidence_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "geometry_quality": {
+          "$ref": "#/definitions/GeometryQuality"
+        },
+        "page_id": {
+          "type": "string"
+        },
+        "region_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "schema_version": {
+          "type": "string"
+        },
+        "source_geometry": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/SourceGeometry"
+          }
+        },
+        "source_pdf_sha256": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "GeometryQuality": {
+      "type": "string",
+      "enum": [
+        "exact_glyph",
+        "exact_word",
+        "exact_line",
+        "exact_region",
+        "page_only",
+        "unknown"
+      ]
+    },
+    "GroundingStatus": {
+      "type": "string",
+      "enum": [
+        "grounded",
+        "rejected"
+      ]
+    },
+    "NormalizedQuantity": {
+      "type": "object",
+      "required": [
+        "canonical_unit",
+        "canonical_value",
+        "registry_identity"
+      ],
+      "properties": {
+        "canonical_unit": {
+          "type": "string"
+        },
+        "canonical_value": {
+          "type": "string"
+        },
+        "registry_identity": {
+          "type": "string"
+        }
+      }
+    },
+    "ParsedQuantityShape": {
+      "type": "string",
+      "enum": [
+        "scalar",
+        "range",
+        "inequality",
+        "tolerance",
+        "set",
+        "text_unparsed"
+      ]
+    },
+    "ProducerIdentity": {
+      "type": "object",
+      "required": [
+        "code_revision",
+        "configuration_digest",
+        "document_ir_schema",
+        "name",
+        "ontology_snapshot_digest",
+        "version"
+      ],
+      "properties": {
+        "code_revision": {
+          "type": "string"
+        },
+        "configuration_digest": {
+          "type": "string"
+        },
+        "document_ir_schema": {
+          "type": "string"
+        },
+        "model_digest": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "name": {
+          "type": "string"
+        },
+        "ontology_snapshot_digest": {
+          "type": "string"
+        },
+        "quantitas_registry_identity": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "version": {
+          "type": "string"
+        }
+      }
+    },
+    "QuantityCandidate": {
+      "type": "object",
+      "required": [
+        "anchor",
+        "id",
+        "parse_warnings",
+        "parsed_shape",
+        "raw_text"
+      ],
+      "properties": {
+        "anchor": {
+          "$ref": "#/definitions/EvidenceAnchor"
+        },
+        "dimensionality": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "id": {
+          "type": "string"
+        },
+        "normalized_quantity": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/NormalizedQuantity"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "parse_warnings": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "parsed_shape": {
+          "$ref": "#/definitions/ParsedQuantityShape"
+        },
+        "quantity_kind_hint": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "raw_text": {
+          "type": "string"
+        },
+        "raw_unit": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "SourceGeometry": {
+      "type": "object",
+      "required": [
+        "bottom",
+        "left",
+        "right",
+        "top"
+      ],
+      "properties": {
+        "bottom": {
+          "type": "number",
+          "format": "double"
+        },
+        "left": {
+          "type": "number",
+          "format": "double"
+        },
+        "right": {
+          "type": "number",
+          "format": "double"
+        },
+        "top": {
+          "type": "number",
+          "format": "double"
+        }
+      }
+    },
+    "SpecificationRegime": {
+      "type": "string",
+      "enum": [
+        "absolute_maximum",
+        "recommended_operating",
+        "guaranteed",
+        "tested",
+        "characterized_typical",
+        "application_guidance",
+        "informative",
+        "derived",
+        "inferred",
+        "measured",
+        "unknown"
+      ]
+    },
+    "SubjectHint": {
+      "type": "object",
+      "required": [
+        "mpn_raw"
+      ],
+      "properties": {
+        "manufacturer_raw": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "mpn_raw": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

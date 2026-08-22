@@ -1,0 +1,18 @@
+[package]
+name = "datasheet-core"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+repository.workspace = true
+authors.workspace = true
+description = "Dependency-light durable contracts for evidence-grounded datasheet extraction."
+license = "MIT OR Apache-2.0"
+
+[dependencies]
+schemars.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+sha2.workspace = true
+
+[lints]
+workspace = true

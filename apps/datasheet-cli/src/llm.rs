@@ -33,6 +33,7 @@ pub struct Attachment {
 }
 
 impl Attachment {
+    #[allow(dead_code)]
     pub fn from_path(path: &Path) -> Result<Self> {
         let data = std::fs::read(path).with_context(|| format!("reading {}", path.display()))?;
         Ok(Self {

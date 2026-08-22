@@ -1,41 +1,47 @@
-[package]
-name = "datasheet-cli"
+[workspace]
+members = [
+    "apps/datasheet-cli",
+    "crates/datasheet-compiler",
+    "crates/datasheet-core",
+    "crates/datasheet-model",
+    "tools/datasheet-train",
+]
+resolver = "3"
+
+[workspace.package]
 version = "0.1.8"
 edition = "2024"
 rust-version = "1.85"
-
-
-description = "Extract footprint/land-pattern drawings from PDF datasheets."
-license = "GPL-3.0-only"
 repository = "https://github.com/akiselev/datasheet-cli"
-homepage = "https://github.com/akiselev/datasheet-cli"
-readme = "README.md"
 authors = ["Alexander Kiselev <alex@akiselev.com>"]
-keywords = ["datasheet", "pdf", "footprint", "pcb"]
-categories = ["command-line-utilities"]
 
-[[bin]]
-name = "datasheet"
-path = "src/main.rs"
-
-[dependencies]
+[workspace.dependencies]
 anyhow = "1.0.100"
 base64 = "0.22.1"
 clap = { version = "4.5.54", features = ["derive", "env"] }
+datasheet-compiler = { path = "crates/datasheet-compiler", version = "0.1.8" }
+datasheet-core = { path = "crates/datasheet-core", version = "0.1.8" }
+datasheet-model = { path = "crates/datasheet-model", version = "0.1.8" }
+image = "0.25"
+lopdf = { version = "0.39", default-features = false }
+mupdf = "0.4"
 reqwest = { version = "0.12.23", default-features = false, features = [
     "blocking",
     "json",
     "rustls-tls",
 ] }
+roxmltree = "0.20"
+rpassword = "5.0"
+schemars = "0.8.22"
 serde = { version = "1.0.228", features = ["derive"] }
 serde_json = "1.0.149"
 sha2 = "0.10"
-dirs = "5.0"
-lopdf = { version = "0.39", default-features = false }
-roxmltree = "0.20"
 ureq = { version = "2.10", features = ["json"] }
 urlencoding = "2.1"
-zip = "2.0"
-rpassword = "5.0"
-mupdf = "0.4"
-image = "0.25"
+zip = { version = "2.0", default-features = false, features = ["deflate"] }
+
+[workspace.lints.rust]
+unsafe_code = "forbid"
+
+[workspace.lints.clippy]
+all = "warn"

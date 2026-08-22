@@ -1,0 +1,40 @@
+[package]
+name = "datasheet-cli"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+repository.workspace = true
+homepage = "https://github.com/akiselev/datasheet-cli"
+authors.workspace = true
+description = "Extract structured data and footprint drawings from PDF datasheets."
+license = "GPL-3.0-only"
+readme = "../../README.md"
+keywords = ["datasheet", "pdf", "footprint", "pcb"]
+categories = ["command-line-utilities"]
+
+[[bin]]
+name = "datasheet"
+path = "src/main.rs"
+
+[dependencies]
+anyhow.workspace = true
+base64.workspace = true
+clap.workspace = true
+datasheet-compiler.workspace = true
+datasheet-core.workspace = true
+dirs = "5.0"
+image.workspace = true
+lopdf.workspace = true
+mupdf.workspace = true
+reqwest.workspace = true
+roxmltree.workspace = true
+rpassword.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+sha2.workspace = true
+ureq.workspace = true
+urlencoding.workspace = true
+zip.workspace = true
+
+[lints]
+workspace = true

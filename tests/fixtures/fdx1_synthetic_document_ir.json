@@ -1,0 +1,109 @@
+{
+  "schema_version": "ferrodoc-document-ir-fixture/1",
+  "source_pdf_sha256": "1759310ab11053297113c688c781bd6829682f06d4e0b6d32e4be1c83d8ff5db",
+  "document_state_id": "document-state:synthetic-power-table-v1",
+  "document_ir_logical_sha256": "1f7b128b313beab6f8bd7999b4432107876bbe0449a917d11558cce88ad1061b",
+  "pages": [
+    {
+      "page_id": "page-5",
+      "regions": [
+        {
+          "region_id": "identity",
+          "geometry": { "left": 0.1, "top": 0.05, "right": 0.5, "bottom": 0.1 },
+          "geometry_quality": "exact_region",
+          "evidence": [
+            {
+              "evidence_id": "e-subject",
+              "text": "SYNTH1000",
+              "candidate_kind": "subject",
+              "subject_kind": "part",
+              "manufacturer_hint": "Synthetic Semiconductor"
+            },
+            {
+              "evidence_id": "e-package",
+              "text": "QFN-8",
+              "candidate_kind": "package"
+            }
+          ]
+        },
+        {
+          "region_id": "heading",
+          "geometry": { "left": 0.1, "top": 0.15, "right": 0.8, "bottom": 0.2 },
+          "geometry_quality": "exact_line",
+          "evidence": [
+            {
+              "evidence_id": "e-heading-abs",
+              "text": "Absolute Maximum Ratings",
+              "candidate_kind": "section",
+              "regime": "absolute_maximum"
+            },
+            {
+              "evidence_id": "e-heading-rec",
+              "text": "Recommended Operating Conditions",
+              "candidate_kind": "section",
+              "regime": "recommended_operating"
+            }
+          ]
+        },
+        {
+          "region_id": "electrical-table",
+          "geometry": { "left": 0.08, "top": 0.22, "right": 0.92, "bottom": 0.52 },
+          "geometry_quality": "exact_region",
+          "table_shape": {
+            "rows": 2,
+            "columns": 4,
+            "heading_path": ["Recommended Operating Conditions"]
+          },
+          "evidence": [
+            {
+              "evidence_id": "e-cell-parameter",
+              "text": "Input voltage",
+              "candidate_kind": "table_cell",
+              "row": 0,
+              "column": 0
+            },
+            {
+              "evidence_id": "e-cell-min",
+              "text": "Min",
+              "candidate_kind": "table_cell",
+              "row": 0,
+              "column": 1
+            },
+            {
+              "evidence_id": "e-cell-value",
+              "text": "1.80 V",
+              "candidate_kind": "table_cell",
+              "row": 1,
+              "column": 1
+            },
+            {
+              "evidence_id": "e-quantity",
+              "text": "1.80 V",
+              "candidate_kind": "quantity",
+              "shape": "scalar",
+              "raw_unit": "V",
+              "canonical_value": "1.8",
+              "canonical_unit": "V",
+              "quantity_kind_hint": "voltage"
+            },
+            {
+              "evidence_id": "e-condition",
+              "text": "TA = -40 C to 85 C",
+              "candidate_kind": "condition",
+              "parsed_fields": {
+                "ambient_temperature_max": "85 C",
+                "ambient_temperature_min": "-40 C"
+              }
+            },
+            {
+              "evidence_id": "e-symbol",
+              "text": "VIN",
+              "candidate_kind": "symbol",
+              "normalized_symbol": "V_IN"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

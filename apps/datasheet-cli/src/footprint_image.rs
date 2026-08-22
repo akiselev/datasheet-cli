@@ -13,7 +13,7 @@ use anyhow::{Result, anyhow};
 use clap::Args;
 use std::path::PathBuf;
 
-const PROMPT: &str = include_str!("../prompts/extract-footprint-image.md");
+const PROMPT: &str = include_str!("../../../prompts/extract-footprint-image.md");
 const __DEFAULT__: &str = "__DEFAULT__";
 
 #[derive(Args, Debug)]
