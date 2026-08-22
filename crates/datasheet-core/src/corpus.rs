@@ -9,6 +9,7 @@ use serde::{Deserialize, Serialize};
 use crate::Sha256Digest;
 
 pub const PROTECTED_CORPUS_SCHEMA: &str = "fdx4.protected-corpus-manifest/v1";
+pub const QUALIFICATION_EXHAUSTION_SCHEMA: &str = "fdx4.model-qualification-exhaustion/v1";
 
 #[derive(
     Clone, Copy, Debug, Eq, Ord, PartialEq, PartialOrd, Serialize, Deserialize, JsonSchema,
@@ -113,6 +114,31 @@ pub struct ProtectedCorpusManifest {
     pub limitation_codes: Vec<String>,
 }
 
+#[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize, JsonSchema)]
+#[serde(deny_unknown_fields)]
+pub struct ModelQualificationExhaustion {
+    pub schema_version: String,
+    pub qualification_digest: Sha256Digest,
+    pub audited_at_utc: String,
+    pub datasheet_base_revision: String,
+    pub foundry_source_audit_revision: String,
+    pub foundry_source_audit_sha256: Sha256Digest,
+    pub protected_corpus_digest: Sha256Digest,
+    pub protected_corpus_member_count: u64,
+    pub qualification_eligible_member_count: u64,
+    pub required_nonempty_splits: Vec<ProtectedSplit>,
+    pub minimum_pairwise_disjoint_manufacturer_groups: u32,
+    pub minimum_pairwise_disjoint_document_family_groups: u32,
+    pub minimum_pairwise_disjoint_template_groups: u32,
+    pub minimum_pairwise_disjoint_publisher_lineage_groups: u32,
+    pub eligible_new_manufacturer_groups: u32,
+    pub eligible_new_disjoint_document_groups: u32,
+    pub eligible_new_hidden_final_artifacts: u32,
+    pub model_qualification_ready: bool,
+    pub fdx5_training_started: bool,
+    pub blocker_codes: Vec<String>,
+}
+
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub enum CorpusContractError {
     Missing(&'static str),
@@ -128,6 +154,88 @@ impl std::fmt::Display for CorpusContractError {
 }
 
 impl std::error::Error for CorpusContractError {}
+
+impl ModelQualificationExhaustion {
+    #[must_use]
+    pub fn recompute_digest(&self) -> Sha256Digest {
+        let mut canonical = self.clone();
+        canonical.qualification_digest = Sha256Digest::of_bytes(b"placeholder");
+        canonical.required_nonempty_splits.sort();
+        canonical.blocker_codes.sort();
+        Sha256Digest::of_bytes(
+            &serde_json::to_vec(&canonical).expect("qualification exhaustion serialization"),
+        )
+    }
+
+    pub fn validate(&self) -> Result<(), CorpusContractError> {
+        if self.schema_version != QUALIFICATION_EXHAUSTION_SCHEMA
+            || self.audited_at_utc.trim().is_empty()
+            || !is_git_revision(&self.datasheet_base_revision)
+            || !is_git_revision(&self.foundry_source_audit_revision)
+            || self.protected_corpus_member_count == 0
+        {
+            return Err(CorpusContractError::Missing(
+                "qualification exhaustion identity",
+            ));
+        }
+        for digest in [
+            &self.qualification_digest,
+            &self.foundry_source_audit_sha256,
+            &self.protected_corpus_digest,
+        ] {
+            digest
+                .validate()
+                .map_err(|_| CorpusContractError::Invalid("qualification digest"))?;
+        }
+        let required = self
+            .required_nonempty_splits
+            .iter()
+            .copied()
+            .collect::<BTreeSet<_>>();
+        if required != ProtectedSplit::ALL.into_iter().collect()
+            || self.required_nonempty_splits.len() != ProtectedSplit::ALL.len()
+        {
+            return Err(CorpusContractError::Missing("qualification split"));
+        }
+        let split_count = u32::try_from(ProtectedSplit::ALL.len()).expect("six splits");
+        if [
+            self.minimum_pairwise_disjoint_manufacturer_groups,
+            self.minimum_pairwise_disjoint_document_family_groups,
+            self.minimum_pairwise_disjoint_template_groups,
+            self.minimum_pairwise_disjoint_publisher_lineage_groups,
+        ]
+        .into_iter()
+        .any(|minimum| minimum < split_count)
+        {
+            return Err(CorpusContractError::Invalid(
+                "qualification grouping minimum",
+            ));
+        }
+        if self.qualification_eligible_member_count > self.protected_corpus_member_count
+            || self.eligible_new_manufacturer_groups > 0
+            || self.eligible_new_disjoint_document_groups > 0
+            || self.eligible_new_hidden_final_artifacts > 0
+            || self.model_qualification_ready
+            || self.fdx5_training_started
+            || self.blocker_codes.is_empty()
+        {
+            return Err(CorpusContractError::Invalid(
+                "qualification exhaustion must fail closed",
+            ));
+        }
+        unique(self.blocker_codes.iter(), "qualification blocker")?;
+        if self.qualification_digest != self.recompute_digest() {
+            return Err(CorpusContractError::Invalid(
+                "qualification exhaustion digest",
+            ));
+        }
+        Ok(())
+    }
+}
+
+fn is_git_revision(value: &str) -> bool {
+    value.len() == 40 && value.bytes().all(|byte| byte.is_ascii_hexdigit())
+}
 
 impl ProtectedCorpusManifest {
     #[must_use]

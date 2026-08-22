@@ -32,6 +32,18 @@ The corpus is consequently leakage-safe and replayable, but
 distinct rights-cleared development, held-out, and hidden groups are acquired
 and independently audited.
 
+The bounded follow-up source audit is frozen in
+`evidence/fdx4-model-qualification-exhaustion-2026-08-22.json` and binds
+Foundry's complete source decision ledger by commit and SHA-256. The landed
+split contract requires every admitted member to have non-invented manufacturer
+authority and rejects every protected group kind across splits. Six nonempty
+splits therefore require at least six pairwise-disjoint manufacturer,
+document-family, template, and publisher-lineage groups. The NASA rows have no
+manufacturer authority, so their qualification-eligible count is zero even
+though they remain valid train-only FDX3/FDX4 evidence. No reviewed candidate
+supplied an explicit training grant plus suitable evidence-bearing manufacturer
+tables; no new bytes were admitted and FDX5 training was not started.
+
 Checked schemas live under `schemas/fdx4/`; adversarial tests cover every group
 kind, order-independent replay, missing splits, hidden-state misuse,
 trainability/restriction refusal, and exclusion/admission conflicts.

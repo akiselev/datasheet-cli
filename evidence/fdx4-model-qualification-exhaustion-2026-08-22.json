@@ -1,0 +1,34 @@
+{
+  "schema_version": "fdx4.model-qualification-exhaustion/v1",
+  "qualification_digest": "98994f831230494580603ddab128f4edfb3a687e8f312e5ff2022d203ef0b39e",
+  "audited_at_utc": "2026-08-22",
+  "datasheet_base_revision": "36e529f505f900596e4f01961ac7f8a50b250abc",
+  "foundry_source_audit_revision": "14893aaa5c5946456f221f0c5af84a0b9a4b2a73",
+  "foundry_source_audit_sha256": "6cd9eb58767aa1de6f732d0e5849b37d7e6a383f92d981ddefff7c98a06bd180",
+  "protected_corpus_digest": "3f4a2b3c73f5c9910bded44c31af53920dbd0a9097d2892839eb18585c8adbb9",
+  "protected_corpus_member_count": 210,
+  "qualification_eligible_member_count": 0,
+  "required_nonempty_splits": [
+    "train",
+    "development",
+    "template-held-out",
+    "document-family-held-out",
+    "manufacturer-held-out",
+    "final-blind-test"
+  ],
+  "minimum_pairwise_disjoint_manufacturer_groups": 6,
+  "minimum_pairwise_disjoint_document_family_groups": 6,
+  "minimum_pairwise_disjoint_template_groups": 6,
+  "minimum_pairwise_disjoint_publisher_lineage_groups": 6,
+  "eligible_new_manufacturer_groups": 0,
+  "eligible_new_disjoint_document_groups": 0,
+  "eligible_new_hidden_final_artifacts": 0,
+  "model_qualification_ready": false,
+  "fdx5_training_started": false,
+  "blocker_codes": [
+    "existing_nasa_rows_lack_manufacturer_authority",
+    "no_hidden_final_artifact",
+    "six_disjoint_manufacturer_groups_required",
+    "zero_rights_cleared_manufacturer_table_groups"
+  ]
+}
