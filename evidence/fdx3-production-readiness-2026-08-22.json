@@ -1,0 +1,223 @@
+{
+  "schema_version": "fdx3-production-readiness/1",
+  "manifest_digest": "8a9e5f8d3da17b0cb6b669f13d8df9c45ed54316c09b60abac5459356b1a4425",
+  "audited_at_utc": "2026-08-22",
+  "datasheet_revision": "e6eadbc72c7c9f673270e5958150d0e92cdf0439",
+  "foundry_revision": "7299b69dba3d363e93227a543c81de065a46cf37",
+  "ferrodoc_revision": "6e1166415a9ae4a5796c81516a787830dda592b8",
+  "fls5_committed": false,
+  "labeler_catalog_digest": "ce7067347f66ec1adb36f0d23f58f1c8fc49e797b4036aa024d01a9e34b22591",
+  "families": [
+    {
+      "family_id": "government.dla.publog.characteristics",
+      "source_key": "government.dla.publog",
+      "source_profile_id": "government.dla.publog",
+      "source_profile_sha256": "2aae287a532cc00dacf81d712c88cafb762432c999bb28ae2a7d494177b63357",
+      "policy_id": "policy.dla.publog.public",
+      "policy_version": "2026-08",
+      "policy_sha256": "6f4e8c8e3a5d409b218af58cfe9abd17f6338f77c0bd65604469c72e69188b14",
+      "policy_committed": true,
+      "training_decision": "allow",
+      "suitability": "structured_non_electrical_facts",
+      "artifacts": [
+        {
+          "role": "bronze_property_manifest",
+          "content_sha256": "369493d41bc4476cf13cd8677500e71b76442d87f18fe0728f6d9182ebca4bdb",
+          "logical_id": "2b2de15bfa08767009871c40654478517690fb745cbe395a35aab656d2b64cb8",
+          "schema_id": "bronze.property_observations/v1",
+          "row_count": 25499
+        },
+        {
+          "role": "bronze_property_parquet",
+          "content_sha256": "3c9393053d9450f6c3db2c26bc3bea97a3ed80b37988798c68bb793515dc6c39",
+          "schema_id": "bronze.property_observations/v1",
+          "row_count": 25499
+        }
+      ],
+      "selected_labelers": [
+        {
+          "labeler_id": "manufacturer.field_map.v1",
+          "labeler_version": "1"
+        },
+        {
+          "labeler_id": "manufacturer.range_align.v1",
+          "labeler_version": "1"
+        },
+        {
+          "labeler_id": "manufacturer.value_align.v1",
+          "labeler_version": "1"
+        },
+        {
+          "labeler_id": "quantity.dimension.v1",
+          "labeler_version": "1"
+        }
+      ],
+      "source_vocabulary_map_ids": [],
+      "reviewed_development_example_ids": [],
+      "blocker_codes": [
+        "no_qualified_analog_power_characteristic_mapping",
+        "no_manufacturer_document_state_alignment"
+      ],
+      "admitted_for_training": false
+    },
+    {
+      "family_id": "manufacturer.microchip.samd21.cmsis",
+      "source_key": "manufacturer.microchip.cmsis-apache-pack",
+      "source_profile_id": "manufacturer.microchip.cmsis-apache-pack",
+      "source_profile_sha256": "ee5690974d0fdad9acec27ba3eee5ce9013986e1bb5dbfaa83e0ae4774abd05e",
+      "policy_id": "policy.microchip.samd21.apache",
+      "policy_version": "3.8.270",
+      "policy_sha256": "aa0877aba69fea7484d3cab3f6f12fd9f956eb46a576cf8fb4e79589ea339147",
+      "policy_committed": true,
+      "training_decision": "allow",
+      "suitability": "structured_non_electrical_facts",
+      "artifacts": [
+        {
+          "role": "source_pdsc",
+          "content_sha256": "069d1af2924d88951041242b9bee868d3f911e585a5d438ab239d3a4e7748a66"
+        },
+        {
+          "role": "bronze_part_manifest",
+          "content_sha256": "01f169d9dd4b9f26f957bfe8ee06d492dcd04adb5970b65811e44b88778b624a",
+          "logical_id": "74e7079f4ba0f6fbd76a272d4d7dcbd6631c54466eccbb40f646d23537ecaf85",
+          "schema_id": "bronze.part_mentions/v1",
+          "row_count": 34
+        },
+        {
+          "role": "bronze_part_parquet",
+          "content_sha256": "2b349bee680f78617b003279c4df85c00a1a605228fed2942df2b4286cf56b6e",
+          "schema_id": "bronze.part_mentions/v1",
+          "row_count": 34
+        },
+        {
+          "role": "silver_part_manifest",
+          "content_sha256": "244b9565ba6d5d0207eb0fb473ab929832f34f5375c853838f977ca09e569e4a",
+          "logical_id": "f00c0563ddadc0de677c02ba7b215fcd82d9708d0af06dd6dfcd1c6b9c971d2b",
+          "schema_id": "silver.part_candidates/v1",
+          "row_count": 34
+        }
+      ],
+      "selected_labelers": [
+        {
+          "labeler_id": "cmsis.cpu_core.v1",
+          "labeler_version": "1"
+        },
+        {
+          "labeler_id": "cmsis.device_identity.v1",
+          "labeler_version": "1"
+        },
+        {
+          "labeler_id": "cmsis.document_link.v1",
+          "labeler_version": "1"
+        },
+        {
+          "labeler_id": "cmsis.memory.v1",
+          "labeler_version": "1"
+        }
+      ],
+      "source_vocabulary_map_ids": [],
+      "reviewed_development_example_ids": [],
+      "blocker_codes": [
+        "part_identity_only_no_analog_power_structured_facts",
+        "no_evidence_bearing_electrical_cells"
+      ],
+      "admitted_for_training": false
+    },
+    {
+      "family_id": "manufacturer.microchip.samd21.datasheet",
+      "source_key": "manufacturer.microchip.public-datasheet",
+      "policy_id": "policy.microchip.samd21.public-datasheet",
+      "policy_version": "2026-08-22",
+      "policy_sha256": "4a21a9da44a68daa7591f4bc0eaeb0c9fe86a7fb194dd771c97f7cd24788e4e5",
+      "policy_committed": false,
+      "training_decision": "deny",
+      "suitability": "no_suitable_evidence",
+      "artifacts": [
+        {
+          "role": "source_pdf",
+          "content_sha256": "7d65431d4661122390cd05c350e940eb32ccfe55518dea4035194fa1a57643b7"
+        }
+      ],
+      "selected_labelers": [
+        {
+          "labeler_id": "cell.min_typ_max_header.v1",
+          "labeler_version": "1"
+        },
+        {
+          "labeler_id": "predicate.row_name_alias.v1",
+          "labeler_version": "1"
+        },
+        {
+          "labeler_id": "quantity.dimension.v1",
+          "labeler_version": "1"
+        },
+        {
+          "labeler_id": "section.table_header_schema.v1",
+          "labeler_version": "1"
+        }
+      ],
+      "source_vocabulary_map_ids": [],
+      "reviewed_development_example_ids": [],
+      "blocker_codes": [
+        "policy_not_committed",
+        "policy_training_denied",
+        "no_committed_fls5_document_state"
+      ],
+      "admitted_for_training": false
+    },
+    {
+      "family_id": "manufacturer.raspberrypi.rp2040.datasheet",
+      "source_key": "manufacturer.raspberrypi.rp2040-documents",
+      "policy_id": "policy.raspberrypi.rp2040.documents",
+      "policy_version": "2026-08-22",
+      "policy_sha256": "0ac2113034e8bd7150adc5510b90fd5dd9ba7711811feed5b64cdde12012866f",
+      "policy_committed": false,
+      "training_decision": "review_required",
+      "suitability": "evidence_bearing_non_electrical_cells",
+      "artifacts": [
+        {
+          "role": "source_pdf",
+          "content_sha256": "be56fbb75ba0ae9e26558a73c93ac3e75c2ad4e6878d3b6703de2a76d886ea8c"
+        },
+        {
+          "role": "ferrodoc_real_table_oracle",
+          "content_sha256": "e9a26ca8b6bd7291316b4e04ac872e8c680a4c56ee1907fdb3907bf9deb5f568",
+          "logical_id": "evidence_8a30608e6fc2b0e3012c55170fb219051aae1add6e98c014a93cf51a3e501584",
+          "schema_id": "ferrodoc-real-table-oracle/1",
+          "row_count": 2
+        }
+      ],
+      "document_state_id": "state_c154cf48c129b38893405354043403ef034af1ebe46a7a8cbbbf609960c3d4ae",
+      "selected_labelers": [
+        {
+          "labeler_id": "cell.min_typ_max_header.v1",
+          "labeler_version": "1"
+        },
+        {
+          "labeler_id": "predicate.row_name_alias.v1",
+          "labeler_version": "1"
+        },
+        {
+          "labeler_id": "quantity.dimension.v1",
+          "labeler_version": "1"
+        },
+        {
+          "labeler_id": "section.table_header_schema.v1",
+          "labeler_version": "1"
+        }
+      ],
+      "source_vocabulary_map_ids": [],
+      "reviewed_development_example_ids": [],
+      "blocker_codes": [
+        "policy_not_committed",
+        "policy_training_review_required",
+        "qualified_table_is_pin_description_not_analog_power",
+        "qualified_cell_geometry_is_page_only",
+        "foundry_fls5_state_not_committed"
+      ],
+      "admitted_for_training": false
+    }
+  ],
+  "eligible_family_count": 0,
+  "production_acceptance": false
+}

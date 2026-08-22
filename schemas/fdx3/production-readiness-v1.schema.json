@@ -1,0 +1,242 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ProductionReadinessManifest",
+  "description": "Immutable production-readiness selection manifest. Empty map/development/calibration bindings are intentional when rights or evidence preconditions fail; they are not synthetic substitutes.",
+  "type": "object",
+  "required": [
+    "audited_at_utc",
+    "datasheet_revision",
+    "eligible_family_count",
+    "families",
+    "ferrodoc_revision",
+    "fls5_committed",
+    "foundry_revision",
+    "labeler_catalog_digest",
+    "manifest_digest",
+    "production_acceptance",
+    "schema_version"
+  ],
+  "properties": {
+    "audited_at_utc": {
+      "type": "string"
+    },
+    "calibration_digest": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "datasheet_revision": {
+      "type": "string"
+    },
+    "eligible_family_count": {
+      "type": "integer",
+      "format": "uint32",
+      "minimum": 0.0
+    },
+    "families": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/ProductionSupervisionFamilyAudit"
+      }
+    },
+    "ferrodoc_revision": {
+      "type": "string"
+    },
+    "fls5_committed": {
+      "type": "boolean"
+    },
+    "foundry_revision": {
+      "type": "string"
+    },
+    "labeler_catalog_digest": {
+      "type": "string"
+    },
+    "manifest_digest": {
+      "type": "string"
+    },
+    "production_acceptance": {
+      "type": "boolean"
+    },
+    "reviewed_development_set_digest": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "schema_version": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "definitions": {
+    "AnalogPowerSuitability": {
+      "type": "string",
+      "enum": [
+        "evidence_bearing_electrical_cells",
+        "evidence_bearing_non_electrical_cells",
+        "structured_electrical_facts",
+        "structured_non_electrical_facts",
+        "no_suitable_evidence"
+      ]
+    },
+    "LabelerRef": {
+      "type": "object",
+      "required": [
+        "labeler_id",
+        "labeler_version"
+      ],
+      "properties": {
+        "labeler_id": {
+          "type": "string"
+        },
+        "labeler_version": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "PolicyTrainingDecision": {
+      "type": "string",
+      "enum": [
+        "allow",
+        "deny",
+        "review_required"
+      ]
+    },
+    "ProductionArtifactBinding": {
+      "type": "object",
+      "required": [
+        "content_sha256",
+        "role"
+      ],
+      "properties": {
+        "content_sha256": {
+          "type": "string"
+        },
+        "logical_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "role": {
+          "type": "string"
+        },
+        "row_count": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "format": "uint64",
+          "minimum": 0.0
+        },
+        "schema_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "ProductionSupervisionFamilyAudit": {
+      "description": "Fail-closed audit of one real source family considered for analog/power supervision. This record contains identities and decisions only; it must never embed restricted source data.",
+      "type": "object",
+      "required": [
+        "admitted_for_training",
+        "artifacts",
+        "blocker_codes",
+        "family_id",
+        "policy_committed",
+        "policy_id",
+        "policy_sha256",
+        "policy_version",
+        "reviewed_development_example_ids",
+        "selected_labelers",
+        "source_key",
+        "source_vocabulary_map_ids",
+        "suitability",
+        "training_decision"
+      ],
+      "properties": {
+        "admitted_for_training": {
+          "type": "boolean"
+        },
+        "artifacts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ProductionArtifactBinding"
+          }
+        },
+        "blocker_codes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "document_state_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "family_id": {
+          "type": "string"
+        },
+        "policy_committed": {
+          "type": "boolean"
+        },
+        "policy_id": {
+          "type": "string"
+        },
+        "policy_sha256": {
+          "type": "string"
+        },
+        "policy_version": {
+          "type": "string"
+        },
+        "reviewed_development_example_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "selected_labelers": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/LabelerRef"
+          }
+        },
+        "source_key": {
+          "type": "string"
+        },
+        "source_profile_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "source_profile_sha256": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "source_vocabulary_map_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "suitability": {
+          "$ref": "#/definitions/AnalogPowerSuitability"
+        },
+        "training_decision": {
+          "$ref": "#/definitions/PolicyTrainingDecision"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

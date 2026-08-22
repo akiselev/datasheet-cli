@@ -18,6 +18,97 @@ pub const STRUCTURED_FACT_SCHEMA: &str = "silver.structured_facts/v1";
 pub const TRAINING_EXAMPLE_SCHEMA: &str = "training.examples/v1";
 pub const CALIBRATION_SCHEMA: &str = "labeler-calibration/1";
 pub const REVIEWED_DEVELOPMENT_SET_SCHEMA: &str = "reviewed-development-set/1";
+pub const PRODUCTION_READINESS_SCHEMA: &str = "fdx3-production-readiness/1";
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq, Serialize, Deserialize, JsonSchema)]
+#[serde(rename_all = "snake_case")]
+pub enum PolicyTrainingDecision {
+    Allow,
+    Deny,
+    ReviewRequired,
+}
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq, Serialize, Deserialize, JsonSchema)]
+#[serde(rename_all = "snake_case")]
+pub enum AnalogPowerSuitability {
+    EvidenceBearingElectricalCells,
+    EvidenceBearingNonElectricalCells,
+    StructuredElectricalFacts,
+    StructuredNonElectricalFacts,
+    NoSuitableEvidence,
+}
+
+impl AnalogPowerSuitability {
+    #[must_use]
+    pub const fn is_suitable(self) -> bool {
+        matches!(
+            self,
+            Self::EvidenceBearingElectricalCells | Self::StructuredElectricalFacts
+        )
+    }
+}
+
+#[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize, JsonSchema)]
+#[serde(deny_unknown_fields)]
+pub struct ProductionArtifactBinding {
+    pub role: String,
+    pub content_sha256: Sha256Digest,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub logical_id: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub schema_id: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub row_count: Option<u64>,
+}
+
+/// Fail-closed audit of one real source family considered for analog/power supervision.
+/// This record contains identities and decisions only; it must never embed restricted source data.
+#[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize, JsonSchema)]
+#[serde(deny_unknown_fields)]
+pub struct ProductionSupervisionFamilyAudit {
+    pub family_id: String,
+    pub source_key: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub source_profile_id: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub source_profile_sha256: Option<Sha256Digest>,
+    pub policy_id: String,
+    pub policy_version: String,
+    pub policy_sha256: Sha256Digest,
+    pub policy_committed: bool,
+    pub training_decision: PolicyTrainingDecision,
+    pub suitability: AnalogPowerSuitability,
+    pub artifacts: Vec<ProductionArtifactBinding>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub document_state_id: Option<String>,
+    pub selected_labelers: Vec<LabelerRef>,
+    pub source_vocabulary_map_ids: Vec<Sha256Digest>,
+    pub reviewed_development_example_ids: Vec<Sha256Digest>,
+    pub blocker_codes: Vec<String>,
+    pub admitted_for_training: bool,
+}
+
+/// Immutable production-readiness selection manifest. Empty map/development/calibration bindings
+/// are intentional when rights or evidence preconditions fail; they are not synthetic substitutes.
+#[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize, JsonSchema)]
+#[serde(deny_unknown_fields)]
+pub struct ProductionReadinessManifest {
+    pub schema_version: String,
+    pub manifest_digest: Sha256Digest,
+    pub audited_at_utc: String,
+    pub datasheet_revision: String,
+    pub foundry_revision: String,
+    pub ferrodoc_revision: String,
+    pub fls5_committed: bool,
+    pub labeler_catalog_digest: Sha256Digest,
+    pub families: Vec<ProductionSupervisionFamilyAudit>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub reviewed_development_set_digest: Option<Sha256Digest>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub calibration_digest: Option<Sha256Digest>,
+    pub eligible_family_count: u32,
+    pub production_acceptance: bool,
+}
 
 #[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize, JsonSchema)]
 #[serde(deny_unknown_fields)]
@@ -633,6 +724,241 @@ impl TrainingExample {
         self.producer.validate()?;
         unique(self.candidate_ids.iter(), "training candidate")?;
         unique(self.rights_snapshot_ids.iter(), "training rights snapshot")
+    }
+}
+
+impl ProductionArtifactBinding {
+    fn validate(&self) -> Result<(), SupervisionContractError> {
+        if self.role.trim().is_empty()
+            || self
+                .logical_id
+                .as_deref()
+                .is_some_and(|value| value.trim().is_empty())
+            || self
+                .schema_id
+                .as_deref()
+                .is_some_and(|value| value.trim().is_empty())
+        {
+            return Err(SupervisionContractError::Missing(
+                "production artifact identity",
+            ));
+        }
+        self.content_sha256
+            .validate()
+            .map_err(|_| SupervisionContractError::Invalid("production artifact digest"))
+    }
+}
+
+impl ProductionSupervisionFamilyAudit {
+    pub fn validate(&self) -> Result<(), SupervisionContractError> {
+        if self.family_id.trim().is_empty()
+            || self.source_key.trim().is_empty()
+            || self.policy_id.trim().is_empty()
+            || self.policy_version.trim().is_empty()
+            || self.artifacts.is_empty()
+            || self.selected_labelers.is_empty()
+            || self.blocker_codes.iter().any(|code| code.trim().is_empty())
+        {
+            return Err(SupervisionContractError::Missing(
+                "production family audit identity",
+            ));
+        }
+        for digest in [
+            Some(&self.policy_sha256),
+            self.source_profile_sha256.as_ref(),
+        ]
+        .into_iter()
+        .flatten()
+        {
+            digest
+                .validate()
+                .map_err(|_| SupervisionContractError::Invalid("source audit digest"))?;
+        }
+        if self.source_profile_id.is_some() != self.source_profile_sha256.is_some() {
+            return Err(SupervisionContractError::Invalid(
+                "source profile ID/digest binding",
+            ));
+        }
+        unique(
+            self.artifacts.iter().map(|item| &item.role),
+            "artifact role",
+        )?;
+        unique(
+            self.selected_labelers
+                .iter()
+                .map(|item| (&item.labeler_id, &item.labeler_version)),
+            "selected labeler",
+        )?;
+        unique(
+            self.source_vocabulary_map_ids.iter(),
+            "source vocabulary map",
+        )?;
+        unique(
+            self.reviewed_development_example_ids.iter(),
+            "development example",
+        )?;
+        unique(self.blocker_codes.iter(), "blocker code")?;
+        for artifact in &self.artifacts {
+            artifact.validate()?;
+        }
+        for digest in self
+            .source_vocabulary_map_ids
+            .iter()
+            .chain(&self.reviewed_development_example_ids)
+        {
+            digest.validate().map_err(|_| {
+                SupervisionContractError::Invalid("production supervision binding digest")
+            })?;
+        }
+        if self.selected_labelers.iter().any(|labeler| {
+            labeler.labeler_id.trim().is_empty() || labeler.labeler_version.trim().is_empty()
+        }) {
+            return Err(SupervisionContractError::Missing(
+                "selected labeler identity",
+            ));
+        }
+        let eligible = self.policy_committed
+            && self.training_decision == PolicyTrainingDecision::Allow
+            && self.suitability.is_suitable()
+            && self.blocker_codes.is_empty()
+            && (!matches!(
+                self.suitability,
+                AnalogPowerSuitability::EvidenceBearingElectricalCells
+            ) || self
+                .document_state_id
+                .as_deref()
+                .is_some_and(|state| !state.trim().is_empty()));
+        if self.admitted_for_training != eligible {
+            return Err(SupervisionContractError::Invalid(
+                "fail-closed production admission decision",
+            ));
+        }
+        Ok(())
+    }
+}
+
+impl ProductionReadinessManifest {
+    #[must_use]
+    pub fn recompute_digest(&self) -> Sha256Digest {
+        #[derive(Serialize)]
+        struct View<'a> {
+            schema_version: &'a str,
+            audited_at_utc: &'a str,
+            datasheet_revision: &'a str,
+            foundry_revision: &'a str,
+            ferrodoc_revision: &'a str,
+            fls5_committed: bool,
+            labeler_catalog_digest: &'a Sha256Digest,
+            families: &'a [ProductionSupervisionFamilyAudit],
+            reviewed_development_set_digest: &'a Option<Sha256Digest>,
+            calibration_digest: &'a Option<Sha256Digest>,
+            eligible_family_count: u32,
+            production_acceptance: bool,
+        }
+        let mut families = self.families.clone();
+        for family in &mut families {
+            family
+                .artifacts
+                .sort_by(|left, right| left.role.cmp(&right.role));
+            family.selected_labelers.sort_by(|left, right| {
+                (&left.labeler_id, &left.labeler_version)
+                    .cmp(&(&right.labeler_id, &right.labeler_version))
+            });
+            family.source_vocabulary_map_ids.sort();
+            family.reviewed_development_example_ids.sort();
+            family.blocker_codes.sort();
+        }
+        families.sort_by(|left, right| left.family_id.cmp(&right.family_id));
+        Sha256Digest::of_bytes(
+            &serde_json::to_vec(&View {
+                schema_version: &self.schema_version,
+                audited_at_utc: &self.audited_at_utc,
+                datasheet_revision: &self.datasheet_revision,
+                foundry_revision: &self.foundry_revision,
+                ferrodoc_revision: &self.ferrodoc_revision,
+                fls5_committed: self.fls5_committed,
+                labeler_catalog_digest: &self.labeler_catalog_digest,
+                families: &families,
+                reviewed_development_set_digest: &self.reviewed_development_set_digest,
+                calibration_digest: &self.calibration_digest,
+                eligible_family_count: self.eligible_family_count,
+                production_acceptance: self.production_acceptance,
+            })
+            .expect("readiness identity serialization cannot fail"),
+        )
+    }
+
+    pub fn validate(&self) -> Result<(), SupervisionContractError> {
+        if self.schema_version != PRODUCTION_READINESS_SCHEMA
+            || self.audited_at_utc.trim().is_empty()
+            || self.datasheet_revision.trim().is_empty()
+            || self.foundry_revision.trim().is_empty()
+            || self.ferrodoc_revision.trim().is_empty()
+            || self.families.is_empty()
+        {
+            return Err(SupervisionContractError::Missing(
+                "production readiness identity",
+            ));
+        }
+        self.manifest_digest
+            .validate()
+            .map_err(|_| SupervisionContractError::Invalid("readiness manifest digest"))?;
+        self.labeler_catalog_digest
+            .validate()
+            .map_err(|_| SupervisionContractError::Invalid("labeler catalog digest"))?;
+        unique(
+            self.families.iter().map(|family| &family.family_id),
+            "family",
+        )?;
+        for family in &self.families {
+            family.validate()?;
+        }
+        for digest in [
+            self.reviewed_development_set_digest.as_ref(),
+            self.calibration_digest.as_ref(),
+        ]
+        .into_iter()
+        .flatten()
+        {
+            digest
+                .validate()
+                .map_err(|_| SupervisionContractError::Invalid("development/calibration digest"))?;
+        }
+        if self.calibration_digest.is_some() && self.reviewed_development_set_digest.is_none() {
+            return Err(SupervisionContractError::Invalid(
+                "calibration requires a reviewed development set",
+            ));
+        }
+        let eligible = u32::try_from(
+            self.families
+                .iter()
+                .filter(|family| family.admitted_for_training)
+                .count(),
+        )
+        .map_err(|_| SupervisionContractError::Invalid("eligible family count"))?;
+        if eligible != self.eligible_family_count {
+            return Err(SupervisionContractError::Invalid("eligible family count"));
+        }
+        let acceptance = self.fls5_committed
+            && eligible >= 2
+            && self.reviewed_development_set_digest.is_some()
+            && self.calibration_digest.is_some()
+            && self
+                .families
+                .iter()
+                .filter(|family| family.admitted_for_training)
+                .all(|family| {
+                    !family.source_vocabulary_map_ids.is_empty()
+                        && !family.reviewed_development_example_ids.is_empty()
+                });
+        if acceptance != self.production_acceptance
+            || self.manifest_digest != self.recompute_digest()
+        {
+            return Err(SupervisionContractError::Invalid(
+                "production readiness content identity or acceptance",
+            ));
+        }
+        Ok(())
     }
 }
 

@@ -64,4 +64,41 @@ Full FDX3 production acceptance remains open until all of the following exist:
 - retained production votes/abstentions and combined labels through Foundry;
 - production counts, abstention rates, calibration, and failure buckets.
 
+## Production source eligibility audit
+
+`evidence/fdx3-production-readiness-2026-08-22.json` is the immutable,
+identity-bound selection manifest for the currently retained real candidates.
+It contains hashes and decisions only, never source PDF, table text, or other
+potentially restricted content. Its contract is checked by
+`schemas/fdx3/production-readiness-v1.schema.json` and fails closed unless a
+family has both an explicit `training: allow` policy and suitable analog/power
+structured facts or evidence-bearing electrical cells.
+
+The audit found no admissible production family:
+
+- Raspberry Pi RP2040 document policy is `training: review_required`. The
+  policy itself is also still part of the uncommitted FLS5 working tree. The
+  retained Ferrodoc qualification state is additionally a page-only two-column
+  pin-description table, not an analog/power electrical-specification table,
+  and the corresponding Foundry FLS5 state has not been committed.
+- The Microchip SAMD21 public-datasheet policy is `training: deny` and no
+  committed FLS5 state exists; that policy is likewise not yet committed. Its
+  retained PDF hash is recorded only as audit evidence and is not copied into
+  supervision.
+- The distinct Microchip SAMD21 CMSIS Apache profile is `training: allow`, but
+  the retained Bronze/Silver batches contain 34 part-identity mentions rather
+  than analog/power structured facts. CMSIS identity labelers are selected for
+  future alignment, but this source does not count as electrical supervision.
+- DLA PUB LOG is the only already-approved, retained source with trainable
+  property observations. Its 25,499 characteristic rows have not been reviewed
+  into an analog/power vocabulary or aligned to manufacturer document states,
+  so it remains an alternative candidate rather than a substitute family.
+
+Accordingly the source-vocabulary-map IDs, reviewed-development examples, and
+calibration digest remain absent. Creating any of them from these inputs would
+turn a rights or suitability unknown into a production claim. Label votes,
+training labels, and training examples remain empty until the blockers are
+resolved. This is a production-valid blocker record, not FDX3 acceptance and
+not permission to begin FDX4.
+
 No FDX4 split corpus, FDX5 trained model, or FDX6 production cascade is claimed.

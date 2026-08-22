@@ -12,7 +12,9 @@ Implemented phases:
 
 FDX3 production acceptance is not yet claimed: committed FLS5 real states and
 two rights-cleared analog/power structured-fact supervision families remain
-required. FDX4-FDX6 have not started.
+required. The fail-closed real-source selection audit is checked in at
+`../../evidence/fdx3-production-readiness-2026-08-22.json`; it admits no current
+family and persists no restricted content. FDX4-FDX6 have not started.
 
 The implemented boundaries are documented in
 [FDX1](FDX1_WORKSPACE_AND_CONTRACTS.md), the bounded

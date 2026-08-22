@@ -5,9 +5,9 @@ use datasheet_compiler::supervision::{
     validate_source_vocabulary_map, validate_training_label,
 };
 use datasheet_core::supervision::{
-    CalibrationSnapshot, LabelVote, LabelerCalibration, LabelerRef, ReviewedDevelopmentExample,
-    ReviewedDevelopmentSet, SourceVocabularyMap, StructuredFactRecord, SupervisionObservation,
-    SupervisionProducer, TrainingExample, TrainingLabel, VoteOutcome,
+    CalibrationSnapshot, LabelVote, LabelerCalibration, LabelerRef, ProductionReadinessManifest,
+    ReviewedDevelopmentExample, ReviewedDevelopmentSet, SourceVocabularyMap, StructuredFactRecord,
+    SupervisionObservation, SupervisionProducer, TrainingExample, TrainingLabel, VoteOutcome,
 };
 use datasheet_core::{CandidateId, PredicateVocabularySnapshot, Sha256Digest};
 use serde::Deserialize;
@@ -340,6 +340,57 @@ fn checked_in_fdx3_schemas_match_rust_contracts() {
     check::<CombinationResult>(include_str!(
         "../../../schemas/fdx3/combination-result-v1.schema.json"
     ));
+    check::<ProductionReadinessManifest>(include_str!(
+        "../../../schemas/fdx3/production-readiness-v1.schema.json"
+    ));
+}
+
+#[test]
+fn production_readiness_is_exact_and_fails_closed() {
+    let mut manifest: ProductionReadinessManifest = serde_json::from_str(include_str!(
+        "../../../evidence/fdx3-production-readiness-2026-08-22.json"
+    ))
+    .unwrap();
+    assert_eq!(manifest.manifest_digest, manifest.recompute_digest());
+    manifest.validate().unwrap();
+    assert_eq!(manifest.eligible_family_count, 0);
+    assert!(!manifest.production_acceptance);
+    assert!(manifest.reviewed_development_set_digest.is_none());
+    assert!(manifest.calibration_digest.is_none());
+    assert!(manifest.families.iter().all(|family| {
+        family.source_vocabulary_map_ids.is_empty()
+            && family.reviewed_development_example_ids.is_empty()
+            && !family.admitted_for_training
+            && family.selected_labelers.iter().all(|selected| {
+                LABELER_CATALOG.iter().any(|known| {
+                    known.id == selected.labeler_id && known.version == selected.labeler_version
+                })
+            })
+    }));
+    let digest = manifest.manifest_digest.clone();
+    manifest.families.reverse();
+    for family in &mut manifest.families {
+        family.artifacts.reverse();
+        family.selected_labelers.reverse();
+        family.blocker_codes.reverse();
+    }
+    assert_eq!(manifest.recompute_digest(), digest);
+
+    let rp2040 = manifest
+        .families
+        .iter_mut()
+        .find(|family| family.family_id.contains("rp2040"))
+        .unwrap();
+    rp2040.admitted_for_training = true;
+    assert!(rp2040.validate().is_err());
+
+    let mut manifest: ProductionReadinessManifest = serde_json::from_str(include_str!(
+        "../../../evidence/fdx3-production-readiness-2026-08-22.json"
+    ))
+    .unwrap();
+    manifest.production_acceptance = true;
+    manifest.manifest_digest = manifest.recompute_digest();
+    assert!(manifest.validate().is_err());
 }
 
 #[test]

@@ -5,8 +5,8 @@ use std::path::PathBuf;
 
 use datasheet_compiler::supervision::{CombinationResult, LabelerCatalogArtifact};
 use datasheet_core::supervision::{
-    CalibrationSnapshot, LabelVote, ReviewedDevelopmentSet, SourceVocabularyMap,
-    StructuredFactRecord, TrainingExample, TrainingLabel,
+    CalibrationSnapshot, LabelVote, ProductionReadinessManifest, ReviewedDevelopmentSet,
+    SourceVocabularyMap, StructuredFactRecord, TrainingExample, TrainingLabel,
 };
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -24,6 +24,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     write_schema::<ReviewedDevelopmentSet>(&output, "reviewed-development-set-v1.schema.json")?;
     write_schema::<CalibrationSnapshot>(&output, "labeler-calibration-v1.schema.json")?;
     write_schema::<CombinationResult>(&output, "combination-result-v1.schema.json")?;
+    write_schema::<ProductionReadinessManifest>(&output, "production-readiness-v1.schema.json")?;
     Ok(())
 }
 
