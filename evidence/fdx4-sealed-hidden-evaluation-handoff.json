@@ -1,0 +1,28 @@
+{
+  "schema_version": "fdx4.sealed-hidden-evaluation-handoff/v1",
+  "handoff_digest": "07e09e1f0e9dc419f7be58ec000fe4af181c1055a769642c2914a959eaa412f1",
+  "qualification_context_digest": "9f0b0199de506ea29757d5f17e93a6cf4e9b1a8186ea178f53c1070bb0b8a998",
+  "split": "final-blind-test",
+  "state": "awaiting_external_seal",
+  "external_store_locator": "artifactum+sealed://independent-evaluator/fdx4/final-blind-test",
+  "held_out_from_train_by": [
+    "exact_content",
+    "near_duplicate",
+    "revision",
+    "synthetic_root",
+    "document_family",
+    "template_family",
+    "manufacturer",
+    "publisher_lineage"
+  ],
+  "required_evidence_class": "real_document",
+  "source_bytes_repository_visible": false,
+  "labels_repository_visible": false,
+  "candidate_network_access": false,
+  "candidate_credentials_available": false,
+  "limitation_codes": [
+    "external_independent_operator_not_yet_assigned",
+    "final_blind_evaluation_not_claimed",
+    "sealed_real_artifact_not_yet_deposited"
+  ]
+}

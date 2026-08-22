@@ -65,12 +65,15 @@ slices additionally declare their named grouping level. Publisher lineage and
 the other meaningful dimensions can be declared per slice. A member can never
 be tagged both train and evaluation.
 
-`evidence/fdx4-protected-corpus-manifest-v2.json` contains 266 members:
+`evidence/fdx4-protected-corpus-manifest-v2.json` contains 275 members:
 
 - 210 audited NASA examples remain train-only;
 - 55 independently reviewed TPX00242 source-native electrical/operating cells
   carry overlapping development, template-held-out, document-family-held-out,
   and manufacturer-held-out tags, all train-disjoint at every declared level;
+- nine independently reviewed Adafruit MiniBoost TPS61023 bench-measurement rows
+  carry the same evaluation tags as a second real document, template,
+  manufacturer, and publisher-lineage group;
 - one independently rooted minimized synthetic case is a visible development
   contract case only. It is not admitted to final-blind-test.
 
@@ -91,13 +94,28 @@ emits 31 vocabulary maps, 55 reviewed-development examples, 165 votes including
 No regime is inferred and no authority for underlying component manufacturers
 is claimed.
 
-Foundry source/profile semantics are pinned at `d4e35dd`; the resulting corpus,
+The Adafruit source is the exact first-party `Adafruit-TPS61023-PCB` README at
+commit `82b5a33...`. Its own license section binds the retained text to the paired
+CC BY-SA 3.0 `license.txt`; both byte digests are pinned. The nine reviewed rows
+are five maximum-output-current measurements and four efficiency measurements,
+with every stated input/output voltage/current condition retained. They are
+board-publisher bench observations, not TI component limits.
+
+Foundry Adafruit source/profile semantics are pinned at `6173673`; the resulting corpus,
 TPX supervision bundle, six slice artifacts, and visible synthetic contract
 bytes are physically retained through Foundry's audited Artifactum graph.
 
+The checked-in `fdx4.sealed-hidden-evaluation-handoff/v1` contract is a fail-closed
+request for an independent evaluator to retain a real final-blind artifact in an
+external sealed Artifactum collection. A ready handoff requires exact sealed-manifest,
+collection, and operator-attestation identities while forbidding repository-visible
+source bytes/labels and candidate network access or credentials. The current request is
+`awaiting_external_seal`; it is not hidden evidence.
+
 `contract_plumbing_ready` is false and every evaluation slice deliberately sets
 `supports_real_world_generalization` false. The same single real Arduino
-document backs four declared evaluation views, while final-blind-test is empty:
+document and one small Adafruit README back four declared evaluation views, while
+final-blind-test is empty:
 the repository-visible synthetic payload cannot truthfully be treated as blind.
 Therefore `model_qualification_ready` remains false and FDX5 training must not
 begin.

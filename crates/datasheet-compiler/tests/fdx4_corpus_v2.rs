@@ -118,7 +118,7 @@ fn production() -> ProtectedCorpusManifestV2 {
 fn production_manifest_has_honest_overlap_and_hidden_isolation() {
     let manifest = production();
     manifest.validate().unwrap();
-    assert_eq!(manifest.members.len(), 266);
+    assert_eq!(manifest.members.len(), 275);
     let train = manifest
         .slices
         .iter()
@@ -138,11 +138,11 @@ fn production_manifest_has_honest_overlap_and_hidden_isolation() {
             )
         })
         .collect::<Vec<_>>();
-    assert_eq!(evaluation[0].member_ids.len(), 56);
+    assert_eq!(evaluation[0].member_ids.len(), 65);
     assert!(
         evaluation[1..]
             .iter()
-            .all(|slice| slice.member_ids.len() == 55)
+            .all(|slice| slice.member_ids.len() == 64)
     );
     assert!(
         evaluation[1..]
@@ -163,6 +163,20 @@ fn production_manifest_has_honest_overlap_and_hidden_isolation() {
     );
     assert!(!manifest.contract_plumbing_ready);
     assert!(!manifest.model_qualification_ready);
+    assert_eq!(
+        manifest
+            .members
+            .iter()
+            .filter(|member| member.manufacturer_key.as_deref() == Some("adafruit"))
+            .count(),
+        9
+    );
+    assert!(manifest.inputs.iter().any(|input| {
+        input.role == "reviewed_adafruit_tps61023_examples"
+            && input.content_sha256.0
+                == "5fd8d99a976f461b823dc022c59e7f24a6d694fb8956a2eb549067aadf960ab1"
+            && input.row_count == 9
+    }));
 }
 
 #[test]

@@ -11,7 +11,9 @@ use serde_json::{Value, json};
 
 const NASA_BUNDLE_SHA: &str = "5f859c8944f3306f5219f1aea8aa7f545c3e815100e88bd1e523dd66b63fb892";
 const TPX_BUNDLE_SHA: &str = "6a7a6cfa69e619fd048e9a5a16aebda480eb1b6bb2ab92000bd63edcfcdfe29f";
-const FOUNDRY_REVISION: &str = "d4e35dda5fa1f1b78347a4fec2e26b1b06c3e718";
+const ADAFRUIT_BUNDLE_SHA: &str =
+    "5fd8d99a976f461b823dc022c59e7f24a6d694fb8956a2eb549067aadf960ab1";
+const FOUNDRY_REVISION: &str = "61736730f6c7196538951f874b788d70e317a046";
 
 fn digest(value: &impl serde::Serialize) -> Sha256Digest {
     Sha256Digest::of_bytes(&serde_json::to_vec(value).expect("serializable"))
@@ -21,11 +23,12 @@ fn main() {
     let args = env::args().collect::<Vec<_>>();
     assert_eq!(
         args.len(),
-        4,
-        "usage: build_fdx4_protected_corpus_v2 <nasa-bundle> <tpx-bundle> <output>"
+        5,
+        "usage: build_fdx4_protected_corpus_v2 <nasa-bundle> <tpx-bundle> <adafruit-bundle> <output>"
     );
     let nasa_bytes = fs::read(&args[1]).unwrap();
     let tpx_bytes = fs::read(&args[2]).unwrap();
+    let adafruit_bytes = fs::read(&args[3]).unwrap();
     assert_eq!(
         Sha256Digest::of_bytes(&nasa_bytes).0,
         NASA_BUNDLE_SHA,
@@ -36,8 +39,14 @@ fn main() {
         TPX_BUNDLE_SHA,
         "wrong reviewed TPX bundle"
     );
+    assert_eq!(
+        Sha256Digest::of_bytes(&adafruit_bytes).0,
+        ADAFRUIT_BUNDLE_SHA,
+        "wrong reviewed Adafruit bundle"
+    );
     let nasa: Value = serde_json::from_slice(&nasa_bytes).unwrap();
     let tpx: Value = serde_json::from_slice(&tpx_bytes).unwrap();
+    let adafruit: Value = serde_json::from_slice(&adafruit_bytes).unwrap();
     let nasa_observations = nasa["votes"]
         .as_array()
         .unwrap()
@@ -142,6 +151,52 @@ fn main() {
         .collect::<Vec<_>>();
     members.extend(tpx_members);
 
+    let adafruit_lineage = digest(&(
+        "publisher-lineage",
+        "publisher.adafruit",
+        "Adafruit-TPS61023-PCB",
+        "82b5a33",
+    ));
+    let adafruit_near = digest(&("near-duplicate", "Adafruit-4654", "github-82b5a33"));
+    let adafruit_revision = digest(&(
+        "revision",
+        "Adafruit-4654",
+        "82b5a33a1900a5c13849029bc84e7856a44086e0",
+    ));
+    let adafruit_rights = digest(&(
+        "policy.adafruit.tps61023.cc-by-sa-3.0",
+        "2026-08-22",
+        "67f6d35e78f275f2191feff064096a47862ab3f0b6bfd21f01071bbbcac4708d",
+        "075dad5e5fc96c27014fabc269f4f5732909cffd178a486f546d982b6cf86b74",
+    ));
+    let adafruit_members = adafruit["training_examples"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .map(|example| CorpusMemberV2 {
+            example_id: serde_json::from_value(example["example_id"].clone()).unwrap(),
+            example_content_sha256: digest(example),
+            evidence_class: CorpusEvidenceClass::RealDocument,
+            real_world_generalization_eligible: true,
+            document_family_id: "manufacturer.adafruit.tps61023.github-readme".into(),
+            template_family_id: Some("adafruit.github-hardware-readme.bench-measurements".into()),
+            manufacturer_key: Some("adafruit".into()),
+            lineage_group_ids: vec![adafruit_lineage.clone()],
+            near_duplicate_group_id: adafruit_near.clone(),
+            revision_group_id: Some(adafruit_revision.clone()),
+            synthetic_root_example_id: None,
+            rights_snapshot_ids: vec![adafruit_rights.clone()],
+            training_permitted: true,
+            restriction_codes: vec![],
+        })
+        .collect::<Vec<_>>();
+    assert_eq!(adafruit_members.len(), 9);
+    let adafruit_ids = adafruit_members
+        .iter()
+        .map(|member| member.example_id.clone())
+        .collect::<Vec<_>>();
+    members.extend(adafruit_members);
+
     // Independently rooted minimized case. Its bytes are persisted outside the source tree;
     // only identity/grouping metadata enters the public manifest.
     let synthetic_payload = json!({"schema_version":"fdx4-independent-synthetic-case/1","case":"bounded-range-cell",
@@ -191,6 +246,7 @@ fn main() {
         GroupingLevel::PublisherLineage,
     ];
     let mut development_ids = tpx_ids.clone();
+    development_ids.extend(adafruit_ids.clone());
     development_ids.push(synthetic_id.clone());
     let slices = ProtectedSplit::ALL
         .into_iter()
@@ -202,17 +258,17 @@ fn main() {
                     all_groups.clone(),
                     vec![
                         "visible_synthetic_contract_case_included".into(),
-                        "single_real_heldout_document_not_representative".into(),
+                        "two_small_real_heldout_documents_not_representative".into(),
                         "evaluation_tags_declared_to_overlap".into(),
                     ],
                 ),
                 ProtectedSplit::TemplateHeldOut
                 | ProtectedSplit::DocumentFamilyHeldOut
                 | ProtectedSplit::ManufacturerHeldOut => (
-                    tpx_ids.clone(),
+                    tpx_ids.iter().chain(&adafruit_ids).cloned().collect(),
                     all_groups.clone(),
                     vec![
-                        "single_real_heldout_document_not_representative".into(),
+                        "two_small_real_heldout_documents_not_representative".into(),
                         "evaluation_tags_declared_to_overlap".into(),
                     ],
                 ),
@@ -241,12 +297,14 @@ fn main() {
         corpus_digest: digest(&"placeholder"),
         datasheet_revision: "fdx4-overlap-open-docs".into(),
         foundry_revision: FOUNDRY_REVISION.into(),
-        ontology_snapshot_digest: serde_json::from_value(tpx["vocabulary"]["digest"].clone())
-            .unwrap(),
-        calibration_snapshot_digest: serde_json::from_value(
-            tpx["calibration_snapshot"]["digest"].clone(),
-        )
-        .unwrap(),
+        ontology_snapshot_digest: digest(&(
+            &tpx["vocabulary"]["digest"],
+            &adafruit["vocabulary"]["digest"],
+        )),
+        calibration_snapshot_digest: digest(&(
+            &tpx["calibration_snapshot"]["digest"],
+            &adafruit["calibration_snapshot"]["digest"],
+        )),
         builder_configuration_digest: digest(&(
             "fdx4-protected-split-builder",
             2_u8,
@@ -266,6 +324,12 @@ fn main() {
                 row_count: 55,
             },
             CorpusInputBinding {
+                role: "reviewed_adafruit_tps61023_examples".into(),
+                content_sha256: Sha256Digest(ADAFRUIT_BUNDLE_SHA.into()),
+                logical_id: Some("manufacturer.adafruit.tps61023.github-82b5a33".into()),
+                row_count: 9,
+            },
+            CorpusInputBinding {
                 role: "independently_rooted_synthetic_contract_case".into(),
                 content_sha256: synthetic_content,
                 logical_id: Some("synthetic.independent.range-cell/1".into()),
@@ -278,9 +342,10 @@ fn main() {
         contract_plumbing_ready: false,
         model_qualification_ready: false,
         limitation_codes: vec![
-            "only_one_real_evaluation_document_family".into(),
+            "only_two_small_real_evaluation_document_families".into(),
             "evaluation_tags_overlap_by_declaration".into(),
             "final_blind_is_empty".into(),
+            "external_sealed_hidden_handoff_pending".into(),
             "repository_visible_synthetic_is_development_only".into(),
             "no_real_world_generalization_claim".into(),
             "fdx5_model_qualification_blocked".into(),
@@ -289,5 +354,5 @@ fn main() {
     .unwrap();
     let mut bytes = serde_json::to_vec_pretty(&manifest).unwrap();
     bytes.push(b'\n');
-    fs::write(Path::new(&args[3]), bytes).unwrap();
+    fs::write(Path::new(&args[4]), bytes).unwrap();
 }

@@ -1,0 +1,130 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "SealedHiddenEvaluationHandoff",
+  "description": "Repository-safe contract for an independently operated final-blind evaluation.\n\nSource bytes, labels, and decryption credentials must remain outside the shared repository and outside the candidate process. The checked-in form may request a seal, but cannot represent a completed hidden evaluation without an external attestation.",
+  "type": "object",
+  "required": [
+    "candidate_credentials_available",
+    "candidate_network_access",
+    "external_store_locator",
+    "handoff_digest",
+    "held_out_from_train_by",
+    "labels_repository_visible",
+    "limitation_codes",
+    "qualification_context_digest",
+    "required_evidence_class",
+    "schema_version",
+    "source_bytes_repository_visible",
+    "split",
+    "state"
+  ],
+  "properties": {
+    "artifactum_collection_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "candidate_credentials_available": {
+      "type": "boolean"
+    },
+    "candidate_network_access": {
+      "type": "boolean"
+    },
+    "external_store_locator": {
+      "type": "string"
+    },
+    "handoff_digest": {
+      "type": "string"
+    },
+    "held_out_from_train_by": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/GroupingLevel"
+      }
+    },
+    "labels_repository_visible": {
+      "type": "boolean"
+    },
+    "limitation_codes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "operator_attestation_sha256": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "qualification_context_digest": {
+      "type": "string"
+    },
+    "required_evidence_class": {
+      "$ref": "#/definitions/CorpusEvidenceClass"
+    },
+    "schema_version": {
+      "type": "string"
+    },
+    "sealed_manifest_content_sha256": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "source_bytes_repository_visible": {
+      "type": "boolean"
+    },
+    "split": {
+      "$ref": "#/definitions/ProtectedSplit"
+    },
+    "state": {
+      "$ref": "#/definitions/SealedHandoffState"
+    }
+  },
+  "additionalProperties": false,
+  "definitions": {
+    "CorpusEvidenceClass": {
+      "description": "The evidence class controls which claims a protected slice may support.",
+      "type": "string",
+      "enum": [
+        "real_document",
+        "independently_synthetic",
+        "synthetic_derivative"
+      ]
+    },
+    "GroupingLevel": {
+      "description": "A grouping dimension that an evaluation slice promises is disjoint from train.",
+      "type": "string",
+      "enum": [
+        "exact_content",
+        "near_duplicate",
+        "revision",
+        "synthetic_root",
+        "document_family",
+        "template_family",
+        "manufacturer",
+        "publisher_lineage"
+      ]
+    },
+    "ProtectedSplit": {
+      "type": "string",
+      "enum": [
+        "train",
+        "development",
+        "template-held-out",
+        "document-family-held-out",
+        "manufacturer-held-out",
+        "final-blind-test"
+      ]
+    },
+    "SealedHandoffState": {
+      "type": "string",
+      "enum": [
+        "awaiting_external_seal",
+        "sealed_ready"
+      ]
+    }
+  }
+}

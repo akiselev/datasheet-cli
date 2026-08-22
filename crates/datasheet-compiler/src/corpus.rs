@@ -3,7 +3,7 @@
 
 use datasheet_core::corpus::{
     ProtectedCorpusManifest, ProtectedCorpusManifestV2, ProtectedSliceManifestV2,
-    ProtectedSplitManifest,
+    ProtectedSplitManifest, SealedHiddenEvaluationHandoff,
 };
 
 /// Freezes split artifact identities, canonical corpus order, and the corpus digest.
@@ -40,6 +40,19 @@ pub fn freeze_protected_corpus(
     manifest.corpus_digest = manifest.recompute_digest();
     manifest.validate()?;
     Ok(manifest)
+}
+
+/// Freezes a repository-safe request or an externally attested sealed handoff.
+/// # Errors
+/// Returns an error if the locator, isolation flags, seal state, or identities fail closed.
+pub fn freeze_sealed_hidden_handoff(
+    mut handoff: SealedHiddenEvaluationHandoff,
+) -> Result<SealedHiddenEvaluationHandoff, datasheet_core::corpus::CorpusContractError> {
+    handoff.held_out_from_train_by.sort();
+    handoff.limitation_codes.sort();
+    handoff.handoff_digest = handoff.recompute_digest();
+    handoff.validate()?;
+    Ok(handoff)
 }
 
 #[must_use]

@@ -10,6 +10,7 @@ use crate::Sha256Digest;
 
 pub const PROTECTED_CORPUS_SCHEMA: &str = "fdx4.protected-corpus-manifest/v1";
 pub const PROTECTED_CORPUS_V2_SCHEMA: &str = "fdx4.protected-corpus-manifest/v2";
+pub const SEALED_HIDDEN_HANDOFF_SCHEMA: &str = "fdx4.sealed-hidden-evaluation-handoff/v1";
 
 #[derive(
     Clone, Copy, Debug, Eq, Ord, PartialEq, PartialOrd, Serialize, Deserialize, JsonSchema,
@@ -49,6 +50,114 @@ pub enum GroupingLevel {
     TemplateFamily,
     Manufacturer,
     PublisherLineage,
+}
+
+#[derive(
+    Clone, Copy, Debug, Eq, Ord, PartialEq, PartialOrd, Serialize, Deserialize, JsonSchema,
+)]
+#[serde(rename_all = "snake_case")]
+pub enum SealedHandoffState {
+    AwaitingExternalSeal,
+    SealedReady,
+}
+
+/// Repository-safe contract for an independently operated final-blind evaluation.
+///
+/// Source bytes, labels, and decryption credentials must remain outside the shared
+/// repository and outside the candidate process. The checked-in form may request a seal,
+/// but cannot represent a completed hidden evaluation without an external attestation.
+#[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize, JsonSchema)]
+#[serde(deny_unknown_fields)]
+pub struct SealedHiddenEvaluationHandoff {
+    pub schema_version: String,
+    pub handoff_digest: Sha256Digest,
+    pub qualification_context_digest: Sha256Digest,
+    pub split: ProtectedSplit,
+    pub state: SealedHandoffState,
+    pub external_store_locator: String,
+    pub held_out_from_train_by: Vec<GroupingLevel>,
+    pub required_evidence_class: CorpusEvidenceClass,
+    pub source_bytes_repository_visible: bool,
+    pub labels_repository_visible: bool,
+    pub candidate_network_access: bool,
+    pub candidate_credentials_available: bool,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub sealed_manifest_content_sha256: Option<Sha256Digest>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub artifactum_collection_id: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub operator_attestation_sha256: Option<Sha256Digest>,
+    pub limitation_codes: Vec<String>,
+}
+
+impl SealedHiddenEvaluationHandoff {
+    #[must_use]
+    pub fn recompute_digest(&self) -> Sha256Digest {
+        let mut canonical = self.clone();
+        canonical.handoff_digest = Sha256Digest::of_bytes(b"placeholder");
+        canonical.held_out_from_train_by.sort();
+        canonical.limitation_codes.sort();
+        Sha256Digest::of_bytes(&serde_json::to_vec(&canonical).expect("handoff serialization"))
+    }
+
+    pub fn validate(&self) -> Result<(), CorpusContractError> {
+        if self.schema_version != SEALED_HIDDEN_HANDOFF_SCHEMA
+            || self.split != ProtectedSplit::FinalBlindTest
+            || !self
+                .external_store_locator
+                .starts_with("artifactum+sealed://")
+            || self.held_out_from_train_by.is_empty()
+            || self.limitation_codes.is_empty()
+        {
+            return Err(CorpusContractError::Invalid("sealed handoff identity"));
+        }
+        if self.source_bytes_repository_visible
+            || self.labels_repository_visible
+            || self.candidate_network_access
+            || self.candidate_credentials_available
+            || self.required_evidence_class != CorpusEvidenceClass::RealDocument
+        {
+            return Err(CorpusContractError::Invalid("hidden evaluation isolation"));
+        }
+        self.qualification_context_digest
+            .validate()
+            .map_err(|_| CorpusContractError::Invalid("handoff context digest"))?;
+        unique(self.held_out_from_train_by.iter(), "handoff grouping")?;
+        unique(self.limitation_codes.iter(), "handoff limitation")?;
+        let sealed = self.sealed_manifest_content_sha256.is_some()
+            && self.artifactum_collection_id.is_some()
+            && self.operator_attestation_sha256.is_some();
+        if (self.state == SealedHandoffState::SealedReady) != sealed {
+            return Err(CorpusContractError::Invalid("sealed handoff readiness"));
+        }
+        if let Some(digest) = &self.sealed_manifest_content_sha256 {
+            digest
+                .validate()
+                .map_err(|_| CorpusContractError::Invalid("sealed manifest digest"))?;
+        }
+        if let Some(id) = &self.artifactum_collection_id {
+            let digest = id
+                .strip_prefix("sha256:")
+                .ok_or(CorpusContractError::Invalid("sealed Artifactum collection"))?;
+            Sha256Digest(digest.into())
+                .validate()
+                .map_err(|_| CorpusContractError::Invalid("sealed Artifactum collection"))?;
+        }
+        if let Some(digest) = &self.operator_attestation_sha256 {
+            digest
+                .validate()
+                .map_err(|_| CorpusContractError::Invalid("operator attestation"))?;
+        }
+        if self.handoff_digest != self.recompute_digest() {
+            return Err(CorpusContractError::Invalid("sealed handoff digest"));
+        }
+        Ok(())
+    }
+
+    #[must_use]
+    pub fn ready_for_hidden_evaluation(&self) -> bool {
+        self.state == SealedHandoffState::SealedReady && self.validate().is_ok()
+    }
 }
 
 impl ProtectedSplit {

@@ -1,0 +1,19 @@
+{
+  "schema_version": "fdx4.independent-source-review/v1",
+  "source_readme_sha256": "67f6d35e78f275f2191feff064096a47862ab3f0b6bfd21f01071bbbcac4708d",
+  "source_license_sha256": "075dad5e5fc96c27014fabc269f4f5732909cffd178a486f546d982b6cf86b74",
+  "source_commit": "82b5a33a1900a5c13849029bc84e7856a44086e0",
+  "review_method": "line-by-line comparison with exact first-party README bytes; conditions transcribed, not inferred",
+  "rows": [
+    {"record_id":"bf4df72bff0f40847f89135a3778ae838d5745f73f515c9bfd23421605cf3114","predicate":"power_converter.measured_maximum_output_current","value":"300 mA","conditions":{"input_voltage":"2 V","output_voltage":"5 V"},"source_line":"19"},
+    {"record_id":"9dadc2c0ceedb1c5603d5a81542fca88811589766b93177049c4b67af59c5ce0","predicate":"power_converter.measured_maximum_output_current","value":"500 mA","conditions":{"input_voltage":"2.5 V","output_voltage":"5 V"},"source_line":"20"},
+    {"record_id":"a27f24cde96b0876e4e0ccc8cc62c6fffa653dda03e0b499ba741a4a0daf24a8","predicate":"power_converter.measured_maximum_output_current","value":"800 mA","conditions":{"input_voltage":"3 V","output_voltage":"5 V"},"source_line":"21"},
+    {"record_id":"be4181831d14ea4785cacdbee26bdab6b4a65136fad6dd065904b2df55162ab7","predicate":"power_converter.measured_maximum_output_current","value":"1100 mA","conditions":{"input_voltage":"3.5 V","output_voltage":"5 V"},"source_line":"22"},
+    {"record_id":"ee08d81e61faee852c58bd257a245ed7ac6e0ffb94c4008562d31901d2b049ad","predicate":"power_converter.measured_maximum_output_current","value":"1400 mA","conditions":{"input_voltage":"4 V","output_voltage":"5 V"},"source_line":"23"},
+    {"record_id":"ea4e60e2361fd9bba3dca6f0dd566f65016b07458d2d17c41db1c3dfe91e25d2","predicate":"power_converter.measured_efficiency","value":"88 %","conditions":{"input_voltage":"3.7 V","input_current":"160 mA","output_voltage":"5.2 V","output_current":"100 mA"},"source_line":"27"},
+    {"record_id":"261708e4b46f439f3a313034863bda93ba81c0bc13f3ca1231f0ff4fba8404e7","predicate":"power_converter.measured_efficiency","value":"88 %","conditions":{"input_voltage":"3.7 V","input_current":"400 mA","output_voltage":"5.2 V","output_current":"250 mA"},"source_line":"28"},
+    {"record_id":"0d5e89f9208bf3ecad71cf616c0d484cc600016670004f5852abab66b48af924","predicate":"power_converter.measured_efficiency","value":"88 %","conditions":{"input_voltage":"3.7 V","input_current":"800 mA","output_voltage":"5.2 V","output_current":"500 mA"},"source_line":"29"},
+    {"record_id":"d5d8acd29eea35912363c1a44cb5c21dc9a83608670162cb5e9d2eb42ea1cde5","predicate":"power_converter.measured_efficiency","value":"78 %","conditions":{"input_voltage":"3.7 V","input_current":"1800 mA","output_voltage":"5.2 V","output_current":"1000 mA"},"source_line":"30"}
+  ],
+  "limitations": ["bench measurements reported by board publisher", "not TI component limits", "single README revision", "not hidden"]
+}

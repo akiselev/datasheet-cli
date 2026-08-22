@@ -1,10 +1,10 @@
 {
   "schema_version": "fdx4.protected-corpus-manifest/v2",
-  "corpus_digest": "0c2e1ef233c6d6c98101d38af20dc0fa6b9e8fe01abddee5c08966fa98757a65",
+  "corpus_digest": "32f87445dd27ba252c400dd5746ebee8595dace0f5613f381bf65ec1e6696b5b",
   "datasheet_revision": "fdx4-overlap-open-docs",
-  "foundry_revision": "d4e35dda5fa1f1b78347a4fec2e26b1b06c3e718",
-  "ontology_snapshot_digest": "59ac9209ad9af9f0d796e0f402428affee98ceb48dd62ce6125f1278022766fd",
-  "calibration_snapshot_digest": "a519a56038bc0b0eede930194c2b1ba68a6181f319480dd30a743d64e2b92005",
+  "foundry_revision": "61736730f6c7196538951f874b788d70e317a046",
+  "ontology_snapshot_digest": "89b051c02e3818e5550a654135a60bf287e880c3b9df705a37a6d43449172c0e",
+  "calibration_snapshot_digest": "ab8389895b87ea68eeebf84160ad510c7dcc0fd0596071f0ff6e508627f8b295",
   "builder_configuration_digest": "70f2b2752c4c896d64b13f6f3b5888aa37fd518e65ac51dd12b361dd6ed22151",
   "inputs": [
     {
@@ -18,6 +18,12 @@
       "content_sha256": "e1f715c2faf2bcc26fde2a47d87c198b048894866101285c688fbfb882419d14",
       "logical_id": "synthetic.independent.range-cell/1",
       "row_count": 1
+    },
+    {
+      "role": "reviewed_adafruit_tps61023_examples",
+      "content_sha256": "5fd8d99a976f461b823dc022c59e7f24a6d694fb8956a2eb549067aadf960ab1",
+      "logical_id": "manufacturer.adafruit.tps61023.github-82b5a33",
+      "row_count": 9
     },
     {
       "role": "reviewed_arduino_tpx00242_examples",
@@ -745,6 +751,25 @@
       "revision_group_id": "ce4fa8a485df29554b12a3e725f9b15c4faee7ce8ea8936f00be69daca1a194f",
       "rights_snapshot_ids": [
         "d06bd6f87ceda8f37ff9c1aaaa1d9b9cccc79cff4c21fbf933bb7dcf499dcf69"
+      ],
+      "training_permitted": true,
+      "restriction_codes": []
+    },
+    {
+      "example_id": "2eabecad526069a4ff063156e39a404133f862ffef450f34dff7218b9c16f25e",
+      "example_content_sha256": "b3548ad5208722fecaf519e783b1d38d6769ed0ab4ca0ec310401cfb34f73467",
+      "evidence_class": "real_document",
+      "real_world_generalization_eligible": true,
+      "document_family_id": "manufacturer.adafruit.tps61023.github-readme",
+      "template_family_id": "adafruit.github-hardware-readme.bench-measurements",
+      "manufacturer_key": "adafruit",
+      "lineage_group_ids": [
+        "f789a131fd8c7141bd0a10d3e4c76473c7dd609fed34ec03a78c78fbe1424a05"
+      ],
+      "near_duplicate_group_id": "0e49d5a47984538bb272ee6309ac1d76f6b1ce11a8d1d15304f0e83eb7cb1d0f",
+      "revision_group_id": "1a3bbaab28c81765786e24b8fc2ce74b08e3e18ba9fd34b271c6820e8d62702d",
+      "rights_snapshot_ids": [
+        "2fda3adb655e0a4bc34c2ac63d89543da16d0131d1afd47010961b8e1845671a"
       ],
       "training_permitted": true,
       "restriction_codes": []
@@ -2175,6 +2200,25 @@
       "restriction_codes": []
     },
     {
+      "example_id": "70e4893a3f8aa8cb719a0793e223c534f419e6741481d428cc3dc9f7e4631a08",
+      "example_content_sha256": "4cfa4a31b475933ef505ad4e844aafbb4b26905e46bef8b0538dcdb8cd3f7860",
+      "evidence_class": "real_document",
+      "real_world_generalization_eligible": true,
+      "document_family_id": "manufacturer.adafruit.tps61023.github-readme",
+      "template_family_id": "adafruit.github-hardware-readme.bench-measurements",
+      "manufacturer_key": "adafruit",
+      "lineage_group_ids": [
+        "f789a131fd8c7141bd0a10d3e4c76473c7dd609fed34ec03a78c78fbe1424a05"
+      ],
+      "near_duplicate_group_id": "0e49d5a47984538bb272ee6309ac1d76f6b1ce11a8d1d15304f0e83eb7cb1d0f",
+      "revision_group_id": "1a3bbaab28c81765786e24b8fc2ce74b08e3e18ba9fd34b271c6820e8d62702d",
+      "rights_snapshot_ids": [
+        "2fda3adb655e0a4bc34c2ac63d89543da16d0131d1afd47010961b8e1845671a"
+      ],
+      "training_permitted": true,
+      "restriction_codes": []
+    },
+    {
       "example_id": "70fde1f9d71f8494193894724886b29599be18be902a6a1f825b8c0e68e653c1",
       "example_content_sha256": "11e809f5a88b35b3036fc2e2de13db260b52937837c428102314ef3791ba13a2",
       "evidence_class": "real_document",
@@ -2840,6 +2884,25 @@
       "restriction_codes": []
     },
     {
+      "example_id": "96dd626a5f1d3f62977d5adecc82a2707eafb7504ff6801db14defeaf26779fa",
+      "example_content_sha256": "b3ac91028db91fbfda59603bed588f0e3c38f06adcb2336609d27d646781213d",
+      "evidence_class": "real_document",
+      "real_world_generalization_eligible": true,
+      "document_family_id": "manufacturer.adafruit.tps61023.github-readme",
+      "template_family_id": "adafruit.github-hardware-readme.bench-measurements",
+      "manufacturer_key": "adafruit",
+      "lineage_group_ids": [
+        "f789a131fd8c7141bd0a10d3e4c76473c7dd609fed34ec03a78c78fbe1424a05"
+      ],
+      "near_duplicate_group_id": "0e49d5a47984538bb272ee6309ac1d76f6b1ce11a8d1d15304f0e83eb7cb1d0f",
+      "revision_group_id": "1a3bbaab28c81765786e24b8fc2ce74b08e3e18ba9fd34b271c6820e8d62702d",
+      "rights_snapshot_ids": [
+        "2fda3adb655e0a4bc34c2ac63d89543da16d0131d1afd47010961b8e1845671a"
+      ],
+      "training_permitted": true,
+      "restriction_codes": []
+    },
+    {
       "example_id": "97446dbe9170df2229d8048b9a2e59b1688d5cf45e368e47ecc530d058a9cff0",
       "example_content_sha256": "f8ae91c0e2a58b95100f7ae0952b39945313c6c7bbd981e512908514c1d7aeb1",
       "evidence_class": "real_document",
@@ -3025,6 +3088,25 @@
       "revision_group_id": "77f4cecf25d704da5381392514b089c169523439f2a285d3ce7203184c079c46",
       "rights_snapshot_ids": [
         "bdb890298d965a0cdd436ce40233757dda5e427d8f7c6224a90a114ede321d92"
+      ],
+      "training_permitted": true,
+      "restriction_codes": []
+    },
+    {
+      "example_id": "9d36840eaca4a3d19529d3baaa77e6848e04bf3280381f069394f7d8b742600d",
+      "example_content_sha256": "42ddf4449fb245e7dddc4ff2a6bf2288979bab033010f39698e6a2c86651edfb",
+      "evidence_class": "real_document",
+      "real_world_generalization_eligible": true,
+      "document_family_id": "manufacturer.adafruit.tps61023.github-readme",
+      "template_family_id": "adafruit.github-hardware-readme.bench-measurements",
+      "manufacturer_key": "adafruit",
+      "lineage_group_ids": [
+        "f789a131fd8c7141bd0a10d3e4c76473c7dd609fed34ec03a78c78fbe1424a05"
+      ],
+      "near_duplicate_group_id": "0e49d5a47984538bb272ee6309ac1d76f6b1ce11a8d1d15304f0e83eb7cb1d0f",
+      "revision_group_id": "1a3bbaab28c81765786e24b8fc2ce74b08e3e18ba9fd34b271c6820e8d62702d",
+      "rights_snapshot_ids": [
+        "2fda3adb655e0a4bc34c2ac63d89543da16d0131d1afd47010961b8e1845671a"
       ],
       "training_permitted": true,
       "restriction_codes": []
@@ -3657,6 +3739,25 @@
       "restriction_codes": []
     },
     {
+      "example_id": "b83344e3e41a2cd4b59b26d20e7b37b78808ed47f17333a84ce866d0ac99f3e3",
+      "example_content_sha256": "bbd35dffdb7279b3c03a2b215bff1bba5297fcec71cb776f061ff1fdf6bd3559",
+      "evidence_class": "real_document",
+      "real_world_generalization_eligible": true,
+      "document_family_id": "manufacturer.adafruit.tps61023.github-readme",
+      "template_family_id": "adafruit.github-hardware-readme.bench-measurements",
+      "manufacturer_key": "adafruit",
+      "lineage_group_ids": [
+        "f789a131fd8c7141bd0a10d3e4c76473c7dd609fed34ec03a78c78fbe1424a05"
+      ],
+      "near_duplicate_group_id": "0e49d5a47984538bb272ee6309ac1d76f6b1ce11a8d1d15304f0e83eb7cb1d0f",
+      "revision_group_id": "1a3bbaab28c81765786e24b8fc2ce74b08e3e18ba9fd34b271c6820e8d62702d",
+      "rights_snapshot_ids": [
+        "2fda3adb655e0a4bc34c2ac63d89543da16d0131d1afd47010961b8e1845671a"
+      ],
+      "training_permitted": true,
+      "restriction_codes": []
+    },
+    {
       "example_id": "b93d2dc4b10844595befdae7f383a2dc7c62702d3b1b1a00c665eba94095bd3a",
       "example_content_sha256": "3206c932f48fcbe53cbaeb36a67002842e8037839680f4bfc95c5cd7a2e8483b",
       "evidence_class": "real_document",
@@ -3828,6 +3929,25 @@
       "restriction_codes": []
     },
     {
+      "example_id": "c0769ecd8379c19e11ac2641c2ce1c4b7d4c295b0c781ee9aea7b1d476535d4c",
+      "example_content_sha256": "42707163ed0c3375327244c3ef5eaf2f0da1a750c0612e59df015b9708126d17",
+      "evidence_class": "real_document",
+      "real_world_generalization_eligible": true,
+      "document_family_id": "manufacturer.adafruit.tps61023.github-readme",
+      "template_family_id": "adafruit.github-hardware-readme.bench-measurements",
+      "manufacturer_key": "adafruit",
+      "lineage_group_ids": [
+        "f789a131fd8c7141bd0a10d3e4c76473c7dd609fed34ec03a78c78fbe1424a05"
+      ],
+      "near_duplicate_group_id": "0e49d5a47984538bb272ee6309ac1d76f6b1ce11a8d1d15304f0e83eb7cb1d0f",
+      "revision_group_id": "1a3bbaab28c81765786e24b8fc2ce74b08e3e18ba9fd34b271c6820e8d62702d",
+      "rights_snapshot_ids": [
+        "2fda3adb655e0a4bc34c2ac63d89543da16d0131d1afd47010961b8e1845671a"
+      ],
+      "training_permitted": true,
+      "restriction_codes": []
+    },
+    {
       "example_id": "c12339f7e6e77b15af7e14d9b956545ef0ac141e5c82691889bbbee2efe6c9bc",
       "example_content_sha256": "15512ec934b4450167eca58a5a5373b9b7a6da23be9fdef4d78af02c5f69965d",
       "evidence_class": "real_document",
@@ -3980,6 +4100,25 @@
       "restriction_codes": []
     },
     {
+      "example_id": "c6cd789fd045cf907a48dcc89d59cc6813ab8f109b01c05b179a2645e01abcf3",
+      "example_content_sha256": "170d0e10e0b2d48be2f07806bf2cdb31fb428621dade00f35118dbed07469f8d",
+      "evidence_class": "real_document",
+      "real_world_generalization_eligible": true,
+      "document_family_id": "manufacturer.adafruit.tps61023.github-readme",
+      "template_family_id": "adafruit.github-hardware-readme.bench-measurements",
+      "manufacturer_key": "adafruit",
+      "lineage_group_ids": [
+        "f789a131fd8c7141bd0a10d3e4c76473c7dd609fed34ec03a78c78fbe1424a05"
+      ],
+      "near_duplicate_group_id": "0e49d5a47984538bb272ee6309ac1d76f6b1ce11a8d1d15304f0e83eb7cb1d0f",
+      "revision_group_id": "1a3bbaab28c81765786e24b8fc2ce74b08e3e18ba9fd34b271c6820e8d62702d",
+      "rights_snapshot_ids": [
+        "2fda3adb655e0a4bc34c2ac63d89543da16d0131d1afd47010961b8e1845671a"
+      ],
+      "training_permitted": true,
+      "restriction_codes": []
+    },
+    {
       "example_id": "c73268e2553cae25f07310d115e4baf207c4e947c97bcbeaaa4ee6f8a267feeb",
       "example_content_sha256": "4775a130aaee7f6eb5366ead392cac1ecaede1b4f326325ceb50cd207a8381d8",
       "evidence_class": "real_document",
@@ -4127,6 +4266,25 @@
       "revision_group_id": "ce4fa8a485df29554b12a3e725f9b15c4faee7ce8ea8936f00be69daca1a194f",
       "rights_snapshot_ids": [
         "d06bd6f87ceda8f37ff9c1aaaa1d9b9cccc79cff4c21fbf933bb7dcf499dcf69"
+      ],
+      "training_permitted": true,
+      "restriction_codes": []
+    },
+    {
+      "example_id": "cdf4ffd0d107be8182cf8d20641f297bb987badcc0283bb7947820e43ba9721b",
+      "example_content_sha256": "bf3888fb32c28b0f7b0a75ad7a57883c3772f1c4b6308b7b1b2034729803054f",
+      "evidence_class": "real_document",
+      "real_world_generalization_eligible": true,
+      "document_family_id": "manufacturer.adafruit.tps61023.github-readme",
+      "template_family_id": "adafruit.github-hardware-readme.bench-measurements",
+      "manufacturer_key": "adafruit",
+      "lineage_group_ids": [
+        "f789a131fd8c7141bd0a10d3e4c76473c7dd609fed34ec03a78c78fbe1424a05"
+      ],
+      "near_duplicate_group_id": "0e49d5a47984538bb272ee6309ac1d76f6b1ce11a8d1d15304f0e83eb7cb1d0f",
+      "revision_group_id": "1a3bbaab28c81765786e24b8fc2ce74b08e3e18ba9fd34b271c6820e8d62702d",
+      "rights_snapshot_ids": [
+        "2fda3adb655e0a4bc34c2ac63d89543da16d0131d1afd47010961b8e1845671a"
       ],
       "training_permitted": true,
       "restriction_codes": []
@@ -4469,6 +4627,25 @@
       "revision_group_id": "ce4fa8a485df29554b12a3e725f9b15c4faee7ce8ea8936f00be69daca1a194f",
       "rights_snapshot_ids": [
         "d06bd6f87ceda8f37ff9c1aaaa1d9b9cccc79cff4c21fbf933bb7dcf499dcf69"
+      ],
+      "training_permitted": true,
+      "restriction_codes": []
+    },
+    {
+      "example_id": "e04c5b2397f0deffcc9836c8df043fddefbc95ccb605108e53f412467fc7b2c3",
+      "example_content_sha256": "5c39e8aa9c5e7c76361d05704479c94eeeceaf31e776d9135e056b8358f7f4be",
+      "evidence_class": "real_document",
+      "real_world_generalization_eligible": true,
+      "document_family_id": "manufacturer.adafruit.tps61023.github-readme",
+      "template_family_id": "adafruit.github-hardware-readme.bench-measurements",
+      "manufacturer_key": "adafruit",
+      "lineage_group_ids": [
+        "f789a131fd8c7141bd0a10d3e4c76473c7dd609fed34ec03a78c78fbe1424a05"
+      ],
+      "near_duplicate_group_id": "0e49d5a47984538bb272ee6309ac1d76f6b1ce11a8d1d15304f0e83eb7cb1d0f",
+      "revision_group_id": "1a3bbaab28c81765786e24b8fc2ce74b08e3e18ba9fd34b271c6820e8d62702d",
+      "rights_snapshot_ids": [
+        "2fda3adb655e0a4bc34c2ac63d89543da16d0131d1afd47010961b8e1845671a"
       ],
       "training_permitted": true,
       "restriction_codes": []
@@ -5314,6 +5491,7 @@
         "27c05b9e57cfde979ef8b95f4cc6343a92ead2b5f17d87bd42a58794f9888e33",
         "286ac77c012f8c83ef0b1e09539e38e85aef279723550442e0f647d5fd92f6ee",
         "28dc31f76d3640b2d9b277bd20574e5ebd6650e3e5d923ffd8d7d26d6b1c4354",
+        "2eabecad526069a4ff063156e39a404133f862ffef450f34dff7218b9c16f25e",
         "3499784b3c0dc64d77ad78282e7aed4cbcffa1519fd2418bcb83ddba43fe7824",
         "3ba88378a25d25cd2cd0770d5118351a6fe85814bc8711b2964dc364899424e4",
         "3d8e3864d346a43ad6c61b99bee177cf46e19c62ec20ff58d531b9ce72ae3461",
@@ -5333,6 +5511,7 @@
         "66768f4bd4c0da66a67776299e07c1ea3f489c07d5cb3df59e95844c8d7d29fe",
         "676fed85d9b6565ee6824b1b3f65cd277b14663b97ed8c907dfcf107670bf66e",
         "67ffae8efebc56683b6e867d736b2e4ac6e87859e5af22ee9a9f94aff38dead3",
+        "70e4893a3f8aa8cb719a0793e223c534f419e6741481d428cc3dc9f7e4631a08",
         "7207a75a1ec2fb024e133557dd9e345f344d1e141828ee870c750015897711c5",
         "73bf41d409bcab44c4c0bb830345b816fd3c0584cbe4a94b55c390f833b75611",
         "7ad1357810bd7c18b1e2b19fc13615b61a4d3fb675c63cad440597e92dbdb953",
@@ -5342,20 +5521,27 @@
         "859f0e361c2c07af832da63978d3c8e030d6ab6a52a0ab32ad2de7fbba00a02a",
         "8b6d83d092a6d307d207ada9b3046708ddd4ed31eed7293247a49a2fa01c0899",
         "90673629ca6d801e8f702ed44bd738caf309caf1d1e290dce02dfbe9101aeb96",
+        "96dd626a5f1d3f62977d5adecc82a2707eafb7504ff6801db14defeaf26779fa",
         "9cadc4bd3ec5d01aeefcecd030ffb38acd3454f806fcb58c9d9c28c4d9e29dbc",
         "9cdb82eccf3342e46e066c0afa11b5b918470d72c54e9662aa183a1b8808555c",
+        "9d36840eaca4a3d19529d3baaa77e6848e04bf3280381f069394f7d8b742600d",
         "a29a0ea2f9ce5771330d36df61ef4b89300930eded981c9b6389fd926e35c0a7",
         "a44eed2af82ab05839bb161d61a752858f72b325a2fbe37e5c9b5fe69bfdc4e8",
         "a4d37f53b5da5dabbace674c355aec809b1c8a9f32fbe868a5086a93c6ad84e7",
         "b0233d0646e81630d3d846dc7d74d05f0ddf85a926365193418842b6a34714c1",
+        "b83344e3e41a2cd4b59b26d20e7b37b78808ed47f17333a84ce866d0ac99f3e3",
         "bdc04bf6915d7ade276e5bd636c69168a61002197a8e2e577fd9df03a2264d47",
         "bdea73d9211f24cb40c02ed90f349cb8e732c157b2018a8025a27c992bbfd0d3",
+        "c0769ecd8379c19e11ac2641c2ce1c4b7d4c295b0c781ee9aea7b1d476535d4c",
         "c3905955df147e937635c69428c877ce23c61a140b74c56eb079c2464cb870b7",
+        "c6cd789fd045cf907a48dcc89d59cc6813ab8f109b01c05b179a2645e01abcf3",
         "c73268e2553cae25f07310d115e4baf207c4e947c97bcbeaaa4ee6f8a267feeb",
         "ca371d6b4a498f43267a0280b9c9608bc64406d57158c18ac685e6ec9dffae75",
+        "cdf4ffd0d107be8182cf8d20641f297bb987badcc0283bb7947820e43ba9721b",
         "d0b5ee79d95d3d1e682ea2109834f130d8191bfa5e1dead28f237e0425259043",
         "d1bce10efc6c2b6ca4734c64650e8a0cf2e88687731e53c063282bf3d7f9bc3a",
         "d38d64cf2d10c63b3840f023aabc69ebbf8d2a0d5f062a96897bb409c05f4fed",
+        "e04c5b2397f0deffcc9836c8df043fddefbc95ccb605108e53f412467fc7b2c3",
         "e3b6a4b2092da49b0447f77ab669f8e0d4620ef9d1004b0bf4a84e37c3403152",
         "e3e332006e4ecd479faf84308a2bc4b81682227e09528ed8455654fc0088e2bd",
         "e95f4ee6ed16b15da44cdcc9d2f7001dcafee721f842fd2c96760f5e2c335d75",
@@ -5375,11 +5561,11 @@
         "publisher_lineage"
       ],
       "hidden": false,
-      "artifact_digest": "dd11812f6c5c336c5bdf0041530df4dffbe1bc4377d66352d3be8a50b3ebac2d",
+      "artifact_digest": "e63f898e4d65dcf2852280bfac44c26514f945ba969a9465f0d3b3b0a03c7676",
       "supports_real_world_generalization": false,
       "limitation_codes": [
         "evaluation_tags_declared_to_overlap",
-        "single_real_heldout_document_not_representative",
+        "two_small_real_heldout_documents_not_representative",
         "visible_synthetic_contract_case_included"
       ]
     },
@@ -5393,6 +5579,7 @@
         "27c05b9e57cfde979ef8b95f4cc6343a92ead2b5f17d87bd42a58794f9888e33",
         "286ac77c012f8c83ef0b1e09539e38e85aef279723550442e0f647d5fd92f6ee",
         "28dc31f76d3640b2d9b277bd20574e5ebd6650e3e5d923ffd8d7d26d6b1c4354",
+        "2eabecad526069a4ff063156e39a404133f862ffef450f34dff7218b9c16f25e",
         "3499784b3c0dc64d77ad78282e7aed4cbcffa1519fd2418bcb83ddba43fe7824",
         "3ba88378a25d25cd2cd0770d5118351a6fe85814bc8711b2964dc364899424e4",
         "3d8e3864d346a43ad6c61b99bee177cf46e19c62ec20ff58d531b9ce72ae3461",
@@ -5412,6 +5599,7 @@
         "66768f4bd4c0da66a67776299e07c1ea3f489c07d5cb3df59e95844c8d7d29fe",
         "676fed85d9b6565ee6824b1b3f65cd277b14663b97ed8c907dfcf107670bf66e",
         "67ffae8efebc56683b6e867d736b2e4ac6e87859e5af22ee9a9f94aff38dead3",
+        "70e4893a3f8aa8cb719a0793e223c534f419e6741481d428cc3dc9f7e4631a08",
         "7207a75a1ec2fb024e133557dd9e345f344d1e141828ee870c750015897711c5",
         "73bf41d409bcab44c4c0bb830345b816fd3c0584cbe4a94b55c390f833b75611",
         "7ad1357810bd7c18b1e2b19fc13615b61a4d3fb675c63cad440597e92dbdb953",
@@ -5421,19 +5609,26 @@
         "859f0e361c2c07af832da63978d3c8e030d6ab6a52a0ab32ad2de7fbba00a02a",
         "8b6d83d092a6d307d207ada9b3046708ddd4ed31eed7293247a49a2fa01c0899",
         "90673629ca6d801e8f702ed44bd738caf309caf1d1e290dce02dfbe9101aeb96",
+        "96dd626a5f1d3f62977d5adecc82a2707eafb7504ff6801db14defeaf26779fa",
         "9cadc4bd3ec5d01aeefcecd030ffb38acd3454f806fcb58c9d9c28c4d9e29dbc",
         "9cdb82eccf3342e46e066c0afa11b5b918470d72c54e9662aa183a1b8808555c",
+        "9d36840eaca4a3d19529d3baaa77e6848e04bf3280381f069394f7d8b742600d",
         "a29a0ea2f9ce5771330d36df61ef4b89300930eded981c9b6389fd926e35c0a7",
         "a44eed2af82ab05839bb161d61a752858f72b325a2fbe37e5c9b5fe69bfdc4e8",
         "a4d37f53b5da5dabbace674c355aec809b1c8a9f32fbe868a5086a93c6ad84e7",
+        "b83344e3e41a2cd4b59b26d20e7b37b78808ed47f17333a84ce866d0ac99f3e3",
         "bdc04bf6915d7ade276e5bd636c69168a61002197a8e2e577fd9df03a2264d47",
         "bdea73d9211f24cb40c02ed90f349cb8e732c157b2018a8025a27c992bbfd0d3",
+        "c0769ecd8379c19e11ac2641c2ce1c4b7d4c295b0c781ee9aea7b1d476535d4c",
         "c3905955df147e937635c69428c877ce23c61a140b74c56eb079c2464cb870b7",
+        "c6cd789fd045cf907a48dcc89d59cc6813ab8f109b01c05b179a2645e01abcf3",
         "c73268e2553cae25f07310d115e4baf207c4e947c97bcbeaaa4ee6f8a267feeb",
         "ca371d6b4a498f43267a0280b9c9608bc64406d57158c18ac685e6ec9dffae75",
+        "cdf4ffd0d107be8182cf8d20641f297bb987badcc0283bb7947820e43ba9721b",
         "d0b5ee79d95d3d1e682ea2109834f130d8191bfa5e1dead28f237e0425259043",
         "d1bce10efc6c2b6ca4734c64650e8a0cf2e88687731e53c063282bf3d7f9bc3a",
         "d38d64cf2d10c63b3840f023aabc69ebbf8d2a0d5f062a96897bb409c05f4fed",
+        "e04c5b2397f0deffcc9836c8df043fddefbc95ccb605108e53f412467fc7b2c3",
         "e3b6a4b2092da49b0447f77ab669f8e0d4620ef9d1004b0bf4a84e37c3403152",
         "e3e332006e4ecd479faf84308a2bc4b81682227e09528ed8455654fc0088e2bd",
         "e95f4ee6ed16b15da44cdcc9d2f7001dcafee721f842fd2c96760f5e2c335d75",
@@ -5453,11 +5648,11 @@
         "publisher_lineage"
       ],
       "hidden": false,
-      "artifact_digest": "523a7cffdca50fe9a60982359c933b7fdbf93278ae070a054fd4175e721a7aa1",
+      "artifact_digest": "e7d94e922e8d5dfc0ace0fc5232fccc97f44e0f658639906e6df7d6a5762247f",
       "supports_real_world_generalization": false,
       "limitation_codes": [
         "evaluation_tags_declared_to_overlap",
-        "single_real_heldout_document_not_representative"
+        "two_small_real_heldout_documents_not_representative"
       ]
     },
     {
@@ -5470,6 +5665,7 @@
         "27c05b9e57cfde979ef8b95f4cc6343a92ead2b5f17d87bd42a58794f9888e33",
         "286ac77c012f8c83ef0b1e09539e38e85aef279723550442e0f647d5fd92f6ee",
         "28dc31f76d3640b2d9b277bd20574e5ebd6650e3e5d923ffd8d7d26d6b1c4354",
+        "2eabecad526069a4ff063156e39a404133f862ffef450f34dff7218b9c16f25e",
         "3499784b3c0dc64d77ad78282e7aed4cbcffa1519fd2418bcb83ddba43fe7824",
         "3ba88378a25d25cd2cd0770d5118351a6fe85814bc8711b2964dc364899424e4",
         "3d8e3864d346a43ad6c61b99bee177cf46e19c62ec20ff58d531b9ce72ae3461",
@@ -5489,6 +5685,7 @@
         "66768f4bd4c0da66a67776299e07c1ea3f489c07d5cb3df59e95844c8d7d29fe",
         "676fed85d9b6565ee6824b1b3f65cd277b14663b97ed8c907dfcf107670bf66e",
         "67ffae8efebc56683b6e867d736b2e4ac6e87859e5af22ee9a9f94aff38dead3",
+        "70e4893a3f8aa8cb719a0793e223c534f419e6741481d428cc3dc9f7e4631a08",
         "7207a75a1ec2fb024e133557dd9e345f344d1e141828ee870c750015897711c5",
         "73bf41d409bcab44c4c0bb830345b816fd3c0584cbe4a94b55c390f833b75611",
         "7ad1357810bd7c18b1e2b19fc13615b61a4d3fb675c63cad440597e92dbdb953",
@@ -5498,19 +5695,26 @@
         "859f0e361c2c07af832da63978d3c8e030d6ab6a52a0ab32ad2de7fbba00a02a",
         "8b6d83d092a6d307d207ada9b3046708ddd4ed31eed7293247a49a2fa01c0899",
         "90673629ca6d801e8f702ed44bd738caf309caf1d1e290dce02dfbe9101aeb96",
+        "96dd626a5f1d3f62977d5adecc82a2707eafb7504ff6801db14defeaf26779fa",
         "9cadc4bd3ec5d01aeefcecd030ffb38acd3454f806fcb58c9d9c28c4d9e29dbc",
         "9cdb82eccf3342e46e066c0afa11b5b918470d72c54e9662aa183a1b8808555c",
+        "9d36840eaca4a3d19529d3baaa77e6848e04bf3280381f069394f7d8b742600d",
         "a29a0ea2f9ce5771330d36df61ef4b89300930eded981c9b6389fd926e35c0a7",
         "a44eed2af82ab05839bb161d61a752858f72b325a2fbe37e5c9b5fe69bfdc4e8",
         "a4d37f53b5da5dabbace674c355aec809b1c8a9f32fbe868a5086a93c6ad84e7",
+        "b83344e3e41a2cd4b59b26d20e7b37b78808ed47f17333a84ce866d0ac99f3e3",
         "bdc04bf6915d7ade276e5bd636c69168a61002197a8e2e577fd9df03a2264d47",
         "bdea73d9211f24cb40c02ed90f349cb8e732c157b2018a8025a27c992bbfd0d3",
+        "c0769ecd8379c19e11ac2641c2ce1c4b7d4c295b0c781ee9aea7b1d476535d4c",
         "c3905955df147e937635c69428c877ce23c61a140b74c56eb079c2464cb870b7",
+        "c6cd789fd045cf907a48dcc89d59cc6813ab8f109b01c05b179a2645e01abcf3",
         "c73268e2553cae25f07310d115e4baf207c4e947c97bcbeaaa4ee6f8a267feeb",
         "ca371d6b4a498f43267a0280b9c9608bc64406d57158c18ac685e6ec9dffae75",
+        "cdf4ffd0d107be8182cf8d20641f297bb987badcc0283bb7947820e43ba9721b",
         "d0b5ee79d95d3d1e682ea2109834f130d8191bfa5e1dead28f237e0425259043",
         "d1bce10efc6c2b6ca4734c64650e8a0cf2e88687731e53c063282bf3d7f9bc3a",
         "d38d64cf2d10c63b3840f023aabc69ebbf8d2a0d5f062a96897bb409c05f4fed",
+        "e04c5b2397f0deffcc9836c8df043fddefbc95ccb605108e53f412467fc7b2c3",
         "e3b6a4b2092da49b0447f77ab669f8e0d4620ef9d1004b0bf4a84e37c3403152",
         "e3e332006e4ecd479faf84308a2bc4b81682227e09528ed8455654fc0088e2bd",
         "e95f4ee6ed16b15da44cdcc9d2f7001dcafee721f842fd2c96760f5e2c335d75",
@@ -5530,11 +5734,11 @@
         "publisher_lineage"
       ],
       "hidden": false,
-      "artifact_digest": "c6d8ac1bf03b42c25d8c6d9aa1643afcbff546fec0deba2d0eba49a113becdd0",
+      "artifact_digest": "ea5bffc15755da00fcfd6f60d5a8c4d9ad49be2c7aa872ba8f3a8dad2658ae3e",
       "supports_real_world_generalization": false,
       "limitation_codes": [
         "evaluation_tags_declared_to_overlap",
-        "single_real_heldout_document_not_representative"
+        "two_small_real_heldout_documents_not_representative"
       ]
     },
     {
@@ -5547,6 +5751,7 @@
         "27c05b9e57cfde979ef8b95f4cc6343a92ead2b5f17d87bd42a58794f9888e33",
         "286ac77c012f8c83ef0b1e09539e38e85aef279723550442e0f647d5fd92f6ee",
         "28dc31f76d3640b2d9b277bd20574e5ebd6650e3e5d923ffd8d7d26d6b1c4354",
+        "2eabecad526069a4ff063156e39a404133f862ffef450f34dff7218b9c16f25e",
         "3499784b3c0dc64d77ad78282e7aed4cbcffa1519fd2418bcb83ddba43fe7824",
         "3ba88378a25d25cd2cd0770d5118351a6fe85814bc8711b2964dc364899424e4",
         "3d8e3864d346a43ad6c61b99bee177cf46e19c62ec20ff58d531b9ce72ae3461",
@@ -5566,6 +5771,7 @@
         "66768f4bd4c0da66a67776299e07c1ea3f489c07d5cb3df59e95844c8d7d29fe",
         "676fed85d9b6565ee6824b1b3f65cd277b14663b97ed8c907dfcf107670bf66e",
         "67ffae8efebc56683b6e867d736b2e4ac6e87859e5af22ee9a9f94aff38dead3",
+        "70e4893a3f8aa8cb719a0793e223c534f419e6741481d428cc3dc9f7e4631a08",
         "7207a75a1ec2fb024e133557dd9e345f344d1e141828ee870c750015897711c5",
         "73bf41d409bcab44c4c0bb830345b816fd3c0584cbe4a94b55c390f833b75611",
         "7ad1357810bd7c18b1e2b19fc13615b61a4d3fb675c63cad440597e92dbdb953",
@@ -5575,19 +5781,26 @@
         "859f0e361c2c07af832da63978d3c8e030d6ab6a52a0ab32ad2de7fbba00a02a",
         "8b6d83d092a6d307d207ada9b3046708ddd4ed31eed7293247a49a2fa01c0899",
         "90673629ca6d801e8f702ed44bd738caf309caf1d1e290dce02dfbe9101aeb96",
+        "96dd626a5f1d3f62977d5adecc82a2707eafb7504ff6801db14defeaf26779fa",
         "9cadc4bd3ec5d01aeefcecd030ffb38acd3454f806fcb58c9d9c28c4d9e29dbc",
         "9cdb82eccf3342e46e066c0afa11b5b918470d72c54e9662aa183a1b8808555c",
+        "9d36840eaca4a3d19529d3baaa77e6848e04bf3280381f069394f7d8b742600d",
         "a29a0ea2f9ce5771330d36df61ef4b89300930eded981c9b6389fd926e35c0a7",
         "a44eed2af82ab05839bb161d61a752858f72b325a2fbe37e5c9b5fe69bfdc4e8",
         "a4d37f53b5da5dabbace674c355aec809b1c8a9f32fbe868a5086a93c6ad84e7",
+        "b83344e3e41a2cd4b59b26d20e7b37b78808ed47f17333a84ce866d0ac99f3e3",
         "bdc04bf6915d7ade276e5bd636c69168a61002197a8e2e577fd9df03a2264d47",
         "bdea73d9211f24cb40c02ed90f349cb8e732c157b2018a8025a27c992bbfd0d3",
+        "c0769ecd8379c19e11ac2641c2ce1c4b7d4c295b0c781ee9aea7b1d476535d4c",
         "c3905955df147e937635c69428c877ce23c61a140b74c56eb079c2464cb870b7",
+        "c6cd789fd045cf907a48dcc89d59cc6813ab8f109b01c05b179a2645e01abcf3",
         "c73268e2553cae25f07310d115e4baf207c4e947c97bcbeaaa4ee6f8a267feeb",
         "ca371d6b4a498f43267a0280b9c9608bc64406d57158c18ac685e6ec9dffae75",
+        "cdf4ffd0d107be8182cf8d20641f297bb987badcc0283bb7947820e43ba9721b",
         "d0b5ee79d95d3d1e682ea2109834f130d8191bfa5e1dead28f237e0425259043",
         "d1bce10efc6c2b6ca4734c64650e8a0cf2e88687731e53c063282bf3d7f9bc3a",
         "d38d64cf2d10c63b3840f023aabc69ebbf8d2a0d5f062a96897bb409c05f4fed",
+        "e04c5b2397f0deffcc9836c8df043fddefbc95ccb605108e53f412467fc7b2c3",
         "e3b6a4b2092da49b0447f77ab669f8e0d4620ef9d1004b0bf4a84e37c3403152",
         "e3e332006e4ecd479faf84308a2bc4b81682227e09528ed8455654fc0088e2bd",
         "e95f4ee6ed16b15da44cdcc9d2f7001dcafee721f842fd2c96760f5e2c335d75",
@@ -5607,11 +5820,11 @@
         "publisher_lineage"
       ],
       "hidden": false,
-      "artifact_digest": "fba5f1af2a25cdc8a81135d15437d176a0570b0cfbab07211b81375093ec7a39",
+      "artifact_digest": "ee0ef16b9f06b44aa260b0e94a4f1311153eff5b0da68785f1034947643208c7",
       "supports_real_world_generalization": false,
       "limitation_codes": [
         "evaluation_tags_declared_to_overlap",
-        "single_real_heldout_document_not_representative"
+        "two_small_real_heldout_documents_not_representative"
       ]
     },
     {
@@ -5640,10 +5853,11 @@
   "model_qualification_ready": false,
   "limitation_codes": [
     "evaluation_tags_overlap_by_declaration",
+    "external_sealed_hidden_handoff_pending",
     "fdx5_model_qualification_blocked",
     "final_blind_is_empty",
     "no_real_world_generalization_claim",
-    "only_one_real_evaluation_document_family",
+    "only_two_small_real_evaluation_document_families",
     "repository_visible_synthetic_is_development_only"
   ]
 }
