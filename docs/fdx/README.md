@@ -15,7 +15,8 @@ two rights-cleared analog/power structured-fact supervision families remain
 required. The fail-closed real-source selection audit is checked in at
 `../../evidence/fdx3-production-readiness-2026-08-22.json`; it admits one
 bounded NASA NPSL electrical family, still below the two-family exit gate, and
-persists no restricted content. FDX4-FDX6 have not started.
+persists no restricted content. FDX4 has since frozen that one-family corpus;
+FDX5-FDX6 have not started.
 
 The implemented boundaries are documented in
 [FDX1](FDX1_WORKSPACE_AND_CONTRACTS.md), the bounded

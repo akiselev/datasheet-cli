@@ -190,6 +190,16 @@ impl ProtectedCorpusManifest {
                 return Err(CorpusContractError::Missing("input identity or rows"));
             }
         }
+        let input_rows = self.inputs.iter().try_fold(0_u64, |total, input| {
+            total
+                .checked_add(input.row_count)
+                .ok_or(CorpusContractError::Invalid("input row count overflow"))
+        })?;
+        if input_rows
+            != u64::try_from(self.members.len() + self.exclusions.len()).unwrap_or(u64::MAX)
+        {
+            return Err(CorpusContractError::Invalid("input/member cardinality"));
+        }
         unique(
             self.members.iter().map(|member| &member.example_id),
             "member",
@@ -220,6 +230,18 @@ impl ProtectedCorpusManifest {
             }
             unique(item.reason_codes.iter(), "exclusion reason")?;
             unique(item.rights_snapshot_ids.iter(), "exclusion rights")?;
+            if item
+                .reason_codes
+                .iter()
+                .any(|reason| reason.trim().is_empty())
+            {
+                return Err(CorpusContractError::Missing("exclusion reason"));
+            }
+            for digest in &item.rights_snapshot_ids {
+                digest
+                    .validate()
+                    .map_err(|_| CorpusContractError::Invalid("exclusion rights digest"))?;
+            }
         }
         if self
             .members
@@ -295,7 +317,17 @@ impl ProtectedCorpusManifest {
             .iter()
             .filter(|split| split.split != ProtectedSplit::Train)
             .all(|split| !split.member_ids.is_empty());
-        let ready = all_evaluation_nonempty && self.exclusions.is_empty();
+        let grouping_complete = self.members.iter().all(|member| {
+            member
+                .template_family_id
+                .as_deref()
+                .is_some_and(|group| !group.is_empty())
+                && member
+                    .manufacturer_key
+                    .as_deref()
+                    .is_some_and(|group| !group.is_empty())
+        });
+        let ready = all_evaluation_nonempty && self.exclusions.is_empty() && grouping_complete;
         if self.model_qualification_ready != ready {
             return Err(CorpusContractError::Invalid(
                 "model qualification readiness",
@@ -331,6 +363,25 @@ fn validate_member(member: &CorpusMember) -> Result<(), CorpusContractError> {
             .validate()
             .map_err(|_| CorpusContractError::Invalid("member digest"))?;
     }
+    for digest in member
+        .lineage_group_ids
+        .iter()
+        .chain(&member.rights_snapshot_ids)
+        .chain(member.revision_group_id.iter())
+        .chain(member.synthetic_root_example_id.iter())
+    {
+        digest
+            .validate()
+            .map_err(|_| CorpusContractError::Invalid("member grouping digest"))?;
+    }
+    if member
+        .template_family_id
+        .iter()
+        .chain(&member.manufacturer_key)
+        .any(|group| group.trim().is_empty())
+    {
+        return Err(CorpusContractError::Missing("member grouping key"));
+    }
     unique(member.lineage_group_ids.iter(), "lineage")?;
     unique(member.rights_snapshot_ids.iter(), "rights")?;
     if member.assigned_split == ProtectedSplit::TemplateHeldOut
@@ -354,6 +405,7 @@ fn reject_group_leakage(members: &[CorpusMember]) -> Result<(), CorpusContractEr
     for member in members {
         let mut keys = vec![
             format!("document:{}", member.document_family_id),
+            format!("content:{}", member.example_content_sha256.0),
             format!("near:{}", member.near_duplicate_group_id.0),
         ];
         keys.extend(

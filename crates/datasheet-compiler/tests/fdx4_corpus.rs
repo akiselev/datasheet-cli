@@ -105,6 +105,7 @@ fn production_manifest_is_train_only_and_replays_canonically() {
 #[test]
 fn every_related_group_kind_is_protected_against_cross_split_leakage() {
     for kind in [
+        "content",
         "document",
         "template",
         "manufacturer",
@@ -116,6 +117,7 @@ fn every_related_group_kind_is_protected_against_cross_split_leakage() {
         let mut left = member('5', ProtectedSplit::Train);
         let mut right = member('7', ProtectedSplit::Development);
         match kind {
+            "content" => right.example_content_sha256 = left.example_content_sha256.clone(),
             "document" => right.document_family_id = left.document_family_id.clone(),
             "template" => right.template_family_id = left.template_family_id.clone(),
             "manufacturer" => right.manufacturer_key = left.manufacturer_key.clone(),
@@ -134,6 +136,70 @@ fn every_related_group_kind_is_protected_against_cross_split_leakage() {
             "{kind} leaked"
         );
     }
+}
+
+#[test]
+fn grouping_digests_and_input_cardinality_fail_closed() {
+    let mut manifest = production();
+    manifest.members[0].lineage_group_ids[0] = Sha256Digest("not-a-digest".into());
+    manifest.corpus_digest = manifest.recompute_digest();
+    assert!(manifest.validate().is_err());
+
+    let mut manifest = production();
+    manifest.members[0].revision_group_id = Some(Sha256Digest("not-a-digest".into()));
+    manifest.corpus_digest = manifest.recompute_digest();
+    assert!(manifest.validate().is_err());
+
+    let mut manifest = production();
+    manifest.inputs[0].row_count -= 1;
+    manifest.corpus_digest = manifest.recompute_digest();
+    assert!(manifest.validate().is_err());
+}
+
+#[test]
+fn incomplete_grouping_can_never_claim_model_qualification() {
+    let mut members = ProtectedSplit::ALL
+        .into_iter()
+        .zip(['0', '1', '2', '3', '4', '5'])
+        .map(|(split, id)| member(id, split))
+        .collect::<Vec<_>>();
+    members[0].manufacturer_key = None;
+    let splits = members
+        .iter()
+        .map(|member| ProtectedSplitManifest {
+            split: member.assigned_split,
+            member_ids: vec![member.example_id.clone()],
+            hidden: member.assigned_split == ProtectedSplit::FinalBlindTest,
+            artifact_digest: digest('0'),
+            limitation_codes: vec![],
+        })
+        .collect::<Vec<_>>();
+    let mut manifest = ProtectedCorpusManifest {
+        schema_version: PROTECTED_CORPUS_SCHEMA.into(),
+        corpus_digest: digest('0'),
+        datasheet_revision: "synthetic".into(),
+        foundry_revision: "synthetic".into(),
+        ontology_snapshot_digest: digest('1'),
+        calibration_snapshot_digest: digest('2'),
+        builder_configuration_digest: digest('3'),
+        inputs: vec![CorpusInputBinding {
+            role: "synthetic".into(),
+            content_sha256: digest('4'),
+            logical_id: None,
+            row_count: 6,
+        }],
+        members,
+        exclusions: vec![],
+        splits,
+        model_qualification_ready: true,
+        limitation_codes: vec![],
+    };
+    for split in &mut manifest.splits {
+        split.artifact_digest = split.recompute_digest();
+    }
+    manifest.model_qualification_ready = true;
+    manifest.corpus_digest = manifest.recompute_digest();
+    assert!(manifest.validate().is_err());
 }
 
 #[test]
