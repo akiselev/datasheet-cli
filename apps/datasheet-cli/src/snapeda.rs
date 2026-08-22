@@ -42,13 +42,21 @@ mod cache {
 
     fn sanitize_key(key: &str) -> String {
         key.chars()
-            .map(|c| if c.is_alphanumeric() || c == '-' || c == '_' { c } else { '_' })
+            .map(|c| {
+                if c.is_alphanumeric() || c == '-' || c == '_' {
+                    c
+                } else {
+                    '_'
+                }
+            })
             .collect()
     }
 
     pub fn cache_get(category: &str, key: &str) -> Option<String> {
         let root = cache_root()?;
-        let path = root.join(category).join(format!("{}.json", sanitize_key(key)));
+        let path = root
+            .join(category)
+            .join(format!("{}.json", sanitize_key(key)));
         let content = fs::read_to_string(&path).ok()?;
         let entry: CacheEntry = serde_json::from_str(&content).ok()?;
         if entry.is_expired() {
@@ -458,19 +466,25 @@ fn cmd_search(query: &str, limit: usize, json_output: bool) -> Result<(), String
         println!("Found {} part(s):\n", results.len());
 
         for (i, r) in results.iter().enumerate() {
-            let sym = if is_truthy(&r.has_symbol) { "sym" } else { "   " };
-            let fp = if is_truthy(&r.has_footprint) { "fp" } else { "  " };
+            let sym = if is_truthy(&r.has_symbol) {
+                "sym"
+            } else {
+                "   "
+            };
+            let fp = if is_truthy(&r.has_footprint) {
+                "fp"
+            } else {
+                "  "
+            };
             let model = if is_truthy(&r.has_3d) { "3d" } else { "  " };
             let desc = r.short_description.as_deref().unwrap_or("");
             let desc_truncated = if desc.len() > 70 { &desc[..70] } else { desc };
 
+            println!("{}. {} ({})", i + 1, r.part_number, r.manufacturer);
             println!(
-                "{}. {} ({})",
-                i + 1,
-                r.part_number,
-                r.manufacturer
+                "   unipart_id: {}  [{}|{}|{}]",
+                r.unipart_id, sym, fp, model
             );
-            println!("   unipart_id: {}  [{}|{}|{}]", r.unipart_id, sym, fp, model);
             if !desc_truncated.is_empty() {
                 println!("   {}", desc_truncated);
             }
@@ -505,10 +519,17 @@ fn resolve_and_fetch(part: &str) -> Result<ResolvedPart, String> {
         if let Ok(results) = snapeda_search(&uid) {
             if let Some(r) = results.iter().find(|r| r.unipart_id == uid) {
                 if let Some(mid) = extract_model_id_from_search(r) {
-                    eprintln!("Resolved model_id {} from search for unipart_id {}", mid, uid);
+                    eprintln!(
+                        "Resolved model_id {} from search for unipart_id {}",
+                        mid, uid
+                    );
                     thread::sleep(Duration::from_secs(1));
                     let info = fetch_unipart_info(&uid)?;
-                    let alt_model_id = if info.part_id != mid { Some(info.part_id) } else { None };
+                    let alt_model_id = if info.part_id != mid {
+                        Some(info.part_id)
+                    } else {
+                        None
+                    };
                     return Ok(ResolvedPart {
                         unipart_id: uid,
                         model_id: mid,
@@ -550,25 +571,35 @@ fn resolve_and_fetch(part: &str) -> Result<ResolvedPart, String> {
     // Find best match
     let matched = if let Some(ref mfr) = mfr_filter {
         let mfr_lower = mfr.to_lowercase();
-        results.iter()
+        results
+            .iter()
             .find(|r| r.part_number == query && r.manufacturer.to_lowercase() == mfr_lower)
             .or_else(|| results.iter().find(|r| r.part_number == query))
             .or(results.first())
     } else {
-        results.iter()
+        results
+            .iter()
             .find(|r| r.part_number.eq_ignore_ascii_case(&query))
             .or(results.first())
-    }.unwrap(); // safe: we checked non-empty above
+    }
+    .unwrap(); // safe: we checked non-empty above
 
     let uid = matched.unipart_id.clone();
-    eprintln!("Resolved: {} by {} (unipart_id: {})", matched.part_number, matched.manufacturer, uid);
+    eprintln!(
+        "Resolved: {} by {} (unipart_id: {})",
+        matched.part_number, matched.manufacturer, uid
+    );
 
     // Get model_id from te_param (preferred) or fallback to get_part_for_unipart
     let (model_id, alt_model_id) = if let Some(mid) = extract_model_id_from_search(matched) {
         eprintln!("Using Eagle model_id {} from search metadata", mid);
         thread::sleep(Duration::from_secs(1));
         let info = fetch_unipart_info(&uid)?;
-        let alt = if info.part_id != mid { Some(info.part_id) } else { None };
+        let alt = if info.part_id != mid {
+            Some(info.part_id)
+        } else {
+            None
+        };
         (mid, alt)
     } else {
         thread::sleep(Duration::from_secs(1));
@@ -587,7 +618,8 @@ fn resolve_and_fetch(part: &str) -> Result<ResolvedPart, String> {
 }
 
 fn extract_model_id_from_search(r: &SearchResult) -> Option<u64> {
-    r.te_param.as_ref()
+    r.te_param
+        .as_ref()
         .and_then(|tp| tp.part_images.as_ref())
         .and_then(|pi| pi.symbol_id.as_ref())
         .and_then(|s| s.parse::<u64>().ok())
@@ -626,7 +658,10 @@ fn fetch_part_output(resolved: &ResolvedPart) -> Result<SnapedaOutput, String> {
 
     let eagle_result = match (&eagle_result, resolved.alt_model_id) {
         (Err(primary_err), Some(alt_id)) => {
-            eprintln!("Primary model_id {} failed: {}", resolved.model_id, primary_err);
+            eprintln!(
+                "Primary model_id {} failed: {}",
+                resolved.model_id, primary_err
+            );
             eprintln!("Trying alternate model_id {}...", alt_id);
             thread::sleep(Duration::from_secs(1));
             let alt_result = fetch_eagle_xml(alt_id);
@@ -657,7 +692,11 @@ fn fetch_part_output(resolved: &ResolvedPart) -> Result<SnapedaOutput, String> {
                         // Fallback 2: kicad_mod (footprint-only, no symbol data)
                         eprintln!("Trying kicad_mod download as last resort...");
                         match authenticated_download_text(
-                            resolved, &session_id, &csrf, "kicad_mod", ".kicad_mod"
+                            resolved,
+                            &session_id,
+                            &csrf,
+                            "kicad_mod",
+                            ".kicad_mod",
                         ) {
                             Ok(kicad_content) => {
                                 parse_kicad_mod(&kicad_content, &resolved.part_name)?
@@ -816,7 +855,10 @@ fn fetch_eagle_xml(model_id: u64) -> Result<String, String> {
         }
 
         if attempt < 3 {
-            eprintln!("Eagle XML empty for model_id {}, retrying ({}/3)...", model_id, attempt);
+            eprintln!(
+                "Eagle XML empty for model_id {}, retrying ({}/3)...",
+                model_id, attempt
+            );
             thread::sleep(Duration::from_secs(2));
         }
     }
@@ -861,7 +903,10 @@ fn acquire_csrf_token() -> Result<String, String> {
     let cookie_header = response.header("Set-Cookie").unwrap_or("");
     if let Some(start) = cookie_header.find("csrftoken=") {
         let after = &cookie_header[start + 10..];
-        let token: String = after.chars().take_while(|c| *c != ';' && *c != ' ').collect();
+        let token: String = after
+            .chars()
+            .take_while(|c| *c != ';' && *c != ' ')
+            .collect();
         if !token.is_empty() {
             cache_set("csrf", "token", &token, 1800);
             return Ok(token);
@@ -878,7 +923,10 @@ fn extract_cookie_value(cookies: &[&str], name: &str) -> Option<String> {
     for cookie_str in cookies {
         if let Some(start) = cookie_str.find(&prefix) {
             let after = &cookie_str[start + prefix.len()..];
-            let value: String = after.chars().take_while(|c| *c != ';' && *c != ' ').collect();
+            let value: String = after
+                .chars()
+                .take_while(|c| *c != ';' && *c != ' ')
+                .collect();
             if !value.is_empty() {
                 return Some(value);
             }
@@ -900,7 +948,8 @@ fn cmd_login(username: Option<String>, password: Option<String>) -> Result<(), S
             eprint!("SnapEDA username/email: ");
             std::io::stderr().flush().ok();
             let mut input = String::new();
-            std::io::stdin().read_line(&mut input)
+            std::io::stdin()
+                .read_line(&mut input)
                 .map_err(|e| format!("Failed to read username: {}", e))?;
             input.trim().to_string()
         }
@@ -911,8 +960,7 @@ fn cmd_login(username: Option<String>, password: Option<String>) -> Result<(), S
         None => {
             eprint!("SnapEDA password: ");
             std::io::stderr().flush().ok();
-            rpassword::read_password()
-                .map_err(|e| format!("Failed to read password: {}", e))?
+            rpassword::read_password().map_err(|e| format!("Failed to read password: {}", e))?
         }
     };
 
@@ -936,8 +984,7 @@ fn cmd_login(username: Option<String>, password: Option<String>) -> Result<(), S
     let csrf = extract_cookie_value(&get_cookies, "csrftoken")
         .ok_or_else(|| "Could not extract CSRF token from login page".to_string())?;
     // Django also sets an anonymous sessionid on GET — must send it back with the POST
-    let anon_session = extract_cookie_value(&get_cookies, "sessionid")
-        .unwrap_or_default();
+    let anon_session = extract_cookie_value(&get_cookies, "sessionid").unwrap_or_default();
 
     eprintln!("Got fresh CSRF token, posting login...");
 
@@ -957,9 +1004,7 @@ fn cmd_login(username: Option<String>, password: Option<String>) -> Result<(), S
     };
 
     // Disable redirects so we can capture Set-Cookie from the login response
-    let agent = ureq::AgentBuilder::new()
-        .redirects(0)
-        .build();
+    let agent = ureq::AgentBuilder::new().redirects(0).build();
 
     let response = agent
         .post(&resolved_login_url)
@@ -993,12 +1038,10 @@ fn cmd_login(username: Option<String>, password: Option<String>) -> Result<(), S
 
     // Extract session cookies from the 302 response
     let cookies = resp.all("set-cookie");
-    let session_id = extract_cookie_value(&cookies, "sessionid")
-        .ok_or_else(|| {
-            "Login redirected but no session cookie received. Credentials may be wrong.".to_string()
-        })?;
-    let csrf_token = extract_cookie_value(&cookies, "csrftoken")
-        .unwrap_or(csrf);
+    let session_id = extract_cookie_value(&cookies, "sessionid").ok_or_else(|| {
+        "Login redirected but no session cookie received. Credentials may be wrong.".to_string()
+    })?;
+    let csrf_token = extract_cookie_value(&cookies, "csrftoken").unwrap_or(csrf);
 
     cache_set("session", "sessionid", &session_id, 604800);
     cache_set("session", "csrftoken", &csrf_token, 604800);
@@ -1022,24 +1065,36 @@ fn cmd_download(part: &str, format: &str, out: Option<PathBuf>) -> Result<(), St
 
     let response = ureq::get(&url)
         .set("User-Agent", USER_AGENT)
-        .set("Cookie", &format!("sessionid={}; csrftoken={}", session_id, csrf))
+        .set(
+            "Cookie",
+            &format!("sessionid={}; csrftoken={}", session_id, csrf),
+        )
         .set("Referer", &format!("{}/", BASE_URL))
         .call()
         .map_err(|e| format!("Download request failed: {}", e))?;
 
-    let body = response.into_string()
+    let body = response
+        .into_string()
         .map_err(|e| format!("Failed to read download response: {}", e))?;
 
-    let json: serde_json::Value = serde_json::from_str(&body)
-        .map_err(|e| format!("Failed to parse download response: {} (body: {})", e, &body[..body.len().min(200)]))?;
+    let json: serde_json::Value = serde_json::from_str(&body).map_err(|e| {
+        format!(
+            "Failed to parse download response: {} (body: {})",
+            e,
+            &body[..body.len().min(200)]
+        )
+    })?;
 
     if let Some(error) = json.get("error").and_then(|v| v.as_str()) {
         return Err(format!("SnapEDA download error: {}", error));
     }
 
-    let download_url = json.get("url")
-        .and_then(|v| v.as_str())
-        .ok_or_else(|| format!("No download URL in response: {}", &body[..body.len().min(500)]))?;
+    let download_url = json.get("url").and_then(|v| v.as_str()).ok_or_else(|| {
+        format!(
+            "No download URL in response: {}",
+            &body[..body.len().min(500)]
+        )
+    })?;
 
     // Infer output filename from the S3 URL
     let url_filename = download_url
@@ -1057,7 +1112,9 @@ fn cmd_download(part: &str, format: &str, out: Option<PathBuf>) -> Result<(), St
         .map_err(|e| format!("Failed to download file: {}", e))?;
 
     let mut raw_bytes = Vec::new();
-    dl_response.into_reader().read_to_end(&mut raw_bytes)
+    dl_response
+        .into_reader()
+        .read_to_end(&mut raw_bytes)
         .map_err(|e| format!("Failed to read download data: {}", e))?;
 
     eprintln!("Downloaded {} bytes", raw_bytes.len());
@@ -1092,12 +1149,13 @@ fn cmd_download(part: &str, format: &str, out: Option<PathBuf>) -> Result<(), St
         let archive_len = archive.len();
         let mut extracted_any = false;
         for i in 0..archive_len {
-            let mut file = archive.by_index(i)
+            let mut file = archive
+                .by_index(i)
                 .map_err(|e| format!("Failed to read zip entry: {}", e))?;
             let name = file.name().to_string();
 
-            let matches = target_exts.is_empty()
-                || target_exts.iter().any(|ext| name.ends_with(ext));
+            let matches =
+                target_exts.is_empty() || target_exts.iter().any(|ext| name.ends_with(ext));
             if file.is_dir() || !matches {
                 continue;
             }
@@ -1128,8 +1186,11 @@ fn cmd_download(part: &str, format: &str, out: Option<PathBuf>) -> Result<(), St
                 // Try to print text, or report binary size
                 match String::from_utf8(bytes) {
                     Ok(text) => println!("{}", text),
-                    Err(e) => eprintln!("{}: binary file ({} bytes) — use --out to save",
-                        file_basename, e.into_bytes().len()),
+                    Err(e) => eprintln!(
+                        "{}: binary file ({} bytes) — use --out to save",
+                        file_basename,
+                        e.into_bytes().len()
+                    ),
                 }
             }
             extracted_any = true;
@@ -1137,7 +1198,8 @@ fn cmd_download(part: &str, format: &str, out: Option<PathBuf>) -> Result<(), St
 
         if !extracted_any {
             return Err(format!(
-                "Could not find matching file in archive. Contents: {:?}", all_names
+                "Could not find matching file in archive. Contents: {:?}",
+                all_names
             ));
         }
     } else {
@@ -1158,7 +1220,11 @@ fn cmd_download(part: &str, format: &str, out: Option<PathBuf>) -> Result<(), St
                 .map_err(|e| format!("Failed to write {}: {}", target.display(), e))?;
             eprintln!("Wrote: {} ({} bytes)", target.display(), raw_bytes.len());
         } else {
-            eprintln!("{}: binary file ({} bytes) — use --out to save", url_filename, raw_bytes.len());
+            eprintln!(
+                "{}: binary file ({} bytes) — use --out to save",
+                url_filename,
+                raw_bytes.len()
+            );
         }
     }
 
@@ -1183,12 +1249,16 @@ fn authenticated_download_text(
 
     let response = ureq::get(&url)
         .set("User-Agent", USER_AGENT)
-        .set("Cookie", &format!("sessionid={}; csrftoken={}", session_id, csrf))
+        .set(
+            "Cookie",
+            &format!("sessionid={}; csrftoken={}", session_id, csrf),
+        )
         .set("Referer", &format!("{}/", BASE_URL))
         .call()
         .map_err(|e| format!("Download request failed: {}", e))?;
 
-    let body = response.into_string()
+    let body = response
+        .into_string()
         .map_err(|e| format!("Failed to read download response: {}", e))?;
 
     let json: serde_json::Value = serde_json::from_str(&body)
@@ -1198,9 +1268,12 @@ fn authenticated_download_text(
         return Err(format!("SnapEDA {} download error: {}", format, error));
     }
 
-    let download_url = json.get("url")
-        .and_then(|v| v.as_str())
-        .ok_or_else(|| format!("No download URL in response: {}", &body[..body.len().min(500)]))?;
+    let download_url = json.get("url").and_then(|v| v.as_str()).ok_or_else(|| {
+        format!(
+            "No download URL in response: {}",
+            &body[..body.len().min(500)]
+        )
+    })?;
 
     let dl_response = ureq::get(download_url)
         .set("User-Agent", USER_AGENT)
@@ -1208,7 +1281,9 @@ fn authenticated_download_text(
         .map_err(|e| format!("Failed to download {}: {}", format, e))?;
 
     let mut raw_bytes = Vec::new();
-    dl_response.into_reader().read_to_end(&mut raw_bytes)
+    dl_response
+        .into_reader()
+        .read_to_end(&mut raw_bytes)
         .map_err(|e| format!("Failed to read {} data: {}", format, e))?;
 
     // Check if it's a zip
@@ -1220,7 +1295,8 @@ fn authenticated_download_text(
             .map_err(|e| format!("Failed to open {} zip: {}", format, e))?;
 
         for i in 0..archive.len() {
-            let mut file = archive.by_index(i)
+            let mut file = archive
+                .by_index(i)
                 .map_err(|e| format!("Failed to read zip entry: {}", e))?;
             if file.name().ends_with(target_ext) {
                 let mut content = String::new();
@@ -1234,7 +1310,10 @@ fn authenticated_download_text(
         let names: Vec<String> = (0..archive.len())
             .filter_map(|i| archive.by_index(i).ok().map(|f| f.name().to_string()))
             .collect();
-        Err(format!("No {} file found in {} archive. Contents: {:?}", target_ext, format, names))
+        Err(format!(
+            "No {} file found in {} archive. Contents: {:?}",
+            target_ext, format, names
+        ))
     } else {
         // Raw text file (not zipped)
         String::from_utf8(raw_bytes)
@@ -1306,7 +1385,14 @@ fn parse_kicad_mod(content: &str, part_name: &str) -> Result<EagleLibrary, Strin
                 let width = extract_sexp_single_value(block, "width")
                     .or_else(|| extract_sexp_single_value(block, "stroke"))
                     .unwrap_or(0.05);
-                wires.push(EagleWire { x1, y1, x2, y2, width, layer: 39 });
+                wires.push(EagleWire {
+                    x1,
+                    y1,
+                    x2,
+                    y2,
+                    width,
+                    layer: 39,
+                });
             }
             cy_search = abs_start + block.len();
         } else {
@@ -1325,10 +1411,38 @@ fn parse_kicad_mod(content: &str, part_name: &str) -> Result<EagleLibrary, Strin
                 let width = extract_sexp_single_value(block, "width")
                     .or_else(|| extract_sexp_single_value(block, "stroke"))
                     .unwrap_or(0.05);
-                wires.push(EagleWire { x1, y1, x2: x2, y2: y1, width, layer: 39 });
-                wires.push(EagleWire { x1: x2, y1, x2: x2, y2, width, layer: 39 });
-                wires.push(EagleWire { x1: x2, y1: y2, x2: x1, y2, width, layer: 39 });
-                wires.push(EagleWire { x1, y1: y2, x2: x1, y2: y1, width, layer: 39 });
+                wires.push(EagleWire {
+                    x1,
+                    y1,
+                    x2,
+                    y2: y1,
+                    width,
+                    layer: 39,
+                });
+                wires.push(EagleWire {
+                    x1: x2,
+                    y1,
+                    x2,
+                    y2,
+                    width,
+                    layer: 39,
+                });
+                wires.push(EagleWire {
+                    x1: x2,
+                    y1: y2,
+                    x2: x1,
+                    y2,
+                    width,
+                    layer: 39,
+                });
+                wires.push(EagleWire {
+                    x1,
+                    y1: y2,
+                    x2: x1,
+                    y2: y1,
+                    width,
+                    layer: 39,
+                });
             }
             rect_search = abs_start + block.len();
         } else {
@@ -1436,7 +1550,7 @@ fn extract_sexp_single_value(block: &str, keyword: &str) -> Option<f64> {
     let pattern = format!("({} ", keyword);
     let start = block.find(&pattern)?;
     let after = &block[start + pattern.len()..];
-    let end = after.find(|c: char| c == ')' || c == ' ')?;
+    let end = after.find([')', ' '])?;
     after[..end].trim().parse::<f64>().ok()
 }
 
@@ -1486,8 +1600,8 @@ fn parse_u32(s: &str) -> u32 {
 }
 
 fn parse_eagle_xml(xml: &str) -> Result<EagleLibrary, String> {
-    let doc = roxmltree::Document::parse(xml)
-        .map_err(|e| format!("Failed to parse Eagle XML: {}", e))?;
+    let doc =
+        roxmltree::Document::parse(xml).map_err(|e| format!("Failed to parse Eagle XML: {}", e))?;
 
     let root = doc.root_element();
 
@@ -1536,7 +1650,7 @@ fn parse_eagle_xml(xml: &str) -> Result<EagleLibrary, String> {
                         let x = parse_f64(elem.attribute("x").unwrap_or("0"));
                         let y = parse_f64(elem.attribute("y").unwrap_or("0"));
                         let drill = parse_f64(elem.attribute("drill").unwrap_or("0"));
-                        let diameter = elem.attribute("diameter").map(|v| parse_f64(v));
+                        let diameter = elem.attribute("diameter").map(parse_f64);
                         let shape = elem.attribute("shape").map(|v| v.to_string());
                         pads.push(EaglePad::ThroughHole(EagleThroughHolePad {
                             name: pad_name,
@@ -1553,7 +1667,14 @@ fn parse_eagle_xml(xml: &str) -> Result<EagleLibrary, String> {
                         let y2 = parse_f64(elem.attribute("y2").unwrap_or("0"));
                         let width = parse_f64(elem.attribute("width").unwrap_or("0"));
                         let layer = parse_u32(elem.attribute("layer").unwrap_or("0"));
-                        wires.push(EagleWire { x1, y1, x2, y2, width, layer });
+                        wires.push(EagleWire {
+                            x1,
+                            y1,
+                            x2,
+                            y2,
+                            width,
+                            layer,
+                        });
                     }
                 }
 
@@ -1591,14 +1712,11 @@ fn parse_eagle_xml(xml: &str) -> Result<EagleLibrary, String> {
                 let mut package_name: Option<String> = None;
                 let mut connects: Vec<EagleConnect> = Vec::new();
 
-                if let Some(devices_node) =
-                    ds_node.children().find(|n| n.has_tag_name("devices"))
-                {
+                if let Some(devices_node) = ds_node.children().find(|n| n.has_tag_name("devices")) {
                     if let Some(device_node) =
                         devices_node.children().find(|n| n.has_tag_name("device"))
                     {
-                        package_name =
-                            device_node.attribute("package").map(|v| v.to_string());
+                        package_name = device_node.attribute("package").map(|v| v.to_string());
 
                         if let Some(connects_node) =
                             device_node.children().find(|n| n.has_tag_name("connects"))
@@ -1625,7 +1743,11 @@ fn parse_eagle_xml(xml: &str) -> Result<EagleLibrary, String> {
         }
     }
 
-    Ok(EagleLibrary { packages, symbols, devicesets })
+    Ok(EagleLibrary {
+        packages,
+        symbols,
+        devicesets,
+    })
 }
 
 // --- Electrical type and group mapping ---
@@ -1710,15 +1832,15 @@ fn build_output(
     fp_info: &FootprintInfo,
     library: &EagleLibrary,
 ) -> Result<SnapedaOutput, String> {
-    let part_number = info.modelname.clone().unwrap_or_else(|| unipart_id.to_string());
+    let part_number = info
+        .modelname
+        .clone()
+        .unwrap_or_else(|| unipart_id.to_string());
 
     // Use the first deviceset
     let deviceset = library.devicesets.first();
-    let symbol_name = deviceset.and_then(|ds| {
-        // The symbol name is typically the same as the deviceset name
-        // but could differ; we look it up from the gates
-        Some(ds.name.clone())
-    });
+    // The symbol name is typically the same as the deviceset name.
+    let symbol_name = deviceset.map(|ds| ds.name.clone());
 
     // Find symbol: prefer exact name match, else first
     let symbol = symbol_name
@@ -1840,8 +1962,7 @@ fn build_output(
         fp_pads.sort_by(|a, b| a.number.cmp(&b.number));
 
         // Courtyard: find wires on layer 39
-        let courtyard_wires: Vec<&EagleWire> =
-            pkg.wires.iter().filter(|w| w.layer == 39).collect();
+        let courtyard_wires: Vec<&EagleWire> = pkg.wires.iter().filter(|w| w.layer == 39).collect();
 
         let courtyard = if !courtyard_wires.is_empty() {
             let min_x = courtyard_wires
@@ -1940,15 +2061,13 @@ fn serialize_json<T: Serialize>(value: &T, formatted: bool) -> Result<String, St
         serde_json::to_string_pretty(value)
             .map_err(|e| format!("Failed to serialize output: {}", e))
     } else {
-        serde_json::to_string(value)
-            .map_err(|e| format!("Failed to serialize output: {}", e))
+        serde_json::to_string(value).map_err(|e| format!("Failed to serialize output: {}", e))
     }
 }
 
 fn write_output(text: &str, out: Option<PathBuf>) -> Result<(), String> {
     if let Some(path) = out {
-        std::fs::write(&path, text)
-            .map_err(|e| format!("Failed to write output file: {}", e))?;
+        std::fs::write(&path, text).map_err(|e| format!("Failed to write output file: {}", e))?;
         eprintln!("Wrote output to: {}", path.display());
     } else {
         println!("{}", text);
@@ -1992,10 +2111,7 @@ fn format_full_human(output: &SnapedaOutput) -> String {
         .unwrap_or(0);
 
     s.push_str(&format!("SnapEDA: {}\n", part_number));
-    s.push_str(&format!(
-        "Package: {} ({} pads)\n",
-        ipc, total_pads
-    ));
+    s.push_str(&format!("Package: {} ({} pads)\n", ipc, total_pads));
     s.push_str(&format!(
         "Source:  unipart_id={}, model_id={}\n",
         output.snapeda_source.unipart_id, output.snapeda_source.model_id
@@ -2076,7 +2192,12 @@ fn format_full_human(output: &SnapedaOutput) -> String {
             let thermal_pad_num = output
                 .pin_to_pad_map
                 .iter()
-                .find(|m| m.pad_number.parse::<u32>().map(|n| !fp_pad_numbers.contains(&n)).unwrap_or(false))
+                .find(|m| {
+                    m.pad_number
+                        .parse::<u32>()
+                        .map(|n| !fp_pad_numbers.contains(&n))
+                        .unwrap_or(false)
+                })
                 .map(|m| m.pad_number.clone())
                 .unwrap_or_else(|| "EP".to_string());
 
@@ -2088,10 +2209,7 @@ fn format_full_human(output: &SnapedaOutput) -> String {
 
         if let Some(ref cy) = fp_pkg.courtyard {
             s.push('\n');
-            s.push_str(&format!(
-                "Courtyard: {} x {}\n",
-                cy.width, cy.height
-            ));
+            s.push_str(&format!("Courtyard: {} x {}\n", cy.width, cy.height));
         }
     }
 
@@ -2158,10 +2276,7 @@ fn format_footprint_human(output: &SnapedaOutput) -> String {
 
         if let Some(ref cy) = pkg.courtyard {
             s.push('\n');
-            s.push_str(&format!(
-                "Courtyard: {} x {}\n",
-                cy.width, cy.height
-            ));
+            s.push_str(&format!("Courtyard: {} x {}\n", cy.width, cy.height));
         }
     }
     s

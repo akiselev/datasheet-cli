@@ -407,7 +407,10 @@ fn cmd_download(
         ));
     }
 
-    println!("Datasheet downloaded successfully! ({:.1} KB)", bytes_written as f64 / 1024.0);
+    println!(
+        "Datasheet downloaded successfully! ({:.1} KB)",
+        bytes_written as f64 / 1024.0
+    );
 
     Ok(())
 }
@@ -456,7 +459,10 @@ fn cmd_stock(part_number: &str, api_key: Option<&str>, json_output: bool) -> Res
 
     let stock = part.availability_in_stock.as_deref().and_then(|s| {
         // "4,137 In Stock" → extract leading number, strip commas
-        let num_part: String = s.chars().take_while(|c| c.is_ascii_digit() || *c == ',').collect();
+        let num_part: String = s
+            .chars()
+            .take_while(|c| c.is_ascii_digit() || *c == ',')
+            .collect();
         num_part.replace(',', "").parse::<i64>().ok()
     });
 
@@ -469,7 +475,11 @@ fn cmd_stock(part_number: &str, api_key: Option<&str>, json_output: bool) -> Res
             let qty = pb.quantity?;
             let price_str = pb.price.as_deref()?;
             // Price may be "$10.13" or "1,234.56" — strip currency symbols and commas
-            let price: f64 = price_str.replace(['$', ',', '€', '£'], "").trim().parse().ok()?;
+            let price: f64 = price_str
+                .replace(['$', ',', '€', '£'], "")
+                .trim()
+                .parse()
+                .ok()?;
             Some(StockPriceBreak {
                 quantity: qty,
                 unit_price: price,
@@ -532,8 +542,14 @@ fn cmd_stock(part_number: &str, api_key: Option<&str>, json_output: bool) -> Res
             println!("  Lead Time: {}", lt);
         }
 
-        let moq_str = info.moq.map(|v| v.to_string()).unwrap_or_else(|| "?".to_string());
-        let mult_str = info.order_multiple.map(|v| v.to_string()).unwrap_or_else(|| "?".to_string());
+        let moq_str = info
+            .moq
+            .map(|v| v.to_string())
+            .unwrap_or_else(|| "?".to_string());
+        let mult_str = info
+            .order_multiple
+            .map(|v| v.to_string())
+            .unwrap_or_else(|| "?".to_string());
         println!("  MOQ: {} | Multiple: {}", moq_str, mult_str);
 
         if !info.price_breaks.is_empty() {
@@ -577,7 +593,12 @@ fn format_number(n: i64) -> String {
     result.chars().rev().collect()
 }
 
-fn search_by_keyword(api_key: &str, keyword: &str, limit: usize, starting_record: usize) -> Result<Vec<Part>, String> {
+fn search_by_keyword(
+    api_key: &str,
+    keyword: &str,
+    limit: usize,
+    starting_record: usize,
+) -> Result<Vec<Part>, String> {
     let url = format!("{}/search/keyword?apiKey={}", MOUSER_API_BASE, api_key);
 
     let request = KeywordSearchRequest {
@@ -599,10 +620,7 @@ fn search_by_keyword(api_key: &str, keyword: &str, limit: usize, starting_record
 
     if let Some(errors) = response.errors {
         if !errors.is_empty() {
-            let error_msgs: Vec<String> = errors
-                .iter()
-                .filter_map(|e| e.message.clone())
-                .collect();
+            let error_msgs: Vec<String> = errors.iter().filter_map(|e| e.message.clone()).collect();
             if !error_msgs.is_empty() {
                 return Err(format!("API errors: {}", error_msgs.join(", ")));
             }
@@ -634,10 +652,7 @@ fn search_by_part_number(api_key: &str, part_number: &str) -> Result<Vec<Part>, 
 
     if let Some(errors) = response.errors {
         if !errors.is_empty() {
-            let error_msgs: Vec<String> = errors
-                .iter()
-                .filter_map(|e| e.message.clone())
-                .collect();
+            let error_msgs: Vec<String> = errors.iter().filter_map(|e| e.message.clone()).collect();
             if !error_msgs.is_empty() {
                 return Err(format!("API errors: {}", error_msgs.join(", ")));
             }

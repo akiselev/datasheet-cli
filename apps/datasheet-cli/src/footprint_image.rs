@@ -62,8 +62,13 @@ pub fn run(args: &FootprintImageArgs) -> Result<()> {
     if !args.pdf.exists() {
         return Err(anyhow!("PDF not found: {}", args.pdf.display()));
     }
-    std::fs::create_dir_all(&args.out_dir)
-        .map_err(|e| anyhow!("creating output directory {}: {}", args.out_dir.display(), e))?;
+    std::fs::create_dir_all(&args.out_dir).map_err(|e| {
+        anyhow!(
+            "creating output directory {}: {}",
+            args.out_dir.display(),
+            e
+        )
+    })?;
 
     let api_key = resolve_api_key(args.provider, args.api_key.clone())?;
     let model = if args.model == __DEFAULT__ {
@@ -76,12 +81,14 @@ pub fn run(args: &FootprintImageArgs) -> Result<()> {
     let all_footprints = page_render::detect_pages(
         &args.pdf,
         PROMPT,
-        args.no_cache,
-        &api_key,
-        &args.base_url,
-        args.provider,
-        &model,
-        "FOOTPRINT-IMAGE",
+        &page_render::DetectionOptions {
+            no_cache: args.no_cache,
+            api_key: &api_key,
+            base_url: &args.base_url,
+            provider: args.provider,
+            model: &model,
+            log_prefix: "FOOTPRINT-IMAGE",
+        },
     )?;
 
     if all_footprints.is_empty() {
@@ -111,12 +118,14 @@ pub fn run(args: &FootprintImageArgs) -> Result<()> {
     let (saved, _) = page_render::render_and_crop(
         &args.pdf,
         &all_footprints,
-        args.padding,
-        args.dpi,
-        &args.out_dir,
-        &pdf_stem,
-        args.whole_page,
-        "FOOTPRINT-IMAGE",
+        &page_render::RenderOptions {
+            padding: args.padding,
+            dpi: args.dpi,
+            out_dir: &args.out_dir,
+            pdf_stem: &pdf_stem,
+            whole_page: args.whole_page,
+            log_prefix: "FOOTPRINT-IMAGE",
+        },
     )?;
 
     eprintln!("[FOOTPRINT-IMAGE] Done — {} PNG(s) extracted.", saved);

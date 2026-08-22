@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // SPDX-FileCopyrightText: 2026 Alexander Kiselev <alex@akiselev.com>
 
-use anyhow::{anyhow, Context, Result};
-use base64::engine::general_purpose::STANDARD;
+use anyhow::{Context, Result, anyhow};
 use base64::Engine;
+use base64::engine::general_purpose::STANDARD;
 use clap::ValueEnum;
 use serde_json::Value;
 use std::env;
@@ -12,7 +12,7 @@ use std::time::Duration;
 
 #[derive(Clone, Copy, Debug, ValueEnum)]
 pub enum LlmProvider {
-    #[clap(name="gemini")]
+    #[clap(name = "gemini")]
     Gemini,
 }
 
@@ -112,8 +112,6 @@ pub fn build_client(
     Ok(Box::new(GeminiLlm::new(api_key, base_url)?))
 }
 
-
-
 struct GeminiLlm {
     api_key: String,
     base_url: String,
@@ -122,13 +120,14 @@ struct GeminiLlm {
 
 impl GeminiLlm {
     fn new(api_key: String, base_url: Option<String>) -> Result<Self> {
-        let base_url = base_url.unwrap_or_else(|| LlmProvider::Gemini.default_base_url().to_string());
-        
+        let base_url =
+            base_url.unwrap_or_else(|| LlmProvider::Gemini.default_base_url().to_string());
+
         let client = reqwest::blocking::Client::builder()
             .timeout(Duration::from_secs(300))
             .build()
             .context("building reqwest client")?;
-        
+
         Ok(Self {
             api_key,
             base_url,
@@ -181,27 +180,26 @@ impl LlmClient for GeminiLlm {
                 "responseJsonSchema": request.schema
             }
         });
-        
+
         // Construct the URL: {base_url}/models/{model}:generateContent?key={api_key}
         let url = format!(
             "{}/models/{}:generateContent?key={}",
-            self.base_url,
-            request.model,
-            self.api_key
+            self.base_url, request.model, self.api_key
         );
-        
+
         eprintln!("[DEBUG] Calling: {}", url.replace(&self.api_key, "***"));
-        
-        let resp = self.client
+
+        let resp = self
+            .client
             .post(&url)
             .header("Content-Type", "application/json")
             .json(&body)
             .send()
             .context("sending request to Gemini")?;
-        
+
         let status = resp.status();
         let response_text = resp.text().context("reading response text")?;
-        
+
         if !status.is_success() {
             return Err(anyhow!(
                 "Gemini API error (status {}): {}",
@@ -209,12 +207,15 @@ impl LlmClient for GeminiLlm {
                 response_text
             ));
         }
-        
-        eprintln!("[DEBUG] Response: {}", &response_text[..response_text.len().min(500)]);
-        
-        let response_json: Value = serde_json::from_str(&response_text)
-            .context("parsing Gemini response")?;
-        
+
+        eprintln!(
+            "[DEBUG] Response: {}",
+            &response_text[..response_text.len().min(500)]
+        );
+
+        let response_json: Value =
+            serde_json::from_str(&response_text).context("parsing Gemini response")?;
+
         // Extract the text from candidates[0].content.parts[0].text
         let text = response_json
             .get("candidates")
@@ -225,10 +226,10 @@ impl LlmClient for GeminiLlm {
             .and_then(|p| p.get("text"))
             .and_then(|t| t.as_str())
             .ok_or_else(|| anyhow!("unexpected Gemini response format: {}", response_json))?;
-        
-        let json: Value = serde_json::from_str(text)
-            .context("parsing model JSON from Gemini text response")?;
-        
+
+        let json: Value =
+            serde_json::from_str(text).context("parsing model JSON from Gemini text response")?;
+
         Ok(LlmResponse { json })
     }
 }

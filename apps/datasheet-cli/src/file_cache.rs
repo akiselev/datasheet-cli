@@ -7,7 +7,7 @@
 //! mapped to their Gemini file URIs. Files uploaded to Gemini expire after 48 hours,
 //! so the cache automatically cleans up expired entries.
 
-use anyhow::{anyhow, Context, Result};
+use anyhow::{Context, Result, anyhow};
 use serde::{Deserialize, Serialize};
 use sha2::{Digest, Sha256};
 use std::collections::HashMap;
@@ -71,16 +71,14 @@ impl FileCache {
 
         // Load existing cache or create empty one
         let data = if cache_file.exists() {
-            let content = fs::read_to_string(&cache_file)
-                .context("reading cache file")?;
+            let content = fs::read_to_string(&cache_file).context("reading cache file")?;
             serde_json::from_str(&content).unwrap_or_default()
         } else {
             CacheData::default()
         };
 
-        let base_url = base_url.unwrap_or_else(|| {
-            "https://generativelanguage.googleapis.com/v1beta".to_string()
-        });
+        let base_url = base_url
+            .unwrap_or_else(|| "https://generativelanguage.googleapis.com/v1beta".to_string());
 
         let client = reqwest::blocking::Client::builder()
             .timeout(Duration::from_secs(600)) // 10 min for large uploads
@@ -104,8 +102,7 @@ impl FileCache {
 
     /// Get or upload a file to Gemini, returning the cached file info
     pub fn get_or_upload(&mut self, path: &Path) -> Result<CachedFile> {
-        let file_data = fs::read(path)
-            .with_context(|| format!("reading {}", path.display()))?;
+        let file_data = fs::read(path).with_context(|| format!("reading {}", path.display()))?;
         let hash = compute_hash(&file_data);
 
         // Check if we have a valid cached entry
@@ -153,14 +150,12 @@ impl FileCache {
         // The upload endpoint uses a different path structure than the main API.
         // Base URL is like "https://generativelanguage.googleapis.com/v1beta"
         // Upload URL should be "https://generativelanguage.googleapis.com/upload/v1beta/files"
-        let host = self.base_url
+        let host = self
+            .base_url
             .strip_suffix("/v1beta")
             .or_else(|| self.base_url.strip_suffix("/v1"))
             .unwrap_or(&self.base_url);
-        let start_url = format!(
-            "{}/upload/v1beta/files?key={}",
-            host, self.api_key
-        );
+        let start_url = format!("{}/upload/v1beta/files?key={}", host, self.api_key);
 
         let start_body = serde_json::json!({
             "file": {
@@ -168,7 +163,8 @@ impl FileCache {
             }
         });
 
-        let start_resp = self.client
+        let start_resp = self
+            .client
             .post(&start_url)
             .header("X-Goog-Upload-Protocol", "resumable")
             .header("X-Goog-Upload-Command", "start")
@@ -195,7 +191,8 @@ impl FileCache {
             .to_string();
 
         // Step 2: Upload the actual bytes
-        let upload_resp = self.client
+        let upload_resp = self
+            .client
             .post(&upload_url)
             .header("Content-Length", file_size.to_string())
             .header("X-Goog-Upload-Offset", "0")
@@ -210,8 +207,8 @@ impl FileCache {
             return Err(anyhow!("Failed to upload file ({}): {}", status, body));
         }
 
-        let upload_result: serde_json::Value = upload_resp.json()
-            .context("parsing upload response")?;
+        let upload_result: serde_json::Value =
+            upload_resp.json().context("parsing upload response")?;
 
         // Extract file info from response
         let file_obj = upload_result
@@ -249,20 +246,17 @@ impl FileCache {
 
     /// Check if a file still exists on Gemini
     fn check_file_exists(&self, name: &str) -> Result<bool> {
-        let url = format!(
-            "{}/{}?key={}",
-            self.base_url, name, self.api_key
-        );
+        let url = format!("{}/{}?key={}", self.base_url, name, self.api_key);
 
-        let resp = self.client
+        let resp = self
+            .client
             .get(&url)
             .send()
             .context("checking file existence")?;
 
         if resp.status().is_success() {
             // Parse response to check state
-            let info: serde_json::Value = resp.json()
-                .context("parsing file info")?;
+            let info: serde_json::Value = resp.json().context("parsing file info")?;
 
             // Check if file is in ACTIVE state
             let state = info
@@ -274,7 +268,10 @@ impl FileCache {
         } else if resp.status() == reqwest::StatusCode::NOT_FOUND {
             Ok(false)
         } else {
-            Err(anyhow!("Unexpected status checking file: {}", resp.status()))
+            Err(anyhow!(
+                "Unexpected status checking file: {}",
+                resp.status()
+            ))
         }
     }
 
@@ -293,14 +290,11 @@ impl FileCache {
     /// Save the cache to disk
     fn save(&self) -> Result<()> {
         // Ensure cache directory exists
-        fs::create_dir_all(&self.cache_dir)
-            .context("creating cache directory")?;
+        fs::create_dir_all(&self.cache_dir).context("creating cache directory")?;
 
-        let content = serde_json::to_string_pretty(&self.data)
-            .context("serializing cache")?;
+        let content = serde_json::to_string_pretty(&self.data).context("serializing cache")?;
 
-        fs::write(&self.cache_file, content)
-            .context("writing cache file")?;
+        fs::write(&self.cache_file, content).context("writing cache file")?;
 
         Ok(())
     }
@@ -328,11 +322,14 @@ fn get_cache_dir() -> Result<PathBuf> {
 /// Simple hex encoding (avoiding another dependency)
 mod hex {
     pub fn encode(bytes: impl AsRef<[u8]>) -> String {
-        bytes
-            .as_ref()
-            .iter()
-            .map(|b| format!("{:02x}", b))
-            .collect()
+        const DIGITS: &[u8; 16] = b"0123456789abcdef";
+        let bytes = bytes.as_ref();
+        let mut encoded = String::with_capacity(bytes.len() * 2);
+        for &byte in bytes {
+            encoded.push(char::from(DIGITS[usize::from(byte >> 4)]));
+            encoded.push(char::from(DIGITS[usize::from(byte & 0x0f)]));
+        }
+        encoded
     }
 }
 

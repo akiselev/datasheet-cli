@@ -408,21 +408,40 @@ pub fn execute(command: DigikeySubcommand) -> Result<(), String> {
             output,
             dir,
             sandbox,
-        } => cmd_download(&part_number, client_id.as_deref(), client_secret.as_deref(), output, dir, sandbox),
+        } => cmd_download(
+            &part_number,
+            client_id.as_deref(),
+            client_secret.as_deref(),
+            output,
+            dir,
+            sandbox,
+        ),
         DigikeySubcommand::Part {
             part_number,
             client_id,
             client_secret,
             json,
             sandbox,
-        } => cmd_part(&part_number, client_id.as_deref(), client_secret.as_deref(), json, sandbox),
+        } => cmd_part(
+            &part_number,
+            client_id.as_deref(),
+            client_secret.as_deref(),
+            json,
+            sandbox,
+        ),
         DigikeySubcommand::Stock {
             part_number,
             client_id,
             client_secret,
             json,
             sandbox,
-        } => cmd_stock(&part_number, client_id.as_deref(), client_secret.as_deref(), json, sandbox),
+        } => cmd_stock(
+            &part_number,
+            client_id.as_deref(),
+            client_secret.as_deref(),
+            json,
+            sandbox,
+        ),
     }
 }
 
@@ -474,7 +493,11 @@ fn get_credentials(
 }
 
 fn get_access_token(client_id: &str, client_secret: &str, sandbox: bool) -> Result<String, String> {
-    let base_url = if sandbox { DIGIKEY_API_BASE_SANDBOX } else { DIGIKEY_API_BASE };
+    let base_url = if sandbox {
+        DIGIKEY_API_BASE_SANDBOX
+    } else {
+        DIGIKEY_API_BASE
+    };
     let url = format!("{}/v1/oauth2/token", base_url);
 
     let response: TokenResponse = ureq::post(&url)
@@ -500,10 +523,13 @@ fn map_sort_field(sort: &str) -> Result<SortOptions, String> {
             return Err(format!(
                 "Unknown sort field: {}. Options: price, stock, mpn, manufacturer",
                 sort
-            ))
+            ));
         }
     };
-    Ok(SortOptions { field: field.to_string(), sort_order: order.to_string() })
+    Ok(SortOptions {
+        field: field.to_string(),
+        sort_order: order.to_string(),
+    })
 }
 
 fn build_search_options(in_stock: bool) -> Option<Vec<String>> {
@@ -617,9 +643,12 @@ fn cmd_search(
         // Resolve --param "Name=Value" → ParameterId + ValueId
         let mut resolved_params: Vec<ParametricFilter> = Vec::new();
         for param_str in &params {
-            let (name_part, value_part) = param_str
-                .split_once('=')
-                .ok_or_else(|| format!("Invalid --param format '{}': expected 'Name=Value'", param_str))?;
+            let (name_part, value_part) = param_str.split_once('=').ok_or_else(|| {
+                format!(
+                    "Invalid --param format '{}': expected 'Name=Value'",
+                    param_str
+                )
+            })?;
             let name_lower = name_part.trim().to_lowercase();
             let value_lower = value_part.trim().to_lowercase();
 
@@ -697,7 +726,9 @@ fn cmd_search(
                 "--category is required when using --param (DigiKey requires a category for parametric filtering)",
             )?;
             Some(ParameterFilterRequest {
-                category_filter: FilterId { id: cat_id.to_string() },
+                category_filter: FilterId {
+                    id: cat_id.to_string(),
+                },
                 parameter_filters: resolved_params,
             })
         } else {
@@ -706,8 +737,7 @@ fn cmd_search(
 
         let filter_request = FilterOptionsRequest {
             manufacturer_filter: resolved_mfr_ids,
-            category_filter: resolved_category_id
-                .map(|id| vec![FilterId { id: id.to_string() }]),
+            category_filter: resolved_category_id.map(|id| vec![FilterId { id: id.to_string() }]),
             minimum_quantity_available: None,
             parameter_filter_request,
             search_options: build_search_options(in_stock),
@@ -726,13 +756,17 @@ fn cmd_search(
         // DIRECT: Use provided IDs without discovery.
 
         let manufacturer_filter = if !manufacturer_ids.is_empty() {
-            Some(manufacturer_ids.iter().map(|id| FilterId { id: id.to_string() }).collect())
+            Some(
+                manufacturer_ids
+                    .iter()
+                    .map(|id| FilterId { id: id.to_string() })
+                    .collect(),
+            )
         } else {
             None
         };
 
-        let category_filter = category_id
-            .map(|id| vec![FilterId { id: id.to_string() }]);
+        let category_filter = category_id.map(|id| vec![FilterId { id: id.to_string() }]);
 
         // Parse --param-id "ParameterId=ValueId"
         let mut direct_params: Vec<ParametricFilter> = Vec::new();
@@ -744,11 +778,16 @@ fn cmd_search(
                 )
             })?;
             let parameter_id: i64 = param_id_str.trim().parse().map_err(|_| {
-                format!("Invalid parameter ID '{}': must be an integer", param_id_str.trim())
+                format!(
+                    "Invalid parameter ID '{}': must be an integer",
+                    param_id_str.trim()
+                )
             })?;
             direct_params.push(ParametricFilter {
                 parameter_id,
-                filter_values: vec![FilterId { id: value_id_str.trim().to_string() }],
+                filter_values: vec![FilterId {
+                    id: value_id_str.trim().to_string(),
+                }],
             });
         }
 
@@ -757,7 +796,9 @@ fn cmd_search(
                 "--category-id is required when using --param-id (DigiKey requires a category for parametric filtering)",
             )?;
             Some(ParameterFilterRequest {
-                category_filter: FilterId { id: cat_id.to_string() },
+                category_filter: FilterId {
+                    id: cat_id.to_string(),
+                },
                 parameter_filters: direct_params,
             })
         } else {
@@ -864,7 +905,8 @@ fn cmd_download(
     } else {
         let filename = format!(
             "{}.pdf",
-            product.manufacturer_part_number
+            product
+                .manufacturer_part_number
                 .as_ref()
                 .unwrap_or(&part_number.to_string())
                 .replace(['/', '\\', ':', '*', '?', '"', '<', '>', '|'], "_")
@@ -907,7 +949,10 @@ fn cmd_download(
         ));
     }
 
-    println!("Datasheet downloaded successfully! ({:.1} KB)", bytes_written as f64 / 1024.0);
+    println!(
+        "Datasheet downloaded successfully! ({:.1} KB)",
+        bytes_written as f64 / 1024.0
+    );
 
     Ok(())
 }
@@ -1009,7 +1054,10 @@ fn cmd_stock(
             None => println!("  Stock: Unknown"),
         }
 
-        let moq_str = info.moq.map(|v| v.to_string()).unwrap_or_else(|| "?".to_string());
+        let moq_str = info
+            .moq
+            .map(|v| v.to_string())
+            .unwrap_or_else(|| "?".to_string());
         println!("  MOQ: {}", moq_str);
 
         if !info.price_breaks.is_empty() {
@@ -1056,7 +1104,11 @@ fn search_by_keyword(
     filter_options_request: Option<FilterOptionsRequest>,
     sort_options: Option<SortOptions>,
 ) -> Result<SearchResponse, String> {
-    let base_url = if sandbox { DIGIKEY_API_BASE_SANDBOX } else { DIGIKEY_API_BASE };
+    let base_url = if sandbox {
+        DIGIKEY_API_BASE_SANDBOX
+    } else {
+        DIGIKEY_API_BASE
+    };
     let url = format!("{}/products/v4/search/keyword", base_url);
 
     let request = KeywordSearchRequest {
@@ -1088,23 +1140,28 @@ fn get_part_by_number(
     part_number: &str,
     sandbox: bool,
 ) -> Result<Product, String> {
-    let base_url = if sandbox { DIGIKEY_API_BASE_SANDBOX } else { DIGIKEY_API_BASE };
+    let base_url = if sandbox {
+        DIGIKEY_API_BASE_SANDBOX
+    } else {
+        DIGIKEY_API_BASE
+    };
     // URL encode the part number to handle special characters
     let encoded_part = urlencoding::encode(part_number);
-    let url = format!("{}/products/v4/search/{}/productdetails", base_url, encoded_part);
+    let url = format!(
+        "{}/products/v4/search/{}/productdetails",
+        base_url, encoded_part
+    );
 
     let product: Product = ureq::get(&url)
         .set("X-DIGIKEY-Client-Id", client_id)
         .set("Authorization", &format!("Bearer {}", access_token))
         .set("Accept", "application/json")
         .call()
-        .map_err(|e| {
-            match e {
-                ureq::Error::Status(404, _) => {
-                    format!("Part not found: {}", part_number)
-                }
-                _ => format!("API request failed: {}", e)
+        .map_err(|e| match e {
+            ureq::Error::Status(404, _) => {
+                format!("Part not found: {}", part_number)
             }
+            _ => format!("API request failed: {}", e),
         })?
         .into_json()
         .map_err(|e| format!("Failed to parse API response: {}", e))?;
@@ -1145,7 +1202,11 @@ fn format_product_summary(product: &Product) -> String {
         }
     }
 
-    if product.data_sheet_url.as_ref().is_some_and(|u| !u.is_empty()) {
+    if product
+        .data_sheet_url
+        .as_ref()
+        .is_some_and(|u| !u.is_empty())
+    {
         lines.push("   Datasheet: Available".to_string());
     }
 

@@ -64,21 +64,11 @@ fn main() -> Result<()> {
 
     match cli.command {
         Command::Extract(args) => extract::run_extract(&args),
-        Command::Mouser(subcommand) => {
-            mouser::execute(subcommand).map_err(|e| anyhow!(e))
-        }
-        Command::Digikey(subcommand) => {
-            digikey::execute(subcommand).map_err(|e| anyhow!(e))
-        }
-        Command::Jlcpcb(subcommand) => {
-            jlcpcb::execute(subcommand).map_err(|e| anyhow!(e))
-        }
-        Command::Snapeda(subcommand) => {
-            snapeda::execute(subcommand).map_err(|e| anyhow!(e))
-        }
-        Command::Svd(subcommand) => {
-            svd::execute(subcommand).map_err(|e| anyhow!(e))
-        }
+        Command::Mouser(subcommand) => mouser::execute(subcommand).map_err(|e| anyhow!(e)),
+        Command::Digikey(subcommand) => digikey::execute(subcommand).map_err(|e| anyhow!(e)),
+        Command::Jlcpcb(subcommand) => jlcpcb::execute(subcommand).map_err(|e| anyhow!(e)),
+        Command::Snapeda(subcommand) => snapeda::execute(subcommand).map_err(|e| anyhow!(e)),
+        Command::Svd(subcommand) => svd::execute(subcommand).map_err(|e| anyhow!(e)),
         Command::FootprintImage(args) => footprint_image::run(&args),
         Command::ExtractPages(args) => extract_pages::run(&args),
         Command::Sketch(args) => fdx::run_sketch(&args),

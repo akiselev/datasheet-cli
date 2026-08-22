@@ -32,8 +32,8 @@ pub struct SplitPart {
 /// Returns None if the PDF is within the page limit.
 pub fn split_if_needed(pdf_path: &Path) -> Result<Option<SplitResult>> {
     // Load the document once for page count + TOC
-    let doc = Document::load(pdf_path)
-        .with_context(|| format!("loading PDF: {}", pdf_path.display()))?;
+    let doc =
+        Document::load(pdf_path).with_context(|| format!("loading PDF: {}", pdf_path.display()))?;
 
     let pages = doc.get_pages();
     let page_count = pages.len() as u32;
@@ -48,8 +48,8 @@ pub fn split_if_needed(pdf_path: &Path) -> Result<Option<SplitResult>> {
     );
 
     // Check cache first (hash the file, not the parsed doc)
-    let file_data = std::fs::read(pdf_path)
-        .with_context(|| format!("reading {}", pdf_path.display()))?;
+    let file_data =
+        std::fs::read(pdf_path).with_context(|| format!("reading {}", pdf_path.display()))?;
     let hash = compute_hash(&file_data);
     let cache_dir = get_split_cache_dir()?.join(&hash[..16]);
 
@@ -301,7 +301,13 @@ fn compute_hash(data: &[u8]) -> String {
     let mut hasher = Sha256::new();
     hasher.update(data);
     let result = hasher.finalize();
-    result.iter().map(|b| format!("{:02x}", b)).collect()
+    const DIGITS: &[u8; 16] = b"0123456789abcdef";
+    let mut encoded = String::with_capacity(result.len() * 2);
+    for byte in result.iter().copied() {
+        encoded.push(char::from(DIGITS[usize::from(byte >> 4)]));
+        encoded.push(char::from(DIGITS[usize::from(byte & 0x0f)]));
+    }
+    encoded
 }
 
 fn get_split_cache_dir() -> Result<PathBuf> {

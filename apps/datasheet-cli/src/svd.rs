@@ -6,8 +6,7 @@ use std::path::PathBuf;
 
 const GITHUB_TREES_URL: &str =
     "https://api.github.com/repos/cmsis-svd/cmsis-svd-data/git/trees/main?recursive=1";
-const RAW_BASE_URL: &str =
-    "https://raw.githubusercontent.com/cmsis-svd/cmsis-svd-data/main";
+const RAW_BASE_URL: &str = "https://raw.githubusercontent.com/cmsis-svd/cmsis-svd-data/main";
 const USER_AGENT: &str = "datasheet-cli/0.1 (https://github.com/akiselev/datasheet-cli)";
 
 /// SVD subcommands.
@@ -31,7 +30,7 @@ pub enum SvdSubcommand {
         /// Filter by vendor (useful when chip name is ambiguous)
         #[arg(long)]
         vendor: Option<String>,
-        /// Output file path (defaults to <chip>.svd in current directory)
+        /// Output file path (defaults to `<chip>.svd` in current directory)
         #[arg(long, short)]
         out: Option<PathBuf>,
     },
@@ -119,9 +118,7 @@ fn fetch_svd_index() -> Result<Vec<SvdEntry>, String> {
         .tree
         .into_iter()
         .filter(|e| {
-            e.entry_type == "blob"
-                && e.path.starts_with("data/")
-                && e.path.ends_with(".svd")
+            e.entry_type == "blob" && e.path.starts_with("data/") && e.path.ends_with(".svd")
         })
         .filter_map(|e| {
             // path is like "data/<Vendor>/<chip>.svd"
@@ -175,7 +172,12 @@ fn cmd_search(query: &str, vendor: Option<&str>, json: bool) -> Result<(), Strin
         return Ok(());
     }
 
-    println!("Found {} SVD file{} matching \"{}\":\n", results.len(), if results.len() == 1 { "" } else { "s" }, query);
+    println!(
+        "Found {} SVD file{} matching \"{}\":\n",
+        results.len(),
+        if results.len() == 1 { "" } else { "s" },
+        query
+    );
     for entry in &results {
         println!("  {}/{}", entry.vendor, entry.filename);
     }
@@ -224,7 +226,10 @@ fn cmd_download(chip: &str, vendor: Option<&str>, out: Option<PathBuf>) -> Resul
         for entry in &matches {
             eprintln!("  {}/{}", entry.vendor, entry.filename);
         }
-        eprintln!("\nExample: datasheet svd download {} --vendor {}", chip, matches[0].vendor);
+        eprintln!(
+            "\nExample: datasheet svd download {} --vendor {}",
+            chip, matches[0].vendor
+        );
         return Err(format!("Ambiguous chip name \"{}\"", chip));
     }
 
@@ -247,7 +252,12 @@ fn cmd_download(chip: &str, vendor: Option<&str>, out: Option<PathBuf>) -> Resul
 
     std::fs::write(&dest, &content).map_err(|e| format!("Failed to write file: {e}"))?;
 
-    println!("Downloaded {} ({} bytes) to {}", entry.filename, content.len(), dest.display());
+    println!(
+        "Downloaded {} ({} bytes) to {}",
+        entry.filename,
+        content.len(),
+        dest.display()
+    );
     Ok(())
 }
 
@@ -264,7 +274,10 @@ fn cmd_vendors(json: bool) -> Result<(), String> {
             .iter()
             .map(|(v, c)| serde_json::json!({"vendor": v, "count": c}))
             .collect();
-        println!("{}", serde_json::to_string_pretty(&vendors).unwrap_or_default());
+        println!(
+            "{}",
+            serde_json::to_string_pretty(&vendors).unwrap_or_default()
+        );
         return Ok(());
     }
 
@@ -289,9 +302,11 @@ use std::io::Read as _;
 
 pub fn execute(subcommand: SvdSubcommand) -> Result<(), String> {
     match subcommand {
-        SvdSubcommand::Search { query, vendor, json } => {
-            cmd_search(&query, vendor.as_deref(), json)
-        }
+        SvdSubcommand::Search {
+            query,
+            vendor,
+            json,
+        } => cmd_search(&query, vendor.as_deref(), json),
         SvdSubcommand::Download { chip, vendor, out } => {
             cmd_download(&chip, vendor.as_deref(), out)
         }

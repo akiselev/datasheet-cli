@@ -73,28 +73,27 @@ pub fn run(args: &ExtractPagesArgs) -> Result<()> {
     // Validate that exactly one of --description or --batch is provided
     let descriptions = match (&args.description, &args.batch) {
         (Some(_), Some(_)) => {
-            return Err(anyhow!(
-                "provide either --description or --batch, not both"
-            ));
+            return Err(anyhow!("provide either --description or --batch, not both"));
         }
         (None, None) => {
-            return Err(anyhow!(
-                "one of --description or --batch is required"
-            ));
+            return Err(anyhow!("one of --description or --batch is required"));
         }
         (Some(desc), None) => desc.clone(),
-        (None, Some(batch_path)) => {
-            std::fs::read_to_string(batch_path)
-                .map_err(|e| anyhow!("reading batch file {}: {}", batch_path.display(), e))?
-                .lines()
-                .filter(|l| !l.trim().is_empty())
-                .collect::<Vec<_>>()
-                .join("\n")
-        }
+        (None, Some(batch_path)) => std::fs::read_to_string(batch_path)
+            .map_err(|e| anyhow!("reading batch file {}: {}", batch_path.display(), e))?
+            .lines()
+            .filter(|l| !l.trim().is_empty())
+            .collect::<Vec<_>>()
+            .join("\n"),
     };
 
-    std::fs::create_dir_all(&args.out_dir)
-        .map_err(|e| anyhow!("creating output directory {}: {}", args.out_dir.display(), e))?;
+    std::fs::create_dir_all(&args.out_dir).map_err(|e| {
+        anyhow!(
+            "creating output directory {}: {}",
+            args.out_dir.display(),
+            e
+        )
+    })?;
 
     let api_key = resolve_api_key(args.provider, args.api_key.clone())?;
     let model = if args.model == __DEFAULT__ {
@@ -109,12 +108,14 @@ pub fn run(args: &ExtractPagesArgs) -> Result<()> {
     let locations = page_render::detect_pages(
         &args.pdf,
         &prompt,
-        args.no_cache,
-        &api_key,
-        &args.base_url,
-        args.provider,
-        &model,
-        "EXTRACT-PAGES",
+        &page_render::DetectionOptions {
+            no_cache: args.no_cache,
+            api_key: &api_key,
+            base_url: &args.base_url,
+            provider: args.provider,
+            model: &model,
+            log_prefix: "EXTRACT-PAGES",
+        },
     )?;
 
     if locations.is_empty() {
@@ -142,12 +143,14 @@ pub fn run(args: &ExtractPagesArgs) -> Result<()> {
     let (saved, outputs) = page_render::render_and_crop(
         &args.pdf,
         &locations,
-        args.padding,
-        args.dpi,
-        &args.out_dir,
-        &pdf_stem,
-        !args.bounded,
-        "EXTRACT-PAGES",
+        &page_render::RenderOptions {
+            padding: args.padding,
+            dpi: args.dpi,
+            out_dir: &args.out_dir,
+            pdf_stem: &pdf_stem,
+            whole_page: !args.bounded,
+            log_prefix: "EXTRACT-PAGES",
+        },
     )?;
 
     eprintln!("[EXTRACT-PAGES] Done — {} PNG(s) extracted.", saved);

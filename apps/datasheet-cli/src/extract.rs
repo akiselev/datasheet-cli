@@ -136,18 +136,16 @@ pub fn run_extract(args: &ExtractArgs) -> Result<()> {
     if matches!(args.task, ExtractTask::Custom) {
         // Load custom prompt if provided (from file or inline)
         if let Some(custom_prompt) = &args.prompt {
-            prompt_text = load_text_or_file(custom_prompt)
-                .context("loading custom prompt")?;
+            prompt_text = load_text_or_file(custom_prompt).context("loading custom prompt")?;
         } else {
             prompt_text = prompt_spec.prompt.to_string();
         }
 
         // Load custom schema if provided (from file or inline JSON)
         if let Some(custom_schema) = &args.schema {
-            let schema_text = load_text_or_file(custom_schema)
-                .context("loading custom schema")?;
-            prompt_spec.schema = serde_json::from_str(&schema_text)
-                .context("parsing custom schema as JSON")?;
+            let schema_text = load_text_or_file(custom_schema).context("loading custom schema")?;
+            prompt_spec.schema =
+                serde_json::from_str(&schema_text).context("parsing custom schema as JSON")?;
         }
     } else {
         prompt_text = prompt_spec.prompt.to_string();
@@ -166,17 +164,18 @@ pub fn run_extract(args: &ExtractArgs) -> Result<()> {
     // Get attachment source - use file cache unless disabled
     let attachment = if args.no_cache {
         // Read file directly and send inline
-        let data = fs::read(&args.pdf)
-            .with_context(|| format!("reading {}", args.pdf.display()))?;
+        let data =
+            fs::read(&args.pdf).with_context(|| format!("reading {}", args.pdf.display()))?;
         AttachmentSource::Inline(crate::llm::Attachment {
             mime_type: "application/pdf".to_string(),
             data,
         })
     } else {
         // Use file cache to upload/retrieve the file
-        let mut cache = FileCache::new(api_key, args.base_url.clone())
-            .context("initializing file cache")?;
-        let cached = cache.get_or_upload(&args.pdf)
+        let mut cache =
+            FileCache::new(api_key, args.base_url.clone()).context("initializing file cache")?;
+        let cached = cache
+            .get_or_upload(&args.pdf)
             .context("getting or uploading file to Gemini")?;
         AttachmentSource::FileUri(FileReference {
             mime_type: "application/pdf".to_string(),
@@ -331,8 +330,7 @@ fn deep_merge(base: &mut Value, other: &Value) {
 fn load_text_or_file(input: &str) -> Result<String> {
     let path = Path::new(input);
     if path.exists() && path.is_file() {
-        fs::read_to_string(path)
-            .with_context(|| format!("reading file: {}", path.display()))
+        fs::read_to_string(path).with_context(|| format!("reading file: {}", path.display()))
     } else {
         Ok(input.to_string())
     }

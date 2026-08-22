@@ -99,22 +99,30 @@ pub fn location_schema() -> serde_json::Value {
 
 // ── LLM detection ─────────────────────────────────────────────────────
 
+pub struct DetectionOptions<'a> {
+    pub no_cache: bool,
+    pub api_key: &'a str,
+    pub base_url: &'a Option<String>,
+    pub provider: LlmProvider,
+    pub model: &'a str,
+    pub log_prefix: &'a str,
+}
+
 /// Detect pages/regions in a PDF using a user-supplied prompt.
 ///
 /// Handles PDF splitting for large documents automatically.
 pub fn detect_pages(
     pdf: &Path,
     prompt: &str,
-    no_cache: bool,
-    api_key: &str,
-    base_url: &Option<String>,
-    provider: LlmProvider,
-    model: &str,
-    log_prefix: &str,
+    options: &DetectionOptions<'_>,
 ) -> Result<Vec<PageLocation>> {
     let split_result = pdf_split::split_if_needed(pdf)?;
 
-    let client = build_client(provider, api_key.to_string(), base_url.clone())?;
+    let client = build_client(
+        options.provider,
+        options.api_key.to_string(),
+        options.base_url.clone(),
+    )?;
 
     if let Some(ref split) = split_result {
         let mut all = Vec::new();
@@ -126,8 +134,19 @@ pub fn detect_pages(
                 part.start_page,
                 part.end_page
             );
-            let attachment = make_attachment(&part.path, no_cache, api_key, base_url)?;
-            let mut locations = call_detect(&*client, model, prompt, attachment, log_prefix)?;
+            let attachment = make_attachment(
+                &part.path,
+                options.no_cache,
+                options.api_key,
+                options.base_url,
+            )?;
+            let mut locations = call_detect(
+                &*client,
+                options.model,
+                prompt,
+                attachment,
+                options.log_prefix,
+            )?;
             for loc in &mut locations {
                 loc.page += part.start_page - 1;
             }
@@ -135,8 +154,14 @@ pub fn detect_pages(
         }
         Ok(all)
     } else {
-        let attachment = make_attachment(pdf, no_cache, api_key, base_url)?;
-        call_detect(&*client, model, prompt, attachment, log_prefix)
+        let attachment = make_attachment(pdf, options.no_cache, options.api_key, options.base_url)?;
+        call_detect(
+            &*client,
+            options.model,
+            prompt,
+            attachment,
+            options.log_prefix,
+        )
     }
 }
 
@@ -157,10 +182,23 @@ fn call_detect(
     })?;
     let locations: PageLocations = serde_json::from_value(response.json)
         .context("parsing page locations from LLM response")?;
-    Ok(locations.results.into_iter().map(PageLocation::from).collect())
+    Ok(locations
+        .results
+        .into_iter()
+        .map(PageLocation::from)
+        .collect())
 }
 
 // ── Rendering ─────────────────────────────────────────────────────────
+
+pub struct RenderOptions<'a> {
+    pub padding: u32,
+    pub dpi: u32,
+    pub out_dir: &'a Path,
+    pub pdf_stem: &'a str,
+    pub whole_page: bool,
+    pub log_prefix: &'a str,
+}
 
 /// Render and crop detected page regions to PNG files.
 ///
@@ -168,19 +206,11 @@ fn call_detect(
 pub fn render_and_crop(
     pdf_path: &Path,
     locations: &[PageLocation],
-    padding: u32,
-    dpi: u32,
-    out_dir: &Path,
-    pdf_stem: &str,
-    whole_page: bool,
-    log_prefix: &str,
+    options: &RenderOptions<'_>,
 ) -> Result<(u32, Vec<(String, PathBuf)>)> {
-    let doc = mupdf::document::Document::open(
-        pdf_path
-            .to_str()
-            .ok_or_else(|| anyhow!("non-UTF8 path"))?,
-    )
-    .context("opening PDF with mupdf")?;
+    let doc =
+        mupdf::document::Document::open(pdf_path.to_str().ok_or_else(|| anyhow!("non-UTF8 path"))?)
+            .context("opening PDF with mupdf")?;
 
     let total_pages = doc.page_count().context("getting page count")? as u32;
 
@@ -189,7 +219,7 @@ pub fn render_and_crop(
         by_page.entry(loc.page).or_default().push((i, loc));
     }
 
-    let scale = dpi as f32 / 72.0;
+    let scale = options.dpi as f32 / 72.0;
     let mut saved = 0u32;
     let mut outputs: Vec<(String, PathBuf)> = Vec::new();
 
@@ -197,7 +227,7 @@ pub fn render_and_crop(
         if *page_num < 1 || *page_num > total_pages {
             eprintln!(
                 "[{}] Warning: skipping page {} (PDF has {} pages)",
-                log_prefix, page_num, total_pages
+                options.log_prefix, page_num, total_pages
             );
             continue;
         }
@@ -218,8 +248,8 @@ pub fn render_and_crop(
             .to_pixmap(&ctm, &mupdf::Colorspace::device_rgb(), false, false)
             .with_context(|| format!("rendering page {}", page_num))?;
 
-        let w = pixmap.width() as u32;
-        let h = pixmap.height() as u32;
+        let w = pixmap.width();
+        let h = pixmap.height();
         let n = pixmap.n() as u32;
         let samples = pixmap.samples().to_vec();
 
@@ -235,31 +265,41 @@ pub fn render_and_crop(
             )
         };
 
-        if whole_page {
-            let filename = format!("{}_p{}.png", pdf_stem, page_num);
-            let out_path = out_dir.join(&filename);
+        if options.whole_page {
+            let filename = format!("{}_p{}.png", options.pdf_stem, page_num);
+            let out_path = options.out_dir.join(&filename);
             img.save(&out_path)
                 .with_context(|| format!("saving {}", out_path.display()))?;
-            eprintln!("[{}] Saved: {}", log_prefix, out_path.display());
+            eprintln!("[{}] Saved: {}", options.log_prefix, out_path.display());
             outputs.push((format!("page {}", page_num), out_path));
             saved += 1;
         } else {
             for (i, loc) in locs {
-                let x1 = (loc.bbox_x_min.saturating_sub(padding) as f64 / 1000.0 * w as f64) as u32;
-                let y1 = (loc.bbox_y_min.saturating_sub(padding) as f64 / 1000.0 * h as f64) as u32;
-                let x2 = ((loc.bbox_x_max + padding).min(1000) as f64 / 1000.0 * w as f64) as u32;
-                let y2 = ((loc.bbox_y_max + padding).min(1000) as f64 / 1000.0 * h as f64) as u32;
+                let x1 = (loc.bbox_x_min.saturating_sub(options.padding) as f64 / 1000.0 * w as f64)
+                    as u32;
+                let y1 = (loc.bbox_y_min.saturating_sub(options.padding) as f64 / 1000.0 * h as f64)
+                    as u32;
+                let x2 = ((loc.bbox_x_max + options.padding).min(1000) as f64 / 1000.0 * w as f64)
+                    as u32;
+                let y2 = ((loc.bbox_y_max + options.padding).min(1000) as f64 / 1000.0 * h as f64)
+                    as u32;
                 let cw = x2.saturating_sub(x1).max(1);
                 let ch = y2.saturating_sub(y1).max(1);
                 let cropped = img.crop_imm(x1, y1, cw, ch);
 
                 let safe_label = sanitize_label(&loc.label);
-                let filename = format!("{}_{}_p{}_{}.png", pdf_stem, i + 1, loc.page, safe_label);
-                let out_path = out_dir.join(&filename);
+                let filename = format!(
+                    "{}_{}_p{}_{}.png",
+                    options.pdf_stem,
+                    i + 1,
+                    loc.page,
+                    safe_label
+                );
+                let out_path = options.out_dir.join(&filename);
                 cropped
                     .save(&out_path)
                     .with_context(|| format!("saving {}", out_path.display()))?;
-                eprintln!("[{}] Saved: {}", log_prefix, out_path.display());
+                eprintln!("[{}] Saved: {}", options.log_prefix, out_path.display());
                 outputs.push((loc.label.clone(), out_path));
                 saved += 1;
             }

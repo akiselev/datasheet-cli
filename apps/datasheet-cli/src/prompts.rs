@@ -24,7 +24,8 @@ impl PromptSpec {
     }
 }
 
-const PROMPT_APPLICATION_CIRCUIT: &str = include_str!("../../../prompts/extract-application-circuit.md");
+const PROMPT_APPLICATION_CIRCUIT: &str =
+    include_str!("../../../prompts/extract-application-circuit.md");
 const PROMPT_BOOT_CONFIG: &str = include_str!("../../../prompts/extract-boot-config.md");
 const PROMPT_CHARACTERISTICS: &str = include_str!("../../../prompts/extract-characteristics.md");
 const PROMPT_CUSTOM: &str = include_str!("../../../prompts/extract-custom.md");
@@ -32,7 +33,8 @@ const PROMPT_DRC_RULES: &str = include_str!("../../../prompts/extract-drc-rules.
 const PROMPT_FEATURE_MATRIX: &str = include_str!("../../../prompts/extract-feature-matrix.md");
 const PROMPT_FOOTPRINT: &str = include_str!("../../../prompts/extract-footprint.md");
 const PROMPT_HIGH_SPEED: &str = include_str!("../../../prompts/extract-high-speed.md");
-const PROMPT_LAYOUT_CONSTRAINTS: &str = include_str!("../../../prompts/extract-layout-constraints.md");
+const PROMPT_LAYOUT_CONSTRAINTS: &str =
+    include_str!("../../../prompts/extract-layout-constraints.md");
 const PROMPT_PINOUT: &str = include_str!("../../../prompts/extract-pinout.md");
 const PROMPT_POWER: &str = include_str!("../../../prompts/extract-power.md");
 const PROMPT_REFERENCE_DESIGN: &str = include_str!("../../../prompts/extract-reference-design.md");
@@ -354,11 +356,10 @@ pub fn reference_design() -> PromptSpec {
 }
 
 pub fn custom() -> PromptSpec {
-    let spec = PromptSpec::new(
+    // Schema will be overridden by user if provided, otherwise uses the default.
+    PromptSpec::new(
         "custom",
         "Custom extraction with user-provided prompt",
         PROMPT_CUSTOM,
-    );
-    // Schema will be overridden by user if provided, otherwise uses default from PromptSpec::new
-    spec
+    )
 }

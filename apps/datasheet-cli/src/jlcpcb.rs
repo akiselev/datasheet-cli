@@ -9,8 +9,7 @@ use serde::{Deserialize, Serialize};
 
 const SEARCH_URL: &str =
     "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList/v2";
-const DETAIL_URL: &str =
-    "https://cart.jlcpcb.com/shoppingCart/smtGood/getComponentDetail";
+const DETAIL_URL: &str = "https://cart.jlcpcb.com/shoppingCart/smtGood/getComponentDetail";
 
 /// JLCPCB subcommands.
 #[derive(Subcommand, Debug)]
@@ -244,7 +243,15 @@ pub fn execute(command: JlcpcbSubcommand) -> Result<(), String> {
             package,
             basic_only,
             in_stock,
-        } => cmd_search(&query, limit, json, manufacturer.as_deref(), package.as_deref(), basic_only, in_stock),
+        } => cmd_search(
+            &query,
+            limit,
+            json,
+            manufacturer.as_deref(),
+            package.as_deref(),
+            basic_only,
+            in_stock,
+        ),
         JlcpcbSubcommand::Part {
             lcsc_part_number,
             json,
@@ -293,9 +300,10 @@ fn cmd_part(part_number: &str, json_output: bool) -> Result<(), String> {
         part_number.to_string()
     } else {
         let results = jlcpcb_search(part_number, 5, None, None, false, false)?;
-        let first = results.into_iter().next().ok_or_else(|| {
-            format!("No JLCPCB/LCSC part found for: {}", part_number)
-        })?;
+        let first = results
+            .into_iter()
+            .next()
+            .ok_or_else(|| format!("No JLCPCB/LCSC part found for: {}", part_number))?;
         eprintln!(
             "Resolved {} -> {} ({})",
             part_number,
@@ -348,9 +356,10 @@ fn cmd_stock(part_number: &str, json_output: bool) -> Result<(), String> {
         }
     } else {
         let results = jlcpcb_search(part_number, 5, None, None, false, false)?;
-        let first = results.into_iter().next().ok_or_else(|| {
-            format!("No JLCPCB/LCSC part found for: {}", part_number)
-        })?;
+        let first = results
+            .into_iter()
+            .next()
+            .ok_or_else(|| format!("No JLCPCB/LCSC part found for: {}", part_number))?;
         eprintln!(
             "Resolved {} -> {} ({})",
             part_number,
@@ -412,7 +421,10 @@ fn cmd_stock(part_number: &str, json_output: bool) -> Result<(), String> {
             None => println!("  Stock: Unknown"),
         }
 
-        let moq_str = part.moq.map(|v| v.to_string()).unwrap_or_else(|| "?".to_string());
+        let moq_str = part
+            .moq
+            .map(|v| v.to_string())
+            .unwrap_or_else(|| "?".to_string());
         println!("  MOQ: {}", moq_str);
 
         if !part.price_breaks.is_empty() {
@@ -480,7 +492,10 @@ fn jlcpcb_search(
         obj.insert("componentSpecification".to_string(), serde_json::json!(p));
     }
     if basic_only {
-        obj.insert("componentLibraryType".to_string(), serde_json::json!("base"));
+        obj.insert(
+            "componentLibraryType".to_string(),
+            serde_json::json!("base"),
+        );
     }
     if in_stock {
         obj.insert("stockFlag".to_string(), serde_json::json!(true));
@@ -508,7 +523,10 @@ fn jlcpcb_search(
         .and_then(|p| p.list)
         .unwrap_or_default();
 
-    Ok(components.into_iter().map(|c| convert_search_component(c)).collect())
+    Ok(components
+        .into_iter()
+        .map(convert_search_component)
+        .collect())
 }
 
 fn jlcpcb_part_detail(lcsc_part_number: &str) -> Result<JlcpcbPartDetail, String> {
@@ -596,7 +614,10 @@ fn convert_search_component(c: SearchComponent) -> JlcpcbPart {
         category,
         package: non_empty(c.component_specification_en),
         stock: c.stock_count,
-        price_breaks: c.component_prices.map(|p| convert_price_breaks(&p)).unwrap_or_default(),
+        price_breaks: c
+            .component_prices
+            .map(|p| convert_price_breaks(&p))
+            .unwrap_or_default(),
         datasheet_url: non_empty(c.data_manual_url),
         product_url: non_empty(c.lcsc_goods_url),
         first_category: non_empty(c.first_sort_name),
@@ -630,7 +651,10 @@ fn convert_detail_component(c: DetailComponent) -> JlcpcbPartDetail {
         category,
         package: non_empty(c.component_specification_en),
         stock: c.stock_count,
-        price_breaks: c.prices.map(|p| convert_detail_price_breaks(&p)).unwrap_or_default(),
+        price_breaks: c
+            .prices
+            .map(|p| convert_detail_price_breaks(&p))
+            .unwrap_or_default(),
         datasheet_url: non_empty(c.data_manual_url),
         product_url: non_empty(c.lcsc_goods_url),
         first_category: non_empty(c.first_sort_name).or(non_empty(c.first_type_name_en)),
