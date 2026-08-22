@@ -1,0 +1,135 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CalibrationSnapshot",
+  "type": "object",
+  "required": [
+    "digest",
+    "entries",
+    "minimum_independent_lineages",
+    "minimum_posterior_millionths",
+    "ontology_snapshot_digest",
+    "producer",
+    "reviewed_development_set_digest",
+    "schema_version"
+  ],
+  "properties": {
+    "digest": {
+      "type": "string"
+    },
+    "entries": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/LabelerCalibration"
+      }
+    },
+    "minimum_independent_lineages": {
+      "type": "integer",
+      "format": "uint32",
+      "minimum": 0.0
+    },
+    "minimum_posterior_millionths": {
+      "type": "integer",
+      "format": "uint32",
+      "minimum": 0.0
+    },
+    "ontology_snapshot_digest": {
+      "type": "string"
+    },
+    "producer": {
+      "$ref": "#/definitions/SupervisionProducer"
+    },
+    "reviewed_development_set_digest": {
+      "type": "string"
+    },
+    "schema_version": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "definitions": {
+    "LabelerCalibration": {
+      "type": "object",
+      "required": [
+        "labeler",
+        "precision_millionths",
+        "reviewed_correct",
+        "reviewed_total",
+        "weight_millionths"
+      ],
+      "properties": {
+        "labeler": {
+          "$ref": "#/definitions/LabelerRef"
+        },
+        "precision_millionths": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0.0
+        },
+        "reviewed_correct": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0.0
+        },
+        "reviewed_total": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0.0
+        },
+        "weight_millionths": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0.0
+        }
+      },
+      "additionalProperties": false
+    },
+    "LabelerRef": {
+      "type": "object",
+      "required": [
+        "labeler_id",
+        "labeler_version"
+      ],
+      "properties": {
+        "labeler_id": {
+          "type": "string"
+        },
+        "labeler_version": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "SupervisionProducer": {
+      "type": "object",
+      "required": [
+        "configuration_digest",
+        "name",
+        "version"
+      ],
+      "properties": {
+        "build": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "configuration_digest": {
+          "type": "string"
+        },
+        "model_digest": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "name": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

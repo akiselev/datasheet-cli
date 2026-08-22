@@ -1,0 +1,100 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ReviewedDevelopmentSet",
+  "type": "object",
+  "required": [
+    "digest",
+    "examples",
+    "ontology_snapshot_digest",
+    "producer",
+    "schema_version"
+  ],
+  "properties": {
+    "digest": {
+      "type": "string"
+    },
+    "examples": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/ReviewedDevelopmentExample"
+      }
+    },
+    "ontology_snapshot_digest": {
+      "type": "string"
+    },
+    "producer": {
+      "$ref": "#/definitions/SupervisionProducer"
+    },
+    "schema_version": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "definitions": {
+    "ReviewedDevelopmentExample": {
+      "type": "object",
+      "required": [
+        "example_id",
+        "expected_target_json",
+        "observation_ids",
+        "reviewer_record_id",
+        "task",
+        "training_candidate_id"
+      ],
+      "properties": {
+        "example_id": {
+          "type": "string"
+        },
+        "expected_target_json": true,
+        "observation_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "reviewer_record_id": {
+          "type": "string"
+        },
+        "task": {
+          "type": "string"
+        },
+        "training_candidate_id": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "SupervisionProducer": {
+      "type": "object",
+      "required": [
+        "configuration_digest",
+        "name",
+        "version"
+      ],
+      "properties": {
+        "build": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "configuration_digest": {
+          "type": "string"
+        },
+        "model_digest": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "name": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

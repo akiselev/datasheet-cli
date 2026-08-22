@@ -1,0 +1,481 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "LabelVote",
+  "type": "object",
+  "required": [
+    "labeler",
+    "lineage_group_ids",
+    "observations",
+    "outcome",
+    "producer",
+    "reason_codes",
+    "schema_version",
+    "task",
+    "training_candidate_id",
+    "vote_id"
+  ],
+  "properties": {
+    "labeler": {
+      "$ref": "#/definitions/LabelerRef"
+    },
+    "lineage_group_ids": {
+      "description": "Exact union of the groups carried by `observations`, retained for physical lake projection.",
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "observations": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/SupervisionObservation"
+      }
+    },
+    "outcome": {
+      "$ref": "#/definitions/VoteOutcome"
+    },
+    "producer": {
+      "$ref": "#/definitions/SupervisionProducer"
+    },
+    "reason_codes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "schema_version": {
+      "type": "string"
+    },
+    "task": {
+      "type": "string"
+    },
+    "training_candidate_id": {
+      "type": "string"
+    },
+    "vote_id": {
+      "description": "Datasheet semantic identity; Foundry assigns a distinct physical lake `record_id`.",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "definitions": {
+    "ContentSelector": {
+      "oneOf": [
+        {
+          "type": "object",
+          "required": [
+            "kind"
+          ],
+          "properties": {
+            "kind": {
+              "type": "string",
+              "enum": [
+                "whole_evidence"
+              ]
+            }
+          }
+        },
+        {
+          "type": "object",
+          "required": [
+            "end",
+            "evidence_id",
+            "kind",
+            "start"
+          ],
+          "properties": {
+            "end": {
+              "type": "integer",
+              "format": "uint32",
+              "minimum": 0.0
+            },
+            "evidence_id": {
+              "type": "string"
+            },
+            "kind": {
+              "type": "string",
+              "enum": [
+                "text_range"
+              ]
+            },
+            "start": {
+              "type": "integer",
+              "format": "uint32",
+              "minimum": 0.0
+            }
+          }
+        },
+        {
+          "type": "object",
+          "required": [
+            "column",
+            "kind",
+            "row",
+            "table_region_id"
+          ],
+          "properties": {
+            "column": {
+              "type": "integer",
+              "format": "uint32",
+              "minimum": 0.0
+            },
+            "kind": {
+              "type": "string",
+              "enum": [
+                "table_cell"
+              ]
+            },
+            "row": {
+              "type": "integer",
+              "format": "uint32",
+              "minimum": 0.0
+            },
+            "table_region_id": {
+              "type": "string"
+            }
+          }
+        }
+      ]
+    },
+    "EvidenceAnchor": {
+      "description": "State-aware reference to exact document evidence. Checkpoint identity is optional because logical state identity, rather than physical materialization, owns replay semantics.",
+      "type": "object",
+      "required": [
+        "content_selector",
+        "document_state_id",
+        "evidence_ids",
+        "geometry_quality",
+        "page_id",
+        "schema_version",
+        "source_geometry",
+        "source_pdf_sha256"
+      ],
+      "properties": {
+        "content_selector": {
+          "$ref": "#/definitions/ContentSelector"
+        },
+        "document_ir_logical_sha256": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "document_state_id": {
+          "type": "string"
+        },
+        "evidence_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "geometry_quality": {
+          "$ref": "#/definitions/GeometryQuality"
+        },
+        "page_id": {
+          "type": "string"
+        },
+        "region_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "schema_version": {
+          "type": "string"
+        },
+        "source_geometry": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/SourceGeometry"
+          }
+        },
+        "source_pdf_sha256": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "GeometryQuality": {
+      "type": "string",
+      "enum": [
+        "exact_glyph",
+        "exact_word",
+        "exact_line",
+        "exact_region",
+        "page_only",
+        "unknown"
+      ]
+    },
+    "LabelerRef": {
+      "type": "object",
+      "required": [
+        "labeler_id",
+        "labeler_version"
+      ],
+      "properties": {
+        "labeler_id": {
+          "type": "string"
+        },
+        "labeler_version": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "LineageGroup": {
+      "type": "object",
+      "required": [
+        "group_id"
+      ],
+      "properties": {
+        "group_id": {
+          "type": "string"
+        },
+        "observation_epoch": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "publisher_key": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "source_schema": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "upstream_dataset_fingerprint": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "PinnedDocumentState": {
+      "type": "object",
+      "required": [
+        "datasheet_sketch_id",
+        "document_state_id",
+        "source_pdf_sha256"
+      ],
+      "properties": {
+        "datasheet_sketch_id": {
+          "type": "string"
+        },
+        "document_ir_logical_sha256": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "document_state_id": {
+          "type": "string"
+        },
+        "source_pdf_sha256": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "RightsSnapshot": {
+      "type": "object",
+      "required": [
+        "policy_id",
+        "policy_version",
+        "remote_disclosure_permitted",
+        "retention_permitted",
+        "snapshot_id",
+        "training_permitted"
+      ],
+      "properties": {
+        "policy_id": {
+          "type": "string"
+        },
+        "policy_version": {
+          "type": "string"
+        },
+        "remote_disclosure_permitted": {
+          "type": "boolean"
+        },
+        "retention_permitted": {
+          "type": "boolean"
+        },
+        "snapshot_id": {
+          "type": "string"
+        },
+        "training_permitted": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false
+    },
+    "SourceGeometry": {
+      "type": "object",
+      "required": [
+        "bottom",
+        "left",
+        "right",
+        "top"
+      ],
+      "properties": {
+        "bottom": {
+          "type": "number",
+          "format": "double"
+        },
+        "left": {
+          "type": "number",
+          "format": "double"
+        },
+        "right": {
+          "type": "number",
+          "format": "double"
+        },
+        "top": {
+          "type": "number",
+          "format": "double"
+        }
+      }
+    },
+    "SupervisionObservation": {
+      "description": "Exact immutable observation used by one labeler. Document observations must carry their pinned state and anchors; source-native structured facts deliberately do not invent one.",
+      "type": "object",
+      "required": [
+        "candidate_ids",
+        "evidence_anchors",
+        "lineage_groups",
+        "observation_id",
+        "producer",
+        "rights_snapshots",
+        "source_record_id",
+        "source_schema"
+      ],
+      "properties": {
+        "candidate_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "document_state": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/PinnedDocumentState"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "evidence_anchors": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/EvidenceAnchor"
+          }
+        },
+        "lineage_groups": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/LineageGroup"
+          }
+        },
+        "observation_id": {
+          "type": "string"
+        },
+        "producer": {
+          "$ref": "#/definitions/SupervisionProducer"
+        },
+        "rights_snapshots": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/RightsSnapshot"
+          }
+        },
+        "source_record_id": {
+          "type": "string"
+        },
+        "source_schema": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "SupervisionProducer": {
+      "type": "object",
+      "required": [
+        "configuration_digest",
+        "name",
+        "version"
+      ],
+      "properties": {
+        "build": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "configuration_digest": {
+          "type": "string"
+        },
+        "model_digest": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "name": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "VoteOutcome": {
+      "oneOf": [
+        {
+          "type": "object",
+          "required": [
+            "outcome",
+            "vote_json"
+          ],
+          "properties": {
+            "outcome": {
+              "type": "string",
+              "enum": [
+                "vote"
+              ]
+            },
+            "vote_json": true
+          }
+        },
+        {
+          "type": "object",
+          "required": [
+            "abstain_reason",
+            "outcome"
+          ],
+          "properties": {
+            "abstain_reason": {
+              "type": "string"
+            },
+            "outcome": {
+              "type": "string",
+              "enum": [
+                "abstain"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  }
+}

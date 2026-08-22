@@ -45,7 +45,12 @@ cargo install --path apps/datasheet-cli
 
 The repository is now a Cargo workspace. Durable evidence/claim contracts live in `datasheet-core`, deterministic candidate indexing and claim assembly in `datasheet-compiler`, model artifact contracts in `datasheet-model`, and the existing GPL command application in `apps/datasheet-cli`.
 
-FDX1 is intentionally fixture-only: it defines state-aware evidence anchors, explicit anchored conditions, family-free deterministic sketch identity, deterministic candidate IDs, and fail-closed claim bundles. It does not contain a production corpus or trained model. See [`docs/fdx/FDX1_WORKSPACE_AND_CONTRACTS.md`](docs/fdx/FDX1_WORKSPACE_AND_CONTRACTS.md).
+FDX1 defines state-aware evidence/claim contracts, FDX2 freezes the deterministic
+analog/power baseline, and the FDX3 contract foundation adds exact weak-label
+votes/abstentions, source-vocabulary maps, lineage-aware deterministic
+combination, and rights/calibration interfaces. These phases use only minimized
+fixtures; no production corpus or trained model is claimed. See
+[`docs/fdx/README.md`](docs/fdx/README.md).
 
 ### Binary releases
 

@@ -1,0 +1,125 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "SourceVocabularyMap",
+  "type": "object",
+  "required": [
+    "category_scope",
+    "expected_value_shapes",
+    "external_field_key",
+    "external_namespace",
+    "map_id",
+    "mapping_observation_ids",
+    "mapping_version",
+    "ontology_snapshot_digest",
+    "predicate_term_id",
+    "producer",
+    "schema_version",
+    "source_schema"
+  ],
+  "properties": {
+    "category_scope": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "expected_quantity_kind": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "expected_value_shapes": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/ParsedQuantityShape"
+      }
+    },
+    "external_field_key": {
+      "type": "string"
+    },
+    "external_namespace": {
+      "type": "string"
+    },
+    "map_id": {
+      "type": "string"
+    },
+    "mapping_observation_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "mapping_version": {
+      "type": "string"
+    },
+    "ontology_snapshot_digest": {
+      "type": "string"
+    },
+    "predicate_term_id": {
+      "type": "string"
+    },
+    "producer": {
+      "$ref": "#/definitions/SupervisionProducer"
+    },
+    "regime_hint": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "schema_version": {
+      "type": "string"
+    },
+    "source_schema": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "definitions": {
+    "ParsedQuantityShape": {
+      "type": "string",
+      "enum": [
+        "scalar",
+        "range",
+        "inequality",
+        "tolerance",
+        "set",
+        "symbolic",
+        "text_unparsed"
+      ]
+    },
+    "SupervisionProducer": {
+      "type": "object",
+      "required": [
+        "configuration_digest",
+        "name",
+        "version"
+      ],
+      "properties": {
+        "build": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "configuration_digest": {
+          "type": "string"
+        },
+        "model_digest": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "name": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

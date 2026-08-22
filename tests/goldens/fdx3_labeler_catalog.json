@@ -1,0 +1,282 @@
+{
+  "schema_version": "fdx3-labeler-catalog/1",
+  "digest": "ce7067347f66ec1adb36f0d23f58f1c8fc49e797b4036aa024d01a9e34b22591",
+  "labelers": [
+    {
+      "labeler_id": "alignment.range.v1",
+      "labeler_version": "1",
+      "role": "deterministic_high"
+    },
+    {
+      "labeler_id": "alignment.value_unique.v1",
+      "labeler_version": "1",
+      "role": "deterministic_high"
+    },
+    {
+      "labeler_id": "applicability.footnote_link.v1",
+      "labeler_version": "1",
+      "role": "deterministic_high"
+    },
+    {
+      "labeler_id": "cell.min_typ_max_header.v1",
+      "labeler_version": "1",
+      "role": "deterministic_high"
+    },
+    {
+      "labeler_id": "cmsis.cpu_core.v1",
+      "labeler_version": "1",
+      "role": "deterministic_high"
+    },
+    {
+      "labeler_id": "cmsis.device_identity.v1",
+      "labeler_version": "1",
+      "role": "hard_gate"
+    },
+    {
+      "labeler_id": "cmsis.document_link.v1",
+      "labeler_version": "1",
+      "role": "deterministic_high"
+    },
+    {
+      "labeler_id": "cmsis.memory.v1",
+      "labeler_version": "1",
+      "role": "deterministic_high"
+    },
+    {
+      "labeler_id": "digikey.category_prior.v1",
+      "labeler_version": "1",
+      "role": "weak"
+    },
+    {
+      "labeler_id": "digikey.datasheet_link.v1",
+      "labeler_version": "1",
+      "role": "deterministic_high"
+    },
+    {
+      "labeler_id": "digikey.package_scope.v1",
+      "labeler_version": "1",
+      "role": "deterministic_high"
+    },
+    {
+      "labeler_id": "digikey.parameter_id_map.v1",
+      "labeler_version": "1",
+      "role": "deterministic_high"
+    },
+    {
+      "labeler_id": "digikey.parameter_text_alias.v1",
+      "labeler_version": "1",
+      "role": "weak"
+    },
+    {
+      "labeler_id": "digikey.value_align_unique.v1",
+      "labeler_version": "1",
+      "role": "deterministic_high"
+    },
+    {
+      "labeler_id": "eda.body_dimensions.v1",
+      "labeler_version": "1",
+      "role": "deterministic_high"
+    },
+    {
+      "labeler_id": "eda.model_package.v1",
+      "labeler_version": "1",
+      "role": "deterministic_high"
+    },
+    {
+      "labeler_id": "eda.package_code.v1",
+      "labeler_version": "1",
+      "role": "deterministic_high"
+    },
+    {
+      "labeler_id": "eda.pad_count.v1",
+      "labeler_version": "1",
+      "role": "deterministic_high"
+    },
+    {
+      "labeler_id": "eda.pin_count.v1",
+      "labeler_version": "1",
+      "role": "deterministic_high"
+    },
+    {
+      "labeler_id": "eda.pin_name_by_number.v1",
+      "labeler_version": "1",
+      "role": "deterministic_high"
+    },
+    {
+      "labeler_id": "eda.pin_number_set.v1",
+      "labeler_version": "1",
+      "role": "deterministic_high"
+    },
+    {
+      "labeler_id": "eda.pin_to_pad.v1",
+      "labeler_version": "1",
+      "role": "deterministic_high"
+    },
+    {
+      "labeler_id": "manufacturer.family_scope.v1",
+      "labeler_version": "1",
+      "role": "weak"
+    },
+    {
+      "labeler_id": "manufacturer.field_map.v1",
+      "labeler_version": "1",
+      "role": "deterministic_high"
+    },
+    {
+      "labeler_id": "manufacturer.order_code.v1",
+      "labeler_version": "1",
+      "role": "deterministic_high"
+    },
+    {
+      "labeler_id": "manufacturer.package.v1",
+      "labeler_version": "1",
+      "role": "deterministic_high"
+    },
+    {
+      "labeler_id": "manufacturer.range_align.v1",
+      "labeler_version": "1",
+      "role": "deterministic_high"
+    },
+    {
+      "labeler_id": "manufacturer.value_align.v1",
+      "labeler_version": "1",
+      "role": "deterministic_high"
+    },
+    {
+      "labeler_id": "manufacturer.variant_scope.v1",
+      "labeler_version": "1",
+      "role": "deterministic_high"
+    },
+    {
+      "labeler_id": "mouser.category.v1",
+      "labeler_version": "1",
+      "role": "weak"
+    },
+    {
+      "labeler_id": "mouser.datasheet_link.v1",
+      "labeler_version": "1",
+      "role": "deterministic_high"
+    },
+    {
+      "labeler_id": "mouser.lifecycle.v1",
+      "labeler_version": "1",
+      "role": "deterministic_high"
+    },
+    {
+      "labeler_id": "mouser.mpn_identity.v1",
+      "labeler_version": "1",
+      "role": "hard_gate"
+    },
+    {
+      "labeler_id": "mouser.package.v1",
+      "labeler_version": "1",
+      "role": "deterministic_high"
+    },
+    {
+      "labeler_id": "mouser.replacement.v1",
+      "labeler_version": "1",
+      "role": "deterministic_high"
+    },
+    {
+      "labeler_id": "predicate.row_name_alias.v1",
+      "labeler_version": "1",
+      "role": "deterministic_high"
+    },
+    {
+      "labeler_id": "predicate.symbol_alias.v1",
+      "labeler_version": "1",
+      "role": "deterministic_high"
+    },
+    {
+      "labeler_id": "quantity.dimension.v1",
+      "labeler_version": "1",
+      "role": "deterministic_high"
+    },
+    {
+      "labeler_id": "ranking.regime_conflict.v1",
+      "labeler_version": "1",
+      "role": "deterministic_high"
+    },
+    {
+      "labeler_id": "revision.structure_stability.v1",
+      "labeler_version": "1",
+      "role": "weak"
+    },
+    {
+      "labeler_id": "scope.package.v1",
+      "labeler_version": "1",
+      "role": "deterministic_high"
+    },
+    {
+      "labeler_id": "scope.part.v1",
+      "labeler_version": "1",
+      "role": "deterministic_high"
+    },
+    {
+      "labeler_id": "section.heading.v1",
+      "labeler_version": "1",
+      "role": "deterministic_high"
+    },
+    {
+      "labeler_id": "section.table_header_schema.v1",
+      "labeler_version": "1",
+      "role": "deterministic_high"
+    },
+    {
+      "labeler_id": "svd.peripheral.v1",
+      "labeler_version": "1",
+      "role": "deterministic_high"
+    },
+    {
+      "labeler_id": "svd.register.v1",
+      "labeler_version": "1",
+      "role": "deterministic_high"
+    },
+    {
+      "labeler_id": "template.cluster.v1",
+      "labeler_version": "1",
+      "role": "weak"
+    },
+    {
+      "labeler_id": "ti.field_map.v1",
+      "labeler_version": "1",
+      "role": "deterministic_high"
+    },
+    {
+      "labeler_id": "ti.identity_gate.v1",
+      "labeler_version": "1",
+      "role": "hard_gate"
+    },
+    {
+      "labeler_id": "ti.package_align.v1",
+      "labeler_version": "1",
+      "role": "deterministic_high"
+    },
+    {
+      "labeler_id": "ti.range_align.v1",
+      "labeler_version": "1",
+      "role": "deterministic_high"
+    },
+    {
+      "labeler_id": "ti.unit_kind.v1",
+      "labeler_version": "1",
+      "role": "deterministic_high"
+    },
+    {
+      "labeler_id": "ti.value_align_unique.v1",
+      "labeler_version": "1",
+      "role": "deterministic_high"
+    },
+    {
+      "labeler_id": "value.null_dash_convention.v1",
+      "labeler_version": "1",
+      "role": "deterministic_high"
+    }
+  ],
+  "combiners": [
+    "agreement.independent.v1",
+    "agreement.structured_document.v1",
+    "agreement.subject_triangulation.v1",
+    "conflict.source.v1"
+  ]
+}

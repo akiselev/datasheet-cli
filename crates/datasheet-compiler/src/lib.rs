@@ -5,6 +5,7 @@ pub mod baseline;
 pub mod evaluation;
 pub mod ferrodoc;
 pub mod quantity;
+pub mod supervision;
 
 use std::collections::{BTreeMap, BTreeSet};
 

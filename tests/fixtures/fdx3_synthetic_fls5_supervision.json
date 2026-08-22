@@ -1,0 +1,78 @@
+{
+  "document_observation": {
+    "observation_id": "1111111111111111111111111111111111111111111111111111111111111111",
+    "source_record_id": "2111111111111111111111111111111111111111111111111111111111111111",
+    "source_schema": "ferrodoc-document-state/1",
+    "producer": {
+      "name": "ferrodoc-synthetic-fixture",
+      "version": "1.0.0",
+      "build": "fixture",
+      "configuration_digest": "3111111111111111111111111111111111111111111111111111111111111111"
+    },
+    "document_state": {
+      "source_pdf_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "document_state_id": "state_synthetic_fls5",
+      "document_ir_logical_sha256": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+      "datasheet_sketch_id": "datasheet-sketch:synthetic-fdx3"
+    },
+    "candidate_ids": ["quantity:synthetic-vin-max"],
+    "evidence_anchors": [{
+      "schema_version": "evidence-anchor/2",
+      "source_pdf_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "document_state_id": "state_synthetic_fls5",
+      "document_ir_logical_sha256": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+      "evidence_ids": ["evidence_synthetic_vin_max"],
+      "page_id": "page_synthetic_4",
+      "region_id": "region_synthetic_table",
+      "source_geometry": [{"left":0.1,"top":0.2,"right":0.2,"bottom":0.3}],
+      "geometry_quality": "exact_region",
+      "content_selector": {"kind":"table_cell","table_region_id":"region_synthetic_table","row":2,"column":4}
+    }],
+    "lineage_groups": [{
+      "group_id": "3ab5067901ebdc397dd803dfe264937e75a28efb81e6adaff316f2d32cee77d1",
+      "publisher_key": "synthetic-manufacturer",
+      "source_schema": "ferrodoc-document-state/1",
+      "observation_epoch": "synthetic-revision-a"
+    }],
+    "rights_snapshots": [{
+      "snapshot_id": "5111111111111111111111111111111111111111111111111111111111111111",
+      "policy_id": "synthetic-fixture-only",
+      "policy_version": "1",
+      "retention_permitted": true,
+      "training_permitted": true,
+      "remote_disclosure_permitted": false
+    }]
+  },
+  "structured_observations": [
+    {
+      "observation_id": "1222222222222222222222222222222222222222222222222222222222222222",
+      "source_record_id": "2222222222222222222222222222222222222222222222222222222222222222",
+      "source_schema": "bronze.structured_fact_observations/v1",
+      "producer": {"name":"synthetic-open-facts","version":"1","configuration_digest":"3222222222222222222222222222222222222222222222222222222222222222"},
+      "candidate_ids": [],
+      "evidence_anchors": [],
+      "lineage_groups": [{"group_id":"361c683012de14cb4717bf1e1823ebc51a2fa0bccdf75d3b6ba58ff85b4fc328","publisher_key":"synthetic-upstream-pim","upstream_dataset_fingerprint":"6222222222222222222222222222222222222222222222222222222222222222","source_schema":"synthetic.pim/v1"}],
+      "rights_snapshots": [{"snapshot_id":"5222222222222222222222222222222222222222222222222222222222222222","policy_id":"synthetic-open-training","policy_version":"1","retention_permitted":true,"training_permitted":true,"remote_disclosure_permitted":false}]
+    },
+    {
+      "observation_id": "1333333333333333333333333333333333333333333333333333333333333333",
+      "source_record_id": "2333333333333333333333333333333333333333333333333333333333333333",
+      "source_schema": "bronze.structured_fact_observations/v1",
+      "producer": {"name":"synthetic-distributor-copy","version":"1","configuration_digest":"3333333333333333333333333333333333333333333333333333333333333333"},
+      "candidate_ids": [],
+      "evidence_anchors": [],
+      "lineage_groups": [{"group_id":"361c683012de14cb4717bf1e1823ebc51a2fa0bccdf75d3b6ba58ff85b4fc328","publisher_key":"synthetic-upstream-pim","upstream_dataset_fingerprint":"6222222222222222222222222222222222222222222222222222222222222222","source_schema":"synthetic.pim/v1"}],
+      "rights_snapshots": [{"snapshot_id":"5333333333333333333333333333333333333333333333333333333333333333","policy_id":"synthetic-open-training","policy_version":"1","retention_permitted":true,"training_permitted":true,"remote_disclosure_permitted":false}]
+    },
+    {
+      "observation_id": "1444444444444444444444444444444444444444444444444444444444444444",
+      "source_record_id": "2444444444444444444444444444444444444444444444444444444444444444",
+      "source_schema": "bronze.structured_fact_observations/v1",
+      "producer": {"name":"synthetic-independent-facts","version":"1","configuration_digest":"3444444444444444444444444444444444444444444444444444444444444444"},
+      "candidate_ids": [],
+      "evidence_anchors": [],
+      "lineage_groups": [{"group_id":"800ec2f5e8cf3ca2959dfd1f152e7fbbdc16562045735bec005ebabadd5577f6","publisher_key":"synthetic-independent-publisher","upstream_dataset_fingerprint":"6444444444444444444444444444444444444444444444444444444444444444","source_schema":"synthetic.independent/v1"}],
+      "rights_snapshots": [{"snapshot_id":"5444444444444444444444444444444444444444444444444444444444444444","policy_id":"synthetic-open-training","policy_version":"1","retention_permitted":true,"training_permitted":true,"remote_disclosure_permitted":false}]
+    }
+  ]
+}

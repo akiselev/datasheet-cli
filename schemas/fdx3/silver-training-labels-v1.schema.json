@@ -1,0 +1,105 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "TrainingLabel",
+  "type": "object",
+  "required": [
+    "combiner_configuration_digest",
+    "combiner_id",
+    "combiner_version",
+    "input_vote_record_ids",
+    "schema_version",
+    "supervision_class",
+    "target_json",
+    "task",
+    "training_candidate_id",
+    "training_label_id",
+    "uncertainty"
+  ],
+  "properties": {
+    "combiner_configuration_digest": {
+      "type": "string"
+    },
+    "combiner_id": {
+      "type": "string"
+    },
+    "combiner_version": {
+      "type": "string"
+    },
+    "input_vote_record_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "review_record_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "schema_version": {
+      "type": "string"
+    },
+    "supervision_class": {
+      "$ref": "#/definitions/SupervisionClass"
+    },
+    "target_json": true,
+    "task": {
+      "type": "string"
+    },
+    "training_candidate_id": {
+      "type": "string"
+    },
+    "training_label_id": {
+      "description": "Datasheet semantic identity; Foundry assigns a distinct physical lake `record_id`.",
+      "type": "string"
+    },
+    "uncertainty": {
+      "$ref": "#/definitions/SupervisionUncertainty"
+    }
+  },
+  "additionalProperties": false,
+  "definitions": {
+    "SupervisionClass": {
+      "type": "string",
+      "enum": [
+        "deterministic_high",
+        "weak_consensus",
+        "teacher_reviewed",
+        "human_gold"
+      ]
+    },
+    "SupervisionUncertainty": {
+      "type": "object",
+      "required": [
+        "competing_target_count",
+        "disagreement_millionths",
+        "independent_lineage_count",
+        "posterior_millionths"
+      ],
+      "properties": {
+        "competing_target_count": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0.0
+        },
+        "disagreement_millionths": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0.0
+        },
+        "independent_lineage_count": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0.0
+        },
+        "posterior_millionths": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0.0
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

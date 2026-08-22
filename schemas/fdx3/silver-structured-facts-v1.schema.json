@@ -1,0 +1,123 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "StructuredFactRecord",
+  "type": "object",
+  "required": [
+    "bronze_fact_record_id",
+    "normalization_status",
+    "producer",
+    "raw_value",
+    "schema_version",
+    "structured_fact_id",
+    "warnings"
+  ],
+  "properties": {
+    "bronze_fact_record_id": {
+      "type": "string"
+    },
+    "normalization_status": {
+      "type": "string"
+    },
+    "normalized_quantity": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/NormalizedQuantity"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "predicate_candidate_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "producer": {
+      "$ref": "#/definitions/SupervisionProducer"
+    },
+    "raw_unit": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "raw_value": {
+      "type": "string"
+    },
+    "schema_version": {
+      "type": "string"
+    },
+    "source_vocabulary_map_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "structured_fact_id": {
+      "description": "Datasheet semantic identity; Foundry assigns a distinct physical lake `record_id`.",
+      "type": "string"
+    },
+    "warnings": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "additionalProperties": false,
+  "definitions": {
+    "NormalizedQuantity": {
+      "type": "object",
+      "required": [
+        "canonical_unit",
+        "canonical_value",
+        "registry_identity"
+      ],
+      "properties": {
+        "canonical_unit": {
+          "type": "string"
+        },
+        "canonical_value": {
+          "type": "string"
+        },
+        "registry_identity": {
+          "type": "string"
+        }
+      }
+    },
+    "SupervisionProducer": {
+      "type": "object",
+      "required": [
+        "configuration_digest",
+        "name",
+        "version"
+      ],
+      "properties": {
+        "build": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "configuration_digest": {
+          "type": "string"
+        },
+        "model_digest": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "name": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

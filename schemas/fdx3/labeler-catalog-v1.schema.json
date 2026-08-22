@@ -1,0 +1,62 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "LabelerCatalogArtifact",
+  "type": "object",
+  "required": [
+    "combiners",
+    "digest",
+    "labelers",
+    "schema_version"
+  ],
+  "properties": {
+    "combiners": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "digest": {
+      "type": "string"
+    },
+    "labelers": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/CatalogLabeler"
+      }
+    },
+    "schema_version": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "definitions": {
+    "CatalogLabeler": {
+      "type": "object",
+      "required": [
+        "labeler_id",
+        "labeler_version",
+        "role"
+      ],
+      "properties": {
+        "labeler_id": {
+          "type": "string"
+        },
+        "labeler_version": {
+          "type": "string"
+        },
+        "role": {
+          "$ref": "#/definitions/CatalogLabelerRole"
+        }
+      },
+      "additionalProperties": false
+    },
+    "CatalogLabelerRole": {
+      "type": "string",
+      "enum": [
+        "hard_gate",
+        "deterministic_high",
+        "weak"
+      ]
+    }
+  }
+}

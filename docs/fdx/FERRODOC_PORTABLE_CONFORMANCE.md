@@ -33,4 +33,7 @@ The deterministic baseline can only select raw quantity and condition text prese
 
 This is portable contract conformance, not a production Ferrodoc adapter quality claim. It does not materialize arbitrary delta chains or page additions, execute refinement capabilities, perform PDF extraction, or add any corpus/model path. Those behaviors remain owned by Ferrodoc or later gated Datasheet work.
 
-FDX3 remains dependency-blocked on the Foundry production corpus/supervision gates. This bridge closes the pre-FDX3 cross-repository contract check only; it does not authorize weak-label or training work.
+This bridge closes the portable pre-production state-contract check used by the
+FDX3 deterministic supervision foundation. Production FDX3 examples remain
+blocked on committed FLS5 real states and rights-cleared supervision sources;
+the fixture does not authorize corpus/model work.
