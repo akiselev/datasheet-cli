@@ -115,7 +115,7 @@ fn production() -> ProtectedCorpusManifestV2 {
 }
 
 #[test]
-fn production_manifest_has_honest_overlap_and_synthetic_limitations() {
+fn production_manifest_has_honest_overlap_and_hidden_isolation() {
     let manifest = production();
     manifest.validate().unwrap();
     assert_eq!(manifest.members.len(), 266);
@@ -138,9 +138,14 @@ fn production_manifest_has_honest_overlap_and_synthetic_limitations() {
             )
         })
         .collect::<Vec<_>>();
-    assert!(evaluation.iter().all(|slice| slice.member_ids.len() == 55));
+    assert_eq!(evaluation[0].member_ids.len(), 56);
     assert!(
-        evaluation
+        evaluation[1..]
+            .iter()
+            .all(|slice| slice.member_ids.len() == 55)
+    );
+    assert!(
+        evaluation[1..]
             .windows(2)
             .all(|pair| pair[0].member_ids == pair[1].member_ids)
     );
@@ -149,9 +154,14 @@ fn production_manifest_has_honest_overlap_and_synthetic_limitations() {
         .iter()
         .find(|slice| slice.split == ProtectedSplit::FinalBlindTest)
         .unwrap();
-    assert_eq!(blind.member_ids.len(), 1);
+    assert!(blind.member_ids.is_empty());
     assert!(blind.hidden && !blind.supports_real_world_generalization);
-    assert!(manifest.contract_plumbing_ready);
+    assert!(
+        blind
+            .limitation_codes
+            .contains(&"no_independently_hidden_artifact".into())
+    );
+    assert!(!manifest.contract_plumbing_ready);
     assert!(!manifest.model_qualification_ready);
 }
 

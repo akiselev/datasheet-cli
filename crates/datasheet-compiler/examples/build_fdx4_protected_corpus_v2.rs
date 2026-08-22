@@ -190,13 +190,23 @@ fn main() {
         GroupingLevel::Manufacturer,
         GroupingLevel::PublisherLineage,
     ];
+    let mut development_ids = tpx_ids.clone();
+    development_ids.push(synthetic_id.clone());
     let slices = ProtectedSplit::ALL
         .into_iter()
         .map(|split| {
             let (member_ids, groups, limitations) = match split {
                 ProtectedSplit::Train => (train_ids.clone(), vec![], vec![]),
-                ProtectedSplit::Development
-                | ProtectedSplit::TemplateHeldOut
+                ProtectedSplit::Development => (
+                    development_ids.clone(),
+                    all_groups.clone(),
+                    vec![
+                        "visible_synthetic_contract_case_included".into(),
+                        "single_real_heldout_document_not_representative".into(),
+                        "evaluation_tags_declared_to_overlap".into(),
+                    ],
+                ),
+                ProtectedSplit::TemplateHeldOut
                 | ProtectedSplit::DocumentFamilyHeldOut
                 | ProtectedSplit::ManufacturerHeldOut => (
                     tpx_ids.clone(),
@@ -207,11 +217,11 @@ fn main() {
                     ],
                 ),
                 ProtectedSplit::FinalBlindTest => (
-                    vec![synthetic_id.clone()],
+                    vec![],
                     all_groups.clone(),
                     vec![
-                        "independently_synthetic_contract_only".into(),
-                        "cannot_support_real_world_generalization".into(),
+                        "no_independently_hidden_artifact".into(),
+                        "repository_visible_synthetic_case_not_admitted".into(),
                     ],
                 ),
             };
@@ -265,12 +275,13 @@ fn main() {
         members,
         exclusions: vec![],
         slices,
-        contract_plumbing_ready: true,
+        contract_plumbing_ready: false,
         model_qualification_ready: false,
         limitation_codes: vec![
             "only_one_real_evaluation_document_family".into(),
             "evaluation_tags_overlap_by_declaration".into(),
-            "final_blind_is_synthetic_contract_only".into(),
+            "final_blind_is_empty".into(),
+            "repository_visible_synthetic_is_development_only".into(),
             "no_real_world_generalization_claim".into(),
             "fdx5_model_qualification_blocked".into(),
         ],

@@ -71,8 +71,8 @@ be tagged both train and evaluation.
 - 55 independently reviewed TPX00242 source-native electrical/operating cells
   carry overlapping development, template-held-out, document-family-held-out,
   and manufacturer-held-out tags, all train-disjoint at every declared level;
-- one independently rooted minimized synthetic case populates final-blind-test
-  for contract plumbing only.
+- one independently rooted minimized synthetic case is a visible development
+  contract case only. It is not admitted to final-blind-test.
 
 The NASA rows carry the truthful template grouping
 `nasa-nepp-npsl.html-table.lp-npt` and the explicit grouping cohort
@@ -92,12 +92,12 @@ No regime is inferred and no authority for underlying component manufacturers
 is claimed.
 
 Foundry source/profile semantics are pinned at `d4e35dd`; the resulting corpus,
-TPX supervision bundle, six slice artifacts, and hidden synthetic bytes are
-physically retained by Foundry commit `02733f3` under Artifactum collection
-`sha256:35bbc0a8db37d34ba9d21fcf0198288854981e375db0168d76b1e5fc14e2c1bf`.
+TPX supervision bundle, six slice artifacts, and visible synthetic contract
+bytes are physically retained through Foundry's audited Artifactum graph.
 
-`contract_plumbing_ready` is true, but every evaluation slice deliberately sets
+`contract_plumbing_ready` is false and every evaluation slice deliberately sets
 `supports_real_world_generalization` false. The same single real Arduino
-document backs four declared evaluation views, and final-blind-test is synthetic.
+document backs four declared evaluation views, while final-blind-test is empty:
+the repository-visible synthetic payload cannot truthfully be treated as blind.
 Therefore `model_qualification_ready` remains false and FDX5 training must not
 begin.

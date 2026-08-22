@@ -1,6 +1,6 @@
 {
   "schema_version": "fdx4.protected-corpus-manifest/v2",
-  "corpus_digest": "9bca9089fed360ed4bcbbc8524f45e1bcef32eca9e30c7a579bbbc569f446a48",
+  "corpus_digest": "0c2e1ef233c6d6c98101d38af20dc0fa6b9e8fe01abddee5c08966fa98757a65",
   "datasheet_revision": "fdx4-overlap-open-docs",
   "foundry_revision": "d4e35dda5fa1f1b78347a4fec2e26b1b06c3e718",
   "ontology_snapshot_digest": "59ac9209ad9af9f0d796e0f402428affee98ceb48dd62ce6125f1278022766fd",
@@ -5347,6 +5347,7 @@
         "a29a0ea2f9ce5771330d36df61ef4b89300930eded981c9b6389fd926e35c0a7",
         "a44eed2af82ab05839bb161d61a752858f72b325a2fbe37e5c9b5fe69bfdc4e8",
         "a4d37f53b5da5dabbace674c355aec809b1c8a9f32fbe868a5086a93c6ad84e7",
+        "b0233d0646e81630d3d846dc7d74d05f0ddf85a926365193418842b6a34714c1",
         "bdc04bf6915d7ade276e5bd636c69168a61002197a8e2e577fd9df03a2264d47",
         "bdea73d9211f24cb40c02ed90f349cb8e732c157b2018a8025a27c992bbfd0d3",
         "c3905955df147e937635c69428c877ce23c61a140b74c56eb079c2464cb870b7",
@@ -5374,11 +5375,12 @@
         "publisher_lineage"
       ],
       "hidden": false,
-      "artifact_digest": "548c11254733632715ca8d19b60d6cd41afc397d08030156146ea0b58a6b09bf",
+      "artifact_digest": "dd11812f6c5c336c5bdf0041530df4dffbe1bc4377d66352d3be8a50b3ebac2d",
       "supports_real_world_generalization": false,
       "limitation_codes": [
         "evaluation_tags_declared_to_overlap",
-        "single_real_heldout_document_not_representative"
+        "single_real_heldout_document_not_representative",
+        "visible_synthetic_contract_case_included"
       ]
     },
     {
@@ -5614,9 +5616,7 @@
     },
     {
       "split": "final-blind-test",
-      "member_ids": [
-        "b0233d0646e81630d3d846dc7d74d05f0ddf85a926365193418842b6a34714c1"
-      ],
+      "member_ids": [],
       "held_out_from_train_by": [
         "exact_content",
         "near_duplicate",
@@ -5628,21 +5628,22 @@
         "publisher_lineage"
       ],
       "hidden": true,
-      "artifact_digest": "fd80df5fdd82d7f951f5e6237de61c1ff1a27af21d46ec1612ebe34cf69d2d6c",
+      "artifact_digest": "28618abab31039b50bdb86899ad0236de1bdbb6650fde847855cd211567117f5",
       "supports_real_world_generalization": false,
       "limitation_codes": [
-        "cannot_support_real_world_generalization",
-        "independently_synthetic_contract_only"
+        "no_independently_hidden_artifact",
+        "repository_visible_synthetic_case_not_admitted"
       ]
     }
   ],
-  "contract_plumbing_ready": true,
+  "contract_plumbing_ready": false,
   "model_qualification_ready": false,
   "limitation_codes": [
     "evaluation_tags_overlap_by_declaration",
     "fdx5_model_qualification_blocked",
-    "final_blind_is_synthetic_contract_only",
+    "final_blind_is_empty",
     "no_real_world_generalization_claim",
-    "only_one_real_evaluation_document_family"
+    "only_one_real_evaluation_document_family",
+    "repository_visible_synthetic_is_development_only"
   ]
 }
