@@ -1,8 +1,8 @@
 use datasheet_compiler::supervision::{
-    CombinationAbstentionReason, CombinationResult, LABELER_CATALOG, LabelVoteInput,
-    SourceVocabularyMapInput, build_label_vote, combine_votes, derive_source_vocabulary_map,
-    freeze_calibration_snapshot, freeze_reviewed_development_set, frozen_labeler_catalog,
-    validate_source_vocabulary_map, validate_training_label,
+    build_label_vote, combine_votes, derive_source_vocabulary_map, freeze_calibration_snapshot,
+    freeze_reviewed_development_set, frozen_labeler_catalog, validate_source_vocabulary_map,
+    validate_training_label, CombinationAbstentionReason, CombinationResult, LabelVoteInput,
+    SourceVocabularyMapInput, LABELER_CATALOG,
 };
 use datasheet_core::supervision::{
     CalibrationSnapshot, LabelVote, LabelerCalibration, LabelerRef, ProductionReadinessManifest,
@@ -240,25 +240,23 @@ fn vocabulary_mapping_is_order_independent_and_ontology_bound() {
 
     let mut missing = vocabulary;
     missing.terms.clear();
-    assert!(
-        derive_source_vocabulary_map(
-            SourceVocabularyMapInput {
-                source_schema: first.source_schema,
-                external_namespace: first.external_namespace,
-                external_field_key: first.external_field_key,
-                predicate_term_id: first.predicate_term_id,
-                expected_quantity_kind: first.expected_quantity_kind,
-                expected_value_shapes: first.expected_value_shapes,
-                regime_hint: first.regime_hint,
-                category_scope: first.category_scope,
-                mapping_observation_ids: first.mapping_observation_ids,
-                producer: first.producer,
-                mapping_version: first.mapping_version,
-            },
-            &missing
-        )
-        .is_err()
-    );
+    assert!(derive_source_vocabulary_map(
+        SourceVocabularyMapInput {
+            source_schema: first.source_schema,
+            external_namespace: first.external_namespace,
+            external_field_key: first.external_field_key,
+            predicate_term_id: first.predicate_term_id,
+            expected_quantity_kind: first.expected_quantity_kind,
+            expected_value_shapes: first.expected_value_shapes,
+            regime_hint: first.regime_hint,
+            category_scope: first.category_scope,
+            mapping_observation_ids: first.mapping_observation_ids,
+            producer: first.producer,
+            mapping_version: first.mapping_version,
+        },
+        &missing
+    )
+    .is_err());
 }
 
 #[test]
@@ -353,20 +351,34 @@ fn production_readiness_is_exact_and_fails_closed() {
     .unwrap();
     assert_eq!(manifest.manifest_digest, manifest.recompute_digest());
     manifest.validate().unwrap();
-    assert_eq!(manifest.eligible_family_count, 0);
+    assert_eq!(manifest.eligible_family_count, 1);
     assert!(!manifest.production_acceptance);
     assert!(manifest.reviewed_development_set_digest.is_none());
     assert!(manifest.calibration_digest.is_none());
     assert!(manifest.families.iter().all(|family| {
-        family.source_vocabulary_map_ids.is_empty()
-            && family.reviewed_development_example_ids.is_empty()
-            && !family.admitted_for_training
+        family.reviewed_development_example_ids.is_empty()
             && family.selected_labelers.iter().all(|selected| {
                 LABELER_CATALOG.iter().any(|known| {
                     known.id == selected.labeler_id && known.version == selected.labeler_version
                 })
             })
     }));
+    let nasa = manifest
+        .families
+        .iter()
+        .find(|family| family.family_id == "government.nasa.nepp.npsl.lp_npt")
+        .unwrap();
+    assert!(nasa.admitted_for_training);
+    assert_eq!(nasa.source_vocabulary_map_ids.len(), 6);
+    assert!(nasa.blocker_codes.is_empty());
+    assert!(
+        manifest
+            .families
+            .iter()
+            .filter(|family| family.admitted_for_training)
+            .count()
+            == 1
+    );
     let digest = manifest.manifest_digest.clone();
     manifest.families.reverse();
     for family in &mut manifest.families {
@@ -391,6 +403,71 @@ fn production_readiness_is_exact_and_fails_closed() {
     manifest.production_acceptance = true;
     manifest.manifest_digest = manifest.recompute_digest();
     assert!(manifest.validate().is_err());
+}
+
+#[test]
+fn nasa_npsl_maps_bind_exact_source_fields_without_inventing_rating_regimes() {
+    let vocabulary: PredicateVocabularySnapshot = serde_json::from_str(include_str!(
+        "../../../evidence/fdx3-nasa-npsl-predicate-vocabulary.json"
+    ))
+    .unwrap();
+    let maps: Vec<SourceVocabularyMap> = serde_json::from_str(include_str!(
+        "../../../evidence/fdx3-nasa-npsl-source-vocabulary-maps.json"
+    ))
+    .unwrap();
+    let binding: serde_json::Value = serde_json::from_str(include_str!(
+        "../../../evidence/fdx3-nasa-npsl-source-binding.json"
+    ))
+    .unwrap();
+    assert_eq!(maps.len(), 6);
+    let expected = [
+        ("I_C", "discrete.bjt.collector_current"),
+        ("V_CBO", "discrete.bjt.collector_base_voltage.open_emitter"),
+        ("V_CEO", "discrete.bjt.collector_emitter_voltage.open_base"),
+        ("V_EBO", "discrete.bjt.emitter_base_voltage.open_collector"),
+        (
+            "h_FE_at_I_C",
+            "condition.bjt.collector_current.for_forward_gain",
+        ),
+        ("h_FE_min_max", "discrete.bjt.forward_current_gain"),
+    ]
+    .into_iter()
+    .collect::<std::collections::BTreeMap<_, _>>();
+    for mapping in &maps {
+        validate_source_vocabulary_map(mapping, &vocabulary).unwrap();
+        assert_eq!(
+            mapping.source_schema,
+            "bronze.structured_fact_observations/v1"
+        );
+        assert_eq!(mapping.external_namespace, "NASA.NEPP.NPSL");
+        assert_eq!(
+            mapping.predicate_term_id,
+            expected[mapping.external_field_key.as_str()]
+        );
+        assert_eq!(mapping.regime_hint, None);
+        assert_eq!(mapping.mapping_observation_ids.len(), 1);
+        assert_eq!(
+            mapping.mapping_observation_ids[0].0,
+            binding["mapping_observation_ids"][&mapping.external_field_key]
+                .as_str()
+                .unwrap()
+        );
+    }
+    let manifest: ProductionReadinessManifest = serde_json::from_str(include_str!(
+        "../../../evidence/fdx3-production-readiness-2026-08-22.json"
+    ))
+    .unwrap();
+    let nasa = manifest
+        .families
+        .iter()
+        .find(|family| family.family_id == "government.nasa.nepp.npsl.lp_npt")
+        .unwrap();
+    assert_eq!(
+        nasa.source_vocabulary_map_ids
+            .iter()
+            .collect::<std::collections::BTreeSet<_>>(),
+        maps.iter().map(|mapping| &mapping.map_id).collect()
+    );
 }
 
 #[test]

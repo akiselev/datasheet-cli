@@ -74,7 +74,17 @@ potentially restricted content. Its contract is checked by
 family has both an explicit `training: allow` policy and suitable analog/power
 structured facts or evidence-bearing electrical cells.
 
-The audit found no admissible production family:
+The audit now admits one bounded production family, still short of the required
+two independent families:
+
+- NASA NEPP NPSL is committed in Foundry revision `7f90a7e` with a policy that
+  permits local training and derived facts while denying remote disclosure and
+  leaving raw republication under review. The exact pinned March 1998
+  low-power NPN HTML table yielded 35 part mentions and 210 source-native
+  current/voltage/gain facts. Six checked-in `SourceVocabularyMap` records bind
+  only the exact `I_C`, `V_CBO`, `V_CEO`, `V_EBO`, `h_FE` range and `h_FE`
+  condition fields. They deliberately make no absolute-maximum, current
+  availability, manufacturer, or manufacturer-spec authority claim.
 
 - Raspberry Pi RP2040 document policy is `training: review_required`. The
   policy itself is also still part of the uncommitted FLS5 working tree. The
@@ -89,16 +99,32 @@ The audit found no admissible production family:
   the retained Bronze/Silver batches contain 34 part-identity mentions rather
   than analog/power structured facts. CMSIS identity labelers are selected for
   future alignment, but this source does not count as electrical supervision.
-- DLA PUB LOG is the only already-approved, retained source with trainable
-  property observations. Its 25,499 characteristic rows have not been reviewed
-  into an analog/power vocabulary or aligned to manufacturer document states,
-  so it remains an alternative candidate rather than a substitute family.
+- DLA PUB LOG remains rights-approved, but its retained 25,499
+  `P_CHARACTERISTICS_PICK` observations flatten each item's characteristics
+  into an unordered token bag. MRC/value/unit association is absent, the
+  current lossless CSV is HTTP-403-blocked in this environment, and the
+  retained DVD tables are encrypted. It cannot receive an exact vocabulary map
+  or count as the second family.
+- DLA QPD/QPL/QML and SMD are not an independent second publisher family. The
+  official qualification pages expose approved-source/qualification identity
+  and linked PDFs, not a retained source-native analog/power field table. Any
+  electrical cells in a linked drawing still require artifact-specific control
+  review and a committed FLS5/Ferrodoc state.
+- NASA NTRS record `20205003326` is public-use-permitted, contains no declared
+  third-party material, and is not export-controlled, but its derating table is
+  image-only general guidance rather than part-specific structured evidence.
+  It remains blocked on committed FLS5 cells and would still be the same NASA
+  publisher family as NPSL.
+- LibrePCB/other open EDA and Microchip CMSIS retained sources contain
+  identity, package, symbol, pin, or device metadata rather than electrical
+  parametric evidence. TI/DigiKey-style API material remains excluded wherever
+  the committed source policy denies durable training. Manufacturer PDFs with
+  review-required or denied training rights are not substituted.
 
-Accordingly the source-vocabulary-map IDs, reviewed-development examples, and
-calibration digest remain absent. Creating any of them from these inputs would
-turn a rights or suitability unknown into a production claim. Label votes,
-training labels, and training examples remain empty until the blockers are
-resolved. This is a production-valid blocker record, not FDX3 acceptance and
-not permission to begin FDX4.
+The NASA source-vocabulary-map IDs are present, but reviewed-development
+examples, calibration, production votes, combined labels, and training examples
+remain absent. A second genuinely independent eligible family is still
+required. This is one production-valid source, not FDX3 acceptance and not
+permission to begin FDX4.
 
 No FDX4 split corpus, FDX5 trained model, or FDX6 production cascade is claimed.

@@ -1,6 +1,6 @@
 {
   "schema_version": "fdx3-labeler-catalog/1",
-  "digest": "ce7067347f66ec1adb36f0d23f58f1c8fc49e797b4036aa024d01a9e34b22591",
+  "digest": "ce7588b2d77edf116dea4bfb0f7c6d0501ac8465157766c12e0ab31047ad7a4f",
   "labelers": [
     {
       "labeler_id": "alignment.range.v1",
@@ -219,6 +219,21 @@
     },
     {
       "labeler_id": "section.table_header_schema.v1",
+      "labeler_version": "1",
+      "role": "deterministic_high"
+    },
+    {
+      "labeler_id": "source.range_align.v1",
+      "labeler_version": "1",
+      "role": "deterministic_high"
+    },
+    {
+      "labeler_id": "source.value_align_unique.v1",
+      "labeler_version": "1",
+      "role": "deterministic_high"
+    },
+    {
+      "labeler_id": "source.vocabulary_map.v1",
       "labeler_version": "1",
       "role": "deterministic_high"
     },

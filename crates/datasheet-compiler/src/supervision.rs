@@ -4,11 +4,11 @@
 use std::collections::{BTreeMap, BTreeSet};
 
 use datasheet_core::supervision::{
-    CALIBRATION_SCHEMA, CalibrationSnapshot, LabelVote, LabelerCalibration, LabelerRef,
-    REVIEWED_DEVELOPMENT_SET_SCHEMA, ReviewedDevelopmentExample, ReviewedDevelopmentSet,
-    SOURCE_VOCABULARY_MAP_SCHEMA, SourceVocabularyMap, SupervisionClass, SupervisionContractError,
-    SupervisionObservation, SupervisionProducer, SupervisionUncertainty, TRAINING_LABEL_SCHEMA,
-    TrainingLabel, VoteOutcome,
+    CalibrationSnapshot, LabelVote, LabelerCalibration, LabelerRef, ReviewedDevelopmentExample,
+    ReviewedDevelopmentSet, SourceVocabularyMap, SupervisionClass, SupervisionContractError,
+    SupervisionObservation, SupervisionProducer, SupervisionUncertainty, TrainingLabel,
+    VoteOutcome, CALIBRATION_SCHEMA, REVIEWED_DEVELOPMENT_SET_SCHEMA, SOURCE_VOCABULARY_MAP_SCHEMA,
+    TRAINING_LABEL_SCHEMA,
 };
 use datasheet_core::{CandidateId, PredicateVocabularySnapshot, Sha256Digest};
 use schemars::JsonSchema;
@@ -265,6 +265,21 @@ pub const LABELER_CATALOG: &[LabelerDescriptor] = &[
         id: "manufacturer.family_scope.v1",
         version: "1",
         role: WEAK,
+    },
+    LabelerDescriptor {
+        id: "source.vocabulary_map.v1",
+        version: "1",
+        role: HIGH,
+    },
+    LabelerDescriptor {
+        id: "source.value_align_unique.v1",
+        version: "1",
+        role: HIGH,
+    },
+    LabelerDescriptor {
+        id: "source.range_align.v1",
+        version: "1",
+        role: HIGH,
     },
     LabelerDescriptor {
         id: "eda.pin_number_set.v1",

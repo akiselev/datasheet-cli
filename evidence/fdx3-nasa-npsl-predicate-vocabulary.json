@@ -1,0 +1,120 @@
+{
+  "schema_version": "predicate-vocabulary/1",
+  "digest": "942c84a70c2ae0c45aa5665ecb85e03abbefdbf8fdd20760dedc99594d27511e",
+  "terms": [
+    {
+      "id": "condition.bjt.collector_current.for_forward_gain",
+      "canonical_name": "Collector-current condition for BJT forward gain",
+      "description": "Collector current at which the source-stated h_FE range applies.",
+      "aliases": [],
+      "symbol_aliases": [
+        "I_C"
+      ],
+      "expected_quantity_kind": "si:ElectricCurrent",
+      "expected_dimensionality": "A",
+      "expected_shapes": [
+        "scalar"
+      ],
+      "regime_constraints": [],
+      "category_scope": [
+        "discrete_semiconductor",
+        "analog_power"
+      ]
+    },
+    {
+      "id": "discrete.bjt.collector_base_voltage.open_emitter",
+      "canonical_name": "BJT collector-base voltage with emitter open",
+      "description": "Collector-base voltage V_CBO; the emitter-open condition is carried by the symbol and predicate identity.",
+      "aliases": [],
+      "symbol_aliases": [
+        "V_CBO"
+      ],
+      "expected_quantity_kind": "electronics:ElectricPotential",
+      "expected_dimensionality": "kg m^2 s^-3 A^-1",
+      "expected_shapes": [
+        "scalar"
+      ],
+      "regime_constraints": [],
+      "category_scope": [
+        "discrete_semiconductor",
+        "analog_power"
+      ]
+    },
+    {
+      "id": "discrete.bjt.collector_current",
+      "canonical_name": "BJT collector current",
+      "description": "Collector current stated for a bipolar junction transistor.",
+      "aliases": [],
+      "symbol_aliases": [
+        "I_C"
+      ],
+      "expected_quantity_kind": "si:ElectricCurrent",
+      "expected_dimensionality": "A",
+      "expected_shapes": [
+        "scalar"
+      ],
+      "regime_constraints": [],
+      "category_scope": [
+        "discrete_semiconductor",
+        "analog_power"
+      ]
+    },
+    {
+      "id": "discrete.bjt.collector_emitter_voltage.open_base",
+      "canonical_name": "BJT collector-emitter voltage with base open",
+      "description": "Collector-emitter voltage V_CEO; the base-open condition is carried by the symbol and predicate identity.",
+      "aliases": [],
+      "symbol_aliases": [
+        "V_CEO"
+      ],
+      "expected_quantity_kind": "electronics:ElectricPotential",
+      "expected_dimensionality": "kg m^2 s^-3 A^-1",
+      "expected_shapes": [
+        "scalar"
+      ],
+      "regime_constraints": [],
+      "category_scope": [
+        "discrete_semiconductor",
+        "analog_power"
+      ]
+    },
+    {
+      "id": "discrete.bjt.emitter_base_voltage.open_collector",
+      "canonical_name": "BJT emitter-base voltage with collector open",
+      "description": "Emitter-base voltage V_EBO; the collector-open condition is carried by the symbol and predicate identity.",
+      "aliases": [],
+      "symbol_aliases": [
+        "V_EBO"
+      ],
+      "expected_quantity_kind": "electronics:ElectricPotential",
+      "expected_dimensionality": "kg m^2 s^-3 A^-1",
+      "expected_shapes": [
+        "scalar"
+      ],
+      "regime_constraints": [],
+      "category_scope": [
+        "discrete_semiconductor",
+        "analog_power"
+      ]
+    },
+    {
+      "id": "discrete.bjt.forward_current_gain",
+      "canonical_name": "BJT forward current gain",
+      "description": "Forward common-emitter current gain h_FE represented as the source-stated range.",
+      "aliases": [],
+      "symbol_aliases": [
+        "h_FE"
+      ],
+      "expected_quantity_kind": "datasheet:Ratio",
+      "expected_dimensionality": "1",
+      "expected_shapes": [
+        "range"
+      ],
+      "regime_constraints": [],
+      "category_scope": [
+        "discrete_semiconductor",
+        "analog_power"
+      ]
+    }
+  ]
+}

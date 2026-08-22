@@ -1,0 +1,21 @@
+{
+  "schema_version": "fdx3-production-source-binding/1",
+  "foundry_revision": "7f90a7eddf19534f0580bcc9bee35d1b307cbd28",
+  "source_key": "government.nasa.nepp.npsl",
+  "source_profile_sha256": "e952fb1aa22b9482b6bc36df06b1278b9e9e1285d87c2e7ade902f2f66484b86",
+  "policy_sha256": "86a54fbd17044165438d2fa664a5d6b50fdc02e4221d95d0b831151fc81580c8",
+  "authority_sha256": "9f6bdff4c4d1a478c6e99d7c9f9d786573a8a288b1aab55f00d94643099ed63f",
+  "source_artifact_sha256": "916fcf4561f6961c78c686421abe8922f2845d9e9946c59ea742199374192c43",
+  "source_run_receipt_sha256": "4d5b2aebbb499c7ae976192d2df448c29a32c75245549b7c53698ffe8a69a42e",
+  "structured_fact_batch_id": "14e625d35a0b120c7156ff6d6c4652879cbf3b0da3c7da1a112dd42e7db80571",
+  "structured_fact_parquet_sha256": "1cb0ba26538a609d216097f36e30d30ab69bddd054cd06f8eec81dc689179a9f",
+  "structured_fact_row_count": 210,
+  "mapping_observation_ids": {
+    "I_C": "05994baee8ca3d393e94a7d2bffba3079178eb752a5fbe6897d27e430a6db457",
+    "V_CBO": "31a51a6a6794850b9efde04346381c113d08242b1f4bc610eb22d852944d288e",
+    "V_CEO": "7a3a48d060fc2391f6ad6a7438b2f2023ba86b196fbf76ddfbdaeb7cc24bf48f",
+    "V_EBO": "0ed766149d20449e916bd1e6cc2d5a24f5ef6c05fe674191c3eb3e3ae3ab6d55",
+    "h_FE_at_I_C": "8f7cb491c77613ff9ace12fbe29d54e259c1c0216377e86c6f1273640a107d3e",
+    "h_FE_min_max": "a75b1d7f6fa2066713cdd6e1d156f46d0655d4e6b96f0360e37846678b0521f3"
+  }
+}

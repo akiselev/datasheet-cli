@@ -1,12 +1,12 @@
 {
   "schema_version": "fdx3-production-readiness/1",
-  "manifest_digest": "8a9e5f8d3da17b0cb6b669f13d8df9c45ed54316c09b60abac5459356b1a4425",
+  "manifest_digest": "7f8c460f83ce8030831e4ba5ffba00a14ca87bec6cc9530b6b5fa303c7fa8152",
   "audited_at_utc": "2026-08-22",
-  "datasheet_revision": "e6eadbc72c7c9f673270e5958150d0e92cdf0439",
-  "foundry_revision": "7299b69dba3d363e93227a543c81de065a46cf37",
+  "datasheet_revision": "6dc53b032b1d0a15d772c1d264e43ada2168012c",
+  "foundry_revision": "7f90a7eddf19534f0580bcc9bee35d1b307cbd28",
   "ferrodoc_revision": "6e1166415a9ae4a5796c81516a787830dda592b8",
   "fls5_committed": false,
-  "labeler_catalog_digest": "ce7067347f66ec1adb36f0d23f58f1c8fc49e797b4036aa024d01a9e34b22591",
+  "labeler_catalog_digest": "ce7588b2d77edf116dea4bfb0f7c6d0501ac8465157766c12e0ab31047ad7a4f",
   "families": [
     {
       "family_id": "government.dla.publog.characteristics",
@@ -55,8 +55,9 @@
       "source_vocabulary_map_ids": [],
       "reviewed_development_example_ids": [],
       "blocker_codes": [
-        "no_qualified_analog_power_characteristic_mapping",
-        "no_manufacturer_document_state_alignment"
+        "lossy_characteristic_token_bag_no_mrc_value_association",
+        "lossless_current_characteristics_csv_http_403",
+        "retained_dvd_characteristics_encrypted"
       ],
       "admitted_for_training": false
     },
@@ -122,6 +123,82 @@
         "no_evidence_bearing_electrical_cells"
       ],
       "admitted_for_training": false
+    },
+    {
+      "family_id": "government.nasa.nepp.npsl.lp_npt",
+      "source_key": "government.nasa.nepp.npsl",
+      "source_profile_id": "government.nasa.nepp.npsl",
+      "source_profile_sha256": "e952fb1aa22b9482b6bc36df06b1278b9e9e1285d87c2e7ade902f2f66484b86",
+      "policy_id": "policy.nasa.nepp.npsl.public",
+      "policy_version": "2026-08-22",
+      "policy_sha256": "86a54fbd17044165438d2fa664a5d6b50fdc02e4221d95d0b831151fc81580c8",
+      "policy_committed": true,
+      "training_decision": "allow",
+      "suitability": "structured_electrical_facts",
+      "artifacts": [
+        {
+          "role": "source_html",
+          "content_sha256": "916fcf4561f6961c78c686421abe8922f2845d9e9946c59ea742199374192c43"
+        },
+        {
+          "role": "source_run_receipt",
+          "content_sha256": "4d5b2aebbb499c7ae976192d2df448c29a32c75245549b7c53698ffe8a69a42e",
+          "schema_id": "foundry.durable-source-run-receipt/v1"
+        },
+        {
+          "role": "bronze_structured_fact_manifest",
+          "content_sha256": "ad078987a576ce68db8c832af93996bc6aee0d89aa7837d51aacce51c56b000e",
+          "logical_id": "14e625d35a0b120c7156ff6d6c4652879cbf3b0da3c7da1a112dd42e7db80571",
+          "schema_id": "bronze.structured_fact_observations/v1",
+          "row_count": 210
+        },
+        {
+          "role": "bronze_structured_fact_parquet",
+          "content_sha256": "1cb0ba26538a609d216097f36e30d30ab69bddd054cd06f8eec81dc689179a9f",
+          "schema_id": "bronze.structured_fact_observations/v1",
+          "row_count": 210
+        },
+        {
+          "role": "datasheet_source_binding",
+          "content_sha256": "01a6cfbdfcd32f12ba611a45b525c1c41d6854a3f484df9dd0df80badd9b2975",
+          "schema_id": "fdx3-production-source-binding/1"
+        },
+        {
+          "role": "datasheet_source_vocabulary_maps",
+          "content_sha256": "825dbf8825795fc02d3ca04f191f1beaaa280514cfeca836d58f840f4464fae4",
+          "schema_id": "source-vocabulary-map/1",
+          "row_count": 6
+        }
+      ],
+      "selected_labelers": [
+        {
+          "labeler_id": "quantity.dimension.v1",
+          "labeler_version": "1"
+        },
+        {
+          "labeler_id": "source.range_align.v1",
+          "labeler_version": "1"
+        },
+        {
+          "labeler_id": "source.value_align_unique.v1",
+          "labeler_version": "1"
+        },
+        {
+          "labeler_id": "source.vocabulary_map.v1",
+          "labeler_version": "1"
+        }
+      ],
+      "source_vocabulary_map_ids": [
+        "0d9b408cece90ace3523bcc283e41645f975b19d9a48bb79f367fdf961c71654",
+        "46d21bccddfc2da58cbbe26a59a17e1da327741071a2cd38ca77f9de1d40b168",
+        "e9d68e116afeacf43db36418f4cdfc05fd2fd28d9b03b056807927cad8f218d8",
+        "0a782bb73aa9a8a5f584a358c5da91b65ee8fe6ac2459ca560dd3c397ad6e5ce",
+        "bed50dfc6f75fc0dfaeedbd16fa60da11079499c0daf4884f6e1fbe058ee4975",
+        "06adba0b4dfaef634d1ccfe3ab2b5d66d6061fbc5d52910dae0dcb47d5606791"
+      ],
+      "reviewed_development_example_ids": [],
+      "blocker_codes": [],
+      "admitted_for_training": true
     },
     {
       "family_id": "manufacturer.microchip.samd21.datasheet",
@@ -218,6 +295,6 @@
       "admitted_for_training": false
     }
   ],
-  "eligible_family_count": 0,
+  "eligible_family_count": 1,
   "production_acceptance": false
 }

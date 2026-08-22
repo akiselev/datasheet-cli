@@ -1,0 +1,158 @@
+[
+  {
+    "schema_version": "source-vocabulary-map/1",
+    "map_id": "0d9b408cece90ace3523bcc283e41645f975b19d9a48bb79f367fdf961c71654",
+    "source_schema": "bronze.structured_fact_observations/v1",
+    "external_namespace": "NASA.NEPP.NPSL",
+    "external_field_key": "I_C",
+    "predicate_term_id": "discrete.bjt.collector_current",
+    "expected_quantity_kind": "si:ElectricCurrent",
+    "expected_value_shapes": [
+      "scalar"
+    ],
+    "category_scope": [
+      "analog_power",
+      "discrete_semiconductor"
+    ],
+    "mapping_observation_ids": [
+      "05994baee8ca3d393e94a7d2bffba3079178eb752a5fbe6897d27e430a6db457"
+    ],
+    "ontology_snapshot_digest": "942c84a70c2ae0c45aa5665ecb85e03abbefdbf8fdd20760dedc99594d27511e",
+    "producer": {
+      "name": "datasheet-fdx3-nasa-npsl-vocabulary",
+      "version": "1",
+      "configuration_digest": "01a6cfbdfcd32f12ba611a45b525c1c41d6854a3f484df9dd0df80badd9b2975"
+    },
+    "mapping_version": "npsl-lp-npt/1998-03+policy-2026-08-22"
+  },
+  {
+    "schema_version": "source-vocabulary-map/1",
+    "map_id": "46d21bccddfc2da58cbbe26a59a17e1da327741071a2cd38ca77f9de1d40b168",
+    "source_schema": "bronze.structured_fact_observations/v1",
+    "external_namespace": "NASA.NEPP.NPSL",
+    "external_field_key": "V_CBO",
+    "predicate_term_id": "discrete.bjt.collector_base_voltage.open_emitter",
+    "expected_quantity_kind": "electronics:ElectricPotential",
+    "expected_value_shapes": [
+      "scalar"
+    ],
+    "category_scope": [
+      "analog_power",
+      "discrete_semiconductor"
+    ],
+    "mapping_observation_ids": [
+      "31a51a6a6794850b9efde04346381c113d08242b1f4bc610eb22d852944d288e"
+    ],
+    "ontology_snapshot_digest": "942c84a70c2ae0c45aa5665ecb85e03abbefdbf8fdd20760dedc99594d27511e",
+    "producer": {
+      "name": "datasheet-fdx3-nasa-npsl-vocabulary",
+      "version": "1",
+      "configuration_digest": "01a6cfbdfcd32f12ba611a45b525c1c41d6854a3f484df9dd0df80badd9b2975"
+    },
+    "mapping_version": "npsl-lp-npt/1998-03+policy-2026-08-22"
+  },
+  {
+    "schema_version": "source-vocabulary-map/1",
+    "map_id": "e9d68e116afeacf43db36418f4cdfc05fd2fd28d9b03b056807927cad8f218d8",
+    "source_schema": "bronze.structured_fact_observations/v1",
+    "external_namespace": "NASA.NEPP.NPSL",
+    "external_field_key": "V_CEO",
+    "predicate_term_id": "discrete.bjt.collector_emitter_voltage.open_base",
+    "expected_quantity_kind": "electronics:ElectricPotential",
+    "expected_value_shapes": [
+      "scalar"
+    ],
+    "category_scope": [
+      "analog_power",
+      "discrete_semiconductor"
+    ],
+    "mapping_observation_ids": [
+      "7a3a48d060fc2391f6ad6a7438b2f2023ba86b196fbf76ddfbdaeb7cc24bf48f"
+    ],
+    "ontology_snapshot_digest": "942c84a70c2ae0c45aa5665ecb85e03abbefdbf8fdd20760dedc99594d27511e",
+    "producer": {
+      "name": "datasheet-fdx3-nasa-npsl-vocabulary",
+      "version": "1",
+      "configuration_digest": "01a6cfbdfcd32f12ba611a45b525c1c41d6854a3f484df9dd0df80badd9b2975"
+    },
+    "mapping_version": "npsl-lp-npt/1998-03+policy-2026-08-22"
+  },
+  {
+    "schema_version": "source-vocabulary-map/1",
+    "map_id": "0a782bb73aa9a8a5f584a358c5da91b65ee8fe6ac2459ca560dd3c397ad6e5ce",
+    "source_schema": "bronze.structured_fact_observations/v1",
+    "external_namespace": "NASA.NEPP.NPSL",
+    "external_field_key": "V_EBO",
+    "predicate_term_id": "discrete.bjt.emitter_base_voltage.open_collector",
+    "expected_quantity_kind": "electronics:ElectricPotential",
+    "expected_value_shapes": [
+      "scalar"
+    ],
+    "category_scope": [
+      "analog_power",
+      "discrete_semiconductor"
+    ],
+    "mapping_observation_ids": [
+      "0ed766149d20449e916bd1e6cc2d5a24f5ef6c05fe674191c3eb3e3ae3ab6d55"
+    ],
+    "ontology_snapshot_digest": "942c84a70c2ae0c45aa5665ecb85e03abbefdbf8fdd20760dedc99594d27511e",
+    "producer": {
+      "name": "datasheet-fdx3-nasa-npsl-vocabulary",
+      "version": "1",
+      "configuration_digest": "01a6cfbdfcd32f12ba611a45b525c1c41d6854a3f484df9dd0df80badd9b2975"
+    },
+    "mapping_version": "npsl-lp-npt/1998-03+policy-2026-08-22"
+  },
+  {
+    "schema_version": "source-vocabulary-map/1",
+    "map_id": "bed50dfc6f75fc0dfaeedbd16fa60da11079499c0daf4884f6e1fbe058ee4975",
+    "source_schema": "bronze.structured_fact_observations/v1",
+    "external_namespace": "NASA.NEPP.NPSL",
+    "external_field_key": "h_FE_at_I_C",
+    "predicate_term_id": "condition.bjt.collector_current.for_forward_gain",
+    "expected_quantity_kind": "si:ElectricCurrent",
+    "expected_value_shapes": [
+      "scalar"
+    ],
+    "category_scope": [
+      "analog_power",
+      "discrete_semiconductor"
+    ],
+    "mapping_observation_ids": [
+      "8f7cb491c77613ff9ace12fbe29d54e259c1c0216377e86c6f1273640a107d3e"
+    ],
+    "ontology_snapshot_digest": "942c84a70c2ae0c45aa5665ecb85e03abbefdbf8fdd20760dedc99594d27511e",
+    "producer": {
+      "name": "datasheet-fdx3-nasa-npsl-vocabulary",
+      "version": "1",
+      "configuration_digest": "01a6cfbdfcd32f12ba611a45b525c1c41d6854a3f484df9dd0df80badd9b2975"
+    },
+    "mapping_version": "npsl-lp-npt/1998-03+policy-2026-08-22"
+  },
+  {
+    "schema_version": "source-vocabulary-map/1",
+    "map_id": "06adba0b4dfaef634d1ccfe3ab2b5d66d6061fbc5d52910dae0dcb47d5606791",
+    "source_schema": "bronze.structured_fact_observations/v1",
+    "external_namespace": "NASA.NEPP.NPSL",
+    "external_field_key": "h_FE_min_max",
+    "predicate_term_id": "discrete.bjt.forward_current_gain",
+    "expected_quantity_kind": "datasheet:Ratio",
+    "expected_value_shapes": [
+      "range"
+    ],
+    "category_scope": [
+      "analog_power",
+      "discrete_semiconductor"
+    ],
+    "mapping_observation_ids": [
+      "a75b1d7f6fa2066713cdd6e1d156f46d0655d4e6b96f0360e37846678b0521f3"
+    ],
+    "ontology_snapshot_digest": "942c84a70c2ae0c45aa5665ecb85e03abbefdbf8fdd20760dedc99594d27511e",
+    "producer": {
+      "name": "datasheet-fdx3-nasa-npsl-vocabulary",
+      "version": "1",
+      "configuration_digest": "01a6cfbdfcd32f12ba611a45b525c1c41d6854a3f484df9dd0df80badd9b2975"
+    },
+    "mapping_version": "npsl-lp-npt/1998-03+policy-2026-08-22"
+  }
+]
