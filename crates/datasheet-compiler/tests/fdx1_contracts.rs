@@ -2,7 +2,7 @@
 
 use datasheet_compiler::{
     ClaimSelection, DatasheetSketch, FixtureDocumentIr, assemble_claim_bundle, sketch_from_fixture,
-    validate_claim_bundle_against_sketch,
+    validate_claim_bundle_against_sketch, validate_claim_bundle_against_sketch_and_vocabulary,
 };
 use datasheet_core::{
     CandidateId, ClaimBundle, EvidenceAnchor, ParsedQuantityShape, PredicateTerm,
@@ -76,7 +76,7 @@ fn fixture_produces_deterministic_family_free_sketch() {
     assert_eq!(first.sketch_id, first.recompute_id().unwrap());
     assert_eq!(
         first.sketch_id.0,
-        "datasheet-sketch:39ad7b95fe3f883f43e2e3e0d397ef6ca005783236fa28b25afc75f261c357ec"
+        "datasheet-sketch:bfe0100aaf5a77818784f2a056f3c305a88f59f99f320fa08b9de67b5c2e743d"
     );
     assert_eq!(
         first.subjects[0].id.0,
@@ -215,12 +215,79 @@ fn claim_bundle_rejects_missing_condition_and_evidence_references() {
 }
 
 #[test]
+fn claim_bundle_rejects_generated_value_tampering_and_stale_claim_identity() {
+    let sketch = sketch();
+    let mut generated =
+        assemble_claim_bundle(&sketch, &vocabulary(), &[selection(&sketch)]).unwrap();
+    generated.selected_values[0].raw_text = "9.99 V".into();
+    generated.selected_values[0]
+        .normalized_quantity
+        .as_mut()
+        .unwrap()
+        .canonical_value = "9.99".into();
+    assert!(validate_claim_bundle_against_sketch(&generated, &sketch).is_err());
+
+    let mut stale_id =
+        assemble_claim_bundle(&sketch, &vocabulary(), &[selection(&sketch)]).unwrap();
+    stale_id.claims[0].predicate_term_id = "electrical.changed".into();
+    assert!(validate_claim_bundle_against_sketch(&stale_id, &sketch).is_err());
+
+    let mut generated_subject =
+        assemble_claim_bundle(&sketch, &vocabulary(), &[selection(&sketch)]).unwrap();
+    generated_subject.subject_hints[0].mpn_raw = "GENERATED-PART".into();
+    assert!(validate_claim_bundle_against_sketch(&generated_subject, &sketch).is_err());
+
+    let bundle = assemble_claim_bundle(&sketch, &vocabulary(), &[selection(&sketch)]).unwrap();
+    let mut missing_predicate = vocabulary();
+    missing_predicate.terms.clear();
+    assert!(
+        validate_claim_bundle_against_sketch_and_vocabulary(&bundle, &sketch, &missing_predicate)
+            .is_err()
+    );
+}
+
+#[test]
+fn identical_table_shapes_in_distinct_regions_have_distinct_candidate_ids() {
+    let mut fixture = fixture();
+    let mut duplicate = fixture.pages[0]
+        .regions
+        .iter()
+        .find(|region| region.table_shape.is_some())
+        .unwrap()
+        .clone();
+    duplicate.region_id = "region-table-duplicate".into();
+    for (index, evidence) in duplicate.evidence.iter_mut().enumerate() {
+        evidence.evidence_id = format!("duplicate-cell-{index}");
+    }
+    fixture.pages[0].regions.push(duplicate);
+    let sketch = sketch_from_fixture(&fixture, producer()).unwrap();
+    assert_eq!(sketch.tables.len(), 2);
+    assert_ne!(sketch.tables[0].id, sketch.tables[1].id);
+}
+
+#[test]
 fn ontology_snapshot_participates_in_sketch_identity() {
     let first = sketch();
     let mut changed_producer = producer();
     changed_producer.ontology_snapshot_digest = Sha256Digest::of_bytes(b"different ontology");
     let changed = sketch_from_fixture(&fixture(), changed_producer).unwrap();
     assert_ne!(first.sketch_id, changed.sketch_id);
+}
+
+#[test]
+fn document_schema_and_quantitas_registry_are_bound_fail_closed() {
+    let mut wrong_schema = producer();
+    wrong_schema.document_ir_schema = "different-document-ir/1".into();
+    assert!(sketch_from_fixture(&fixture(), wrong_schema).is_err());
+
+    let mut wrong_registry = sketch();
+    wrong_registry.quantities[0]
+        .normalized_quantity
+        .as_mut()
+        .unwrap()
+        .registry_identity = "different-registry/1".into();
+    wrong_registry.sketch_id = wrong_registry.recompute_id().unwrap();
+    assert!(wrong_registry.validate().is_err());
 }
 
 #[test]

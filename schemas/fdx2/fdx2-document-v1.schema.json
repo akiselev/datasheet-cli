@@ -1,0 +1,277 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Fdx2Document",
+  "type": "object",
+  "required": [
+    "document_state_id",
+    "pages",
+    "schema_version",
+    "source_pdf_sha256"
+  ],
+  "properties": {
+    "document_ir_logical_sha256": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "document_state_id": {
+      "type": "string"
+    },
+    "pages": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/Fdx2Page"
+      }
+    },
+    "schema_version": {
+      "type": "string"
+    },
+    "source_pdf_sha256": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "definitions": {
+    "Fdx2Cell": {
+      "type": "object",
+      "required": [
+        "column",
+        "evidence_id",
+        "geometry",
+        "geometry_quality",
+        "row",
+        "text"
+      ],
+      "properties": {
+        "column": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0.0
+        },
+        "column_span": {
+          "default": 1,
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0.0
+        },
+        "evidence_id": {
+          "type": "string"
+        },
+        "geometry": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/SourceGeometry"
+          }
+        },
+        "geometry_quality": {
+          "$ref": "#/definitions/GeometryQuality"
+        },
+        "markers": {
+          "default": [],
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "row": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0.0
+        },
+        "row_span": {
+          "default": 1,
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0.0
+        },
+        "source_evidence_ids": {
+          "description": "Every source evidence record contributing bytes to this reconstructed cell. Older minimized fixtures use `evidence_id` alone.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "text": {
+          "type": "string"
+        }
+      }
+    },
+    "Fdx2Footnote": {
+      "type": "object",
+      "required": [
+        "evidence",
+        "marker"
+      ],
+      "properties": {
+        "evidence": {
+          "$ref": "#/definitions/Fdx2TextEvidence"
+        },
+        "marker": {
+          "type": "string"
+        }
+      }
+    },
+    "Fdx2Page": {
+      "type": "object",
+      "required": [
+        "headings",
+        "page_id",
+        "paragraphs",
+        "tables",
+        "title_blocks"
+      ],
+      "properties": {
+        "headings": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Fdx2TextEvidence"
+          }
+        },
+        "page_id": {
+          "type": "string"
+        },
+        "paragraphs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Fdx2TextEvidence"
+          }
+        },
+        "tables": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Fdx2Table"
+          }
+        },
+        "title_blocks": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Fdx2TextEvidence"
+          }
+        }
+      }
+    },
+    "Fdx2Table": {
+      "type": "object",
+      "required": [
+        "cells",
+        "columns",
+        "footnotes",
+        "header_rows",
+        "heading_path",
+        "reconstruction_quality",
+        "region_id",
+        "rows"
+      ],
+      "properties": {
+        "cells": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Fdx2Cell"
+          }
+        },
+        "columns": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0.0
+        },
+        "footnotes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Fdx2Footnote"
+          }
+        },
+        "header_rows": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0.0
+        },
+        "heading_path": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "reconstruction_quality": {
+          "$ref": "#/definitions/GeometryQuality"
+        },
+        "region_id": {
+          "type": "string"
+        },
+        "rows": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0.0
+        }
+      }
+    },
+    "Fdx2TextEvidence": {
+      "type": "object",
+      "required": [
+        "evidence_id",
+        "geometry",
+        "geometry_quality",
+        "region_id",
+        "text"
+      ],
+      "properties": {
+        "evidence_id": {
+          "type": "string"
+        },
+        "geometry": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/SourceGeometry"
+          }
+        },
+        "geometry_quality": {
+          "$ref": "#/definitions/GeometryQuality"
+        },
+        "region_id": {
+          "type": "string"
+        },
+        "text": {
+          "type": "string"
+        }
+      }
+    },
+    "GeometryQuality": {
+      "type": "string",
+      "enum": [
+        "exact_glyph",
+        "exact_word",
+        "exact_line",
+        "exact_region",
+        "page_only",
+        "unknown"
+      ]
+    },
+    "SourceGeometry": {
+      "type": "object",
+      "required": [
+        "bottom",
+        "left",
+        "right",
+        "top"
+      ],
+      "properties": {
+        "bottom": {
+          "type": "number",
+          "format": "double"
+        },
+        "left": {
+          "type": "number",
+          "format": "double"
+        },
+        "right": {
+          "type": "number",
+          "format": "double"
+        },
+        "top": {
+          "type": "number",
+          "format": "double"
+        }
+      }
+    }
+  }
+}

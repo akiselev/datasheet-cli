@@ -65,6 +65,10 @@ pub struct Fdx2Table {
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize, JsonSchema)]
 pub struct Fdx2Cell {
     pub evidence_id: String,
+    /// Every source evidence record contributing bytes to this reconstructed cell. Older
+    /// minimized fixtures use `evidence_id` alone.
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub source_evidence_ids: Vec<String>,
     pub row: u32,
     pub column: u32,
     #[serde(default = "one")]
@@ -115,8 +119,10 @@ impl Fdx2Document {
             {
                 validate_text_evidence(item, &mut evidence)?;
             }
+            let mut table_regions = BTreeSet::new();
             for table in &page.tables {
                 if table.region_id.is_empty()
+                    || !table_regions.insert(&table.region_id)
                     || table.rows == 0
                     || table.columns == 0
                     || table.header_rows == 0
@@ -124,14 +130,19 @@ impl Fdx2Document {
                 {
                     return Err(BaselineError::InvalidDocument("invalid table shape".into()));
                 }
+                let mut coordinates = BTreeSet::new();
                 for cell in &table.cells {
+                    let source_ids = cell_source_evidence_ids(cell);
                     if cell.row >= table.rows
                         || cell.column >= table.columns
                         || cell.row_span == 0
                         || cell.column_span == 0
                         || cell.row + cell.row_span > table.rows
                         || cell.column + cell.column_span > table.columns
-                        || !evidence.insert(cell.evidence_id.clone())
+                        || cell.evidence_id.is_empty()
+                        || source_ids.iter().any(|id| id.is_empty())
+                        || !source_ids.contains(&cell.evidence_id)
+                        || !coordinates.insert((cell.row, cell.column))
                     {
                         return Err(BaselineError::InvalidDocument(
                             "invalid/duplicate table cell".into(),
@@ -161,6 +172,32 @@ impl Fdx2Document {
             .iter()
             .find(|page| page.page_id == anchor.page_id)
             .ok_or_else(|| BaselineError::InvalidAnchor("page missing".into()))?;
+        if let ContentSelector::TableCell {
+            table_region_id,
+            row,
+            column,
+        } = &anchor.content_selector
+        {
+            let cell = page
+                .tables
+                .iter()
+                .find(|table| &table.region_id == table_region_id)
+                .and_then(|table| {
+                    table
+                        .cells
+                        .iter()
+                        .find(|cell| cell.row == *row && cell.column == *column)
+                })
+                .ok_or_else(|| BaselineError::InvalidAnchor("table cell missing".into()))?;
+            let sources = cell_source_evidence_ids(cell);
+            let anchored_sources: BTreeSet<_> = anchor.evidence_ids.iter().collect();
+            if anchored_sources != sources {
+                return Err(BaselineError::InvalidAnchor(
+                    "table cell source evidence mismatch".into(),
+                ));
+            }
+            return Ok(());
+        }
         for evidence_id in &anchor.evidence_ids {
             let text_found =
                 page.title_blocks
@@ -174,18 +211,19 @@ impl Fdx2Document {
                         item.evidence_id == *evidence_id
                             && anchor.region_id.as_ref() == Some(&item.region_id)
                     });
-            let cell_found = page.tables.iter().any(|table| {
-                anchor.region_id.as_ref() == Some(&table.region_id)
-                    && table
-                        .cells
-                        .iter()
-                        .any(|cell| cell.evidence_id == *evidence_id)
-            });
-            if !text_found && !cell_found {
+            if !text_found {
                 return Err(BaselineError::InvalidAnchor(evidence_id.clone()));
             }
         }
         Ok(())
+    }
+}
+
+fn cell_source_evidence_ids(cell: &Fdx2Cell) -> BTreeSet<&String> {
+    if cell.source_evidence_ids.is_empty() {
+        BTreeSet::from([&cell.evidence_id])
+    } else {
+        cell.source_evidence_ids.iter().collect()
     }
 }
 
@@ -761,7 +799,10 @@ fn build_sketch_table(
             row: cell.row,
             column: cell.column,
             raw_text: cell.text.clone(),
-            source_evidence_ids: vec![cell.evidence_id.clone()],
+            source_evidence_ids: cell_source_evidence_ids(cell)
+                .into_iter()
+                .cloned()
+                .collect(),
             anchor: cell_anchor(document, page, table, cell),
         })
         .collect();
@@ -1169,7 +1210,10 @@ fn cell_anchor(
         source_pdf_sha256: document.source_pdf_sha256.clone(),
         document_state_id: document.document_state_id.clone(),
         document_ir_logical_sha256: document.document_ir_logical_sha256.clone(),
-        evidence_ids: vec![cell.evidence_id.clone()],
+        evidence_ids: cell_source_evidence_ids(cell)
+            .into_iter()
+            .cloned()
+            .collect(),
         page_id: page.page_id.clone(),
         region_id: Some(table.region_id.clone()),
         source_geometry: cell.geometry.clone(),

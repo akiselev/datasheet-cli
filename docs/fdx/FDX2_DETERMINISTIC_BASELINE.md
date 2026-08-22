@@ -21,7 +21,7 @@ Ferrodoc continues to own document state, evidence, layout, and table reconstruc
 - Min/typ/max/rating roles remain distinct in row results and claims. Conditions and footnotes are sketch-owned, exactly anchored, and resolved only within table scope.
 - Predicate top-K results expose scores and contributing signals. Impossible quantity kinds, shapes, and regimes are filtered before ranking.
 
-The source fixture, vocabulary, and truth live under `tests/fixtures/`. Frozen compiler and evaluation outputs live under `tests/goldens/`; tests compare exact pretty-JSON bytes and regenerated JSON Schemas.
+The source fixture, vocabulary, and truth live under `tests/fixtures/`. Frozen compiler and evaluation outputs live under `tests/goldens/`; tests compare exact pretty-JSON bytes and regenerated input/output JSON Schemas.
 
 ## Evaluation contract
 

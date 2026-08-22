@@ -10,7 +10,8 @@ use datasheet_compiler::ferrodoc::{
 };
 use datasheet_compiler::quantity::FDX2_REGISTRY_ID;
 use datasheet_core::{
-    EvidenceAnchor, PredicateVocabularySnapshot, ProducerIdentity, Sha256Digest, ValueRole,
+    ContentSelector, EvidenceAnchor, PredicateVocabularySnapshot, ProducerIdentity, Sha256Digest,
+    ValueRole,
 };
 
 const INPUT: &str = include_str!("../../../tests/fixtures/ferrodoc_fdx0_datasheet_input.json");
@@ -199,6 +200,13 @@ fn stale_wrong_state_and_wrong_page_qualified_targets_refuse() {
         Err(FerrodocBridgeError::WrongPageQualifiedTarget)
     ));
 
+    let mut blank_capability = fixture.clone();
+    blank_capability.targets[0].requested_capabilities = BTreeSet::from([" ".into()]);
+    assert!(matches!(
+        blank_capability.validate(),
+        Err(FerrodocBridgeError::StaleTarget)
+    ));
+
     let mut wrong_state = fixture.clone();
     wrong_state.document_state_manifest.source_pdf_sha256 =
         "9999999999999999999999999999999999999999999999999999999999999999".into();
@@ -218,6 +226,83 @@ fn stale_wrong_state_and_wrong_page_qualified_targets_refuse() {
     let mut stale_anchor = all_anchors(&baseline)[0].clone();
     stale_anchor.document_state_id = format!("{state_id}-stale");
     assert!(document.validate_anchor(&stale_anchor).is_err());
+
+    let mut wrong_cell = all_anchors(&baseline)
+        .into_iter()
+        .find(|anchor| matches!(anchor.content_selector, ContentSelector::TableCell { .. }))
+        .unwrap()
+        .clone();
+    if let ContentSelector::TableCell { column, .. } = &mut wrong_cell.content_selector {
+        *column = 99;
+    }
+    assert!(document.validate_anchor(&wrong_cell).is_err());
+}
+
+#[test]
+fn multi_span_cells_retain_every_source_evidence_id() {
+    let mut fixture = input();
+    let table_region = fixture.evidence_delta.new_pages[0]
+        .regions
+        .iter_mut()
+        .find(|region| region.kind == "table")
+        .unwrap();
+    let source_ids: Vec<_> = table_region
+        .evidence
+        .iter()
+        .filter_map(|evidence| match &evidence.content {
+            datasheet_compiler::ferrodoc::FerrodocEvidenceContent::Text { text } => {
+                Some((evidence.id.clone(), text.clone()))
+            }
+            _ => None,
+        })
+        .take(2)
+        .collect();
+    let table = table_region
+        .evidence
+        .iter_mut()
+        .find_map(|evidence| match &mut evidence.content {
+            datasheet_compiler::ferrodoc::FerrodocEvidenceContent::Table { cells, .. } => {
+                Some(cells)
+            }
+            _ => None,
+        })
+        .unwrap();
+    table[0].text = format!("{}{}", source_ids[0].1, source_ids[1].1);
+    table[0].source_spans = vec![
+        datasheet_compiler::ferrodoc::FerrodocTextSourceSpan {
+            evidence_id: source_ids[0].0.clone(),
+            start: 0,
+            end: source_ids[0].1.len() as u32,
+        },
+        datasheet_compiler::ferrodoc::FerrodocTextSourceSpan {
+            evidence_id: source_ids[1].0.clone(),
+            start: 0,
+            end: source_ids[1].1.len() as u32,
+        },
+    ];
+    let delta_id = fixture.evidence_delta.logical_id().unwrap();
+    fixture.document_state_manifest.evidence_delta_ids = BTreeSet::from([delta_id]);
+    let state_id = fixture.document_state_manifest.logical_id().unwrap();
+    for target in &mut fixture.targets {
+        target.base_document_state_id = state_id.clone();
+    }
+
+    let document = adapt_ferrodoc_document(&fixture).unwrap();
+    assert_eq!(
+        document.pages[0].tables[0].cells[0].source_evidence_ids,
+        vec![source_ids[0].0.clone(), source_ids[1].0.clone()]
+    );
+    let baseline = compile_ferrodoc_analog_power_baseline(
+        &fixture,
+        producer(),
+        &vocabulary(),
+        Some("analog_power"),
+    )
+    .unwrap();
+    assert_eq!(
+        baseline.sketch.tables[0].cells[0].anchor.evidence_ids,
+        vec![source_ids[0].0.clone(), source_ids[1].0.clone()]
+    );
 }
 
 #[test]

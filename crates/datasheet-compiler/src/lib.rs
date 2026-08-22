@@ -165,6 +165,15 @@ impl DatasheetSketch {
             anchor.validate()?;
             self.validate_anchor_identity(anchor)?;
         }
+        for quantity in &self.quantities {
+            if let Some(normalized) = &quantity.normalized_quantity {
+                if self.producer.quantitas_registry_identity.as_deref()
+                    != Some(normalized.registry_identity.as_str())
+                {
+                    return Err(CompilerError::QuantitasRegistryMismatch);
+                }
+            }
+        }
         for condition in &self.conditions {
             if !ids.insert(condition.id.0.clone()) {
                 return Err(CompilerError::DuplicateCandidate(condition.id.0.clone()));
@@ -345,6 +354,29 @@ impl FixtureDocumentIr {
                     .ok_or_else(|| CompilerError::MissingRegion(region_id.clone()))
             })
             .transpose()?;
+        if let ContentSelector::TableCell {
+            table_region_id,
+            row,
+            column,
+        } = &anchor.content_selector
+        {
+            let region =
+                region.ok_or_else(|| CompilerError::MissingRegion(table_region_id.clone()))?;
+            let cell = region.evidence.iter().find(|evidence| {
+                matches!(
+                    evidence.candidate,
+                    FixtureCandidate::TableCell {
+                        row: candidate_row,
+                        column: candidate_column,
+                    } if candidate_row == *row && candidate_column == *column
+                )
+            });
+            if cell.is_none_or(|cell| !anchor.evidence_ids.contains(&cell.evidence_id)) {
+                return Err(CompilerError::MissingEvidence(format!(
+                    "{table_region_id}[{row},{column}]"
+                )));
+            }
+        }
         for evidence_id in &anchor.evidence_ids {
             let found = region
                 .map_or_else(
@@ -372,6 +404,9 @@ pub fn sketch_from_fixture(
 ) -> Result<DatasheetSketch, CompilerError> {
     fixture.source_pdf_sha256.validate()?;
     producer.validate()?;
+    if producer.document_ir_schema != fixture.schema_version {
+        return Err(CompilerError::DocumentSchemaMismatch);
+    }
     let mut sketch = DatasheetSketch {
         schema_version: DATASHEET_SKETCH_SCHEMA.into(),
         sketch_id: SketchId(String::new()),
@@ -503,7 +538,16 @@ pub fn sketch_from_fixture(
                 let signature_bytes =
                     serde_json::to_vec(&(shape.rows, shape.columns, cell_coordinates))?;
                 let signature = Sha256Digest::of_bytes(&signature_bytes).0;
-                let table_id = tagged_content_id("table", signature.as_bytes());
+                let table_id = tagged_content_id(
+                    "table",
+                    &serde_json::to_vec(&(
+                        &fixture.source_pdf_sha256,
+                        &fixture.document_state_id,
+                        &page.page_id,
+                        &region.region_id,
+                        &signature,
+                    ))?,
+                );
                 sketch.template_signatures.push(signature.clone());
                 sketch.tables.push(SketchTable {
                     id: table_id,
@@ -603,7 +647,16 @@ pub(crate) fn sort_sketch(sketch: &mut DatasheetSketch) {
     sketch
         .conditions
         .sort_by(|left, right| left.id.cmp(&right.id));
+    for section in &mut sketch.sections {
+        section.block_ids.sort();
+        section.block_ids.dedup();
+        section.table_ids.sort();
+        section.table_ids.dedup();
+        section.deterministic_regime_candidates.sort();
+        section.deterministic_regime_candidates.dedup();
+    }
     sketch.template_signatures.sort();
+    sketch.template_signatures.dedup();
 }
 
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize, JsonSchema)]
@@ -643,11 +696,6 @@ pub fn assemble_claim_bundle(
         .iter()
         .map(|candidate| (&candidate.id, candidate))
         .collect();
-    let packages: BTreeSet<_> = sketch
-        .packages
-        .iter()
-        .map(|candidate| &candidate.id)
-        .collect();
     let predicates: BTreeSet<_> = vocabulary
         .terms
         .iter()
@@ -684,9 +732,12 @@ pub fn assemble_claim_bundle(
             anchors.extend(condition.evidence_anchors.clone());
         }
         for package_id in &selection.package_variant_candidate_ids {
-            if !packages.contains(package_id) {
-                return Err(CompilerError::MissingCandidate(package_id.0.clone()));
-            }
+            let package = sketch
+                .packages
+                .iter()
+                .find(|candidate| &candidate.id == package_id)
+                .ok_or_else(|| CompilerError::MissingCandidate(package_id.0.clone()))?;
+            anchors.push(package.anchor.clone());
         }
         anchors.sort_by_key(|anchor| serde_json::to_string(anchor).unwrap_or_default());
         anchors.dedup();
@@ -732,8 +783,33 @@ pub fn assemble_claim_bundle(
         claims,
         warnings: vec![],
     };
-    validate_claim_bundle_against_sketch(&bundle, sketch)?;
+    validate_claim_bundle_against_sketch_and_vocabulary(&bundle, sketch, vocabulary)?;
     Ok(bundle)
+}
+
+pub fn validate_claim_bundle_against_sketch_and_vocabulary(
+    bundle: &ClaimBundle,
+    sketch: &DatasheetSketch,
+    vocabulary: &PredicateVocabularySnapshot,
+) -> Result<(), CompilerError> {
+    validate_claim_bundle_against_sketch(bundle, sketch)?;
+    vocabulary.digest.validate()?;
+    if vocabulary.digest != sketch.producer.ontology_snapshot_digest {
+        return Err(CompilerError::OntologyMismatch);
+    }
+    let predicates: BTreeSet<_> = vocabulary
+        .terms
+        .iter()
+        .map(|term| term.id.as_str())
+        .collect();
+    for claim in &bundle.claims {
+        if !predicates.contains(claim.predicate_term_id.as_str()) {
+            return Err(CompilerError::MissingPredicate(
+                claim.predicate_term_id.clone(),
+            ));
+        }
+    }
+    Ok(())
 }
 
 pub fn validate_claim_bundle_against_sketch(
@@ -755,21 +831,27 @@ pub fn validate_claim_bundle_against_sketch(
         .iter()
         .map(|candidate| &candidate.id)
         .collect();
-    let values: BTreeSet<_> = sketch
+    let values: BTreeMap<_, _> = sketch
         .quantities
         .iter()
-        .map(|candidate| &candidate.id)
+        .map(|candidate| (&candidate.id, candidate))
         .collect();
-    let conditions: BTreeSet<_> = sketch
-        .conditions
-        .iter()
-        .map(|candidate| &candidate.id)
-        .collect();
-    let packages: BTreeSet<_> = sketch
+    let packages: BTreeMap<_, _> = sketch
         .packages
         .iter()
-        .map(|candidate| &candidate.id)
+        .map(|candidate| (&candidate.id, candidate))
         .collect();
+    let selected_values: BTreeMap<_, _> = bundle
+        .selected_values
+        .iter()
+        .map(|candidate| (&candidate.id, candidate))
+        .collect();
+    for (id, selected) in &selected_values {
+        if values.get(id).copied() != Some(*selected) {
+            return Err(CompilerError::SelectedValueMismatch(id.0.clone()));
+        }
+    }
+    let mut expected_subject_hints = BTreeSet::new();
     let sketch_anchors: Vec<_> = sketch
         .all_candidates_with_anchor()
         .into_iter()
@@ -799,26 +881,95 @@ pub fn validate_claim_bundle_against_sketch(
                 claim.subject_candidate_id.0.clone(),
             ));
         }
-        if !values.contains(&claim.value_candidate_id) {
+        let value = values
+            .get(&claim.value_candidate_id)
+            .ok_or_else(|| CompilerError::MissingCandidate(claim.value_candidate_id.0.clone()))?;
+        if !selected_values.contains_key(&claim.value_candidate_id) {
             return Err(CompilerError::MissingCandidate(
                 claim.value_candidate_id.0.clone(),
             ));
         }
+        let subject = sketch
+            .subjects
+            .iter()
+            .find(|candidate| candidate.id == claim.subject_candidate_id)
+            .expect("subject membership checked above");
+        expected_subject_hints.insert((
+            subject.manufacturer_hint.clone(),
+            subject.raw_designation.clone(),
+        ));
+        let mut canonical_conditions = claim.condition_candidate_ids.clone();
+        canonical_conditions.sort();
+        canonical_conditions.dedup();
+        let mut canonical_packages = claim.package_variant_candidate_ids.clone();
+        canonical_packages.sort();
+        canonical_packages.dedup();
+        if canonical_conditions != claim.condition_candidate_ids
+            || canonical_packages != claim.package_variant_candidate_ids
+        {
+            return Err(CompilerError::NonCanonicalClaimSelection);
+        }
+        let mut required_anchors = vec![&subject.evidence_anchor, &value.anchor];
         for condition in &claim.condition_candidate_ids {
-            if !conditions.contains(condition) {
-                return Err(CompilerError::MissingCondition(condition.0.clone()));
-            }
+            let condition = sketch
+                .conditions
+                .iter()
+                .find(|candidate| &candidate.id == condition)
+                .ok_or_else(|| CompilerError::MissingCondition(condition.0.clone()))?;
+            required_anchors.extend(&condition.evidence_anchors);
         }
         for package in &claim.package_variant_candidate_ids {
-            if !packages.contains(package) {
-                return Err(CompilerError::MissingCandidate(package.0.clone()));
-            }
+            let package = packages
+                .get(package)
+                .ok_or_else(|| CompilerError::MissingCandidate(package.0.clone()))?;
+            required_anchors.push(&package.anchor);
         }
         for anchor in &claim.evidence_anchors {
             if !sketch_anchors.contains(&anchor) {
                 return Err(CompilerError::MissingBundleEvidence);
             }
         }
+        if required_anchors
+            .iter()
+            .any(|required| !claim.evidence_anchors.contains(required))
+        {
+            return Err(CompilerError::MissingBundleEvidence);
+        }
+        let selection = ClaimSelection {
+            subject_candidate_id: claim.subject_candidate_id.clone(),
+            predicate_term_id: claim.predicate_term_id.clone(),
+            regime: claim.regime.clone(),
+            value_role: claim.value_role.clone(),
+            value_candidate_id: claim.value_candidate_id.clone(),
+            condition_candidate_ids: claim.condition_candidate_ids.clone(),
+            package_variant_candidate_ids: claim.package_variant_candidate_ids.clone(),
+            extraction_confidence: claim.extraction_confidence,
+        };
+        let expected_id = tagged_content_id(
+            "claim",
+            &serde_json::to_vec(&(&sketch.sketch_id, &selection))?,
+        );
+        if claim.local_id != expected_id {
+            return Err(CompilerError::IdentityMismatch);
+        }
+    }
+    let referenced_values: BTreeSet<_> = bundle
+        .claims
+        .iter()
+        .map(|claim| &claim.value_candidate_id)
+        .collect();
+    if selected_values.keys().copied().collect::<BTreeSet<_>>() != referenced_values {
+        return Err(CompilerError::SelectedValueSetMismatch);
+    }
+    if bundle
+        .subject_hints
+        .iter()
+        .map(|hint| (hint.manufacturer_raw.clone(), hint.mpn_raw.clone()))
+        .collect::<BTreeSet<_>>()
+        != expected_subject_hints
+        || bundle.subject_hints.len() != expected_subject_hints.len()
+    {
+        return Err(CompilerError::SubjectHintMismatch);
     }
     Ok(())
 }
@@ -828,6 +979,7 @@ pub enum CompilerError {
     AnchorIdentityMismatch,
     Contract(ContractError),
     DuplicateCandidate(String),
+    DocumentSchemaMismatch,
     IdentityMismatch,
     IncompleteNormalization,
     Json(serde_json::Error),
@@ -840,7 +992,12 @@ pub enum CompilerError {
     MissingPredicate(String),
     MissingQuantitasIdentity,
     MissingRegion(String),
+    NonCanonicalClaimSelection,
     OntologyMismatch,
+    QuantitasRegistryMismatch,
+    SelectedValueMismatch(String),
+    SelectedValueSetMismatch,
+    SubjectHintMismatch,
     TableShapeMissing(String),
 }
 

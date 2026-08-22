@@ -24,7 +24,7 @@ datasheet-core = { path = "crates/datasheet-core", version = "0.1.8" }
 datasheet-model = { path = "crates/datasheet-model", version = "0.1.8" }
 image = "0.25"
 lopdf = { version = "0.39", default-features = false }
-mupdf = "0.4"
+mupdf = "0.7"
 quantitas = { version = "0.1.0", git = "https://github.com/akiselev/quantitas.git", rev = "734d78cd6ff516afee54201bc70cd59fd34e67e3" }
 reqwest = { version = "0.12.23", default-features = false, features = [
     "blocking",

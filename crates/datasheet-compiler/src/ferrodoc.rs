@@ -382,7 +382,13 @@ impl FerrodocConformanceInput {
         target: &FerrodocRegionRefinementTarget,
         state_id: &str,
     ) -> Result<(), FerrodocBridgeError> {
-        if target.base_document_state_id != state_id || target.requested_capabilities.is_empty() {
+        if target.base_document_state_id != state_id
+            || target.requested_capabilities.is_empty()
+            || target
+                .requested_capabilities
+                .iter()
+                .any(|capability| capability.trim().is_empty())
+        {
             return Err(FerrodocBridgeError::StaleTarget);
         }
         validate_stable_id("state", &target.base_document_state_id)?;
@@ -698,8 +704,14 @@ fn map_cell(
     let span = cell.source_spans.first().ok_or_else(|| {
         FerrodocBridgeError::InvalidDelta("table cell lacks source evidence".into())
     })?;
+    let source_evidence_ids: BTreeSet<_> = cell
+        .source_spans
+        .iter()
+        .map(|span| span.evidence_id.clone())
+        .collect();
     Ok(Fdx2Cell {
         evidence_id: span.evidence_id.clone(),
+        source_evidence_ids: source_evidence_ids.into_iter().collect(),
         row: cell.row,
         column: cell.column,
         row_span: cell.row_span,

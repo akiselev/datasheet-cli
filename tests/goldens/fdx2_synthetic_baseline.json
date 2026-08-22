@@ -2881,6 +2881,25 @@
             "document_state_id": "document-state:synthetic-fdx2-v1",
             "document_ir_logical_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
             "evidence_ids": [
+              "th-12"
+            ],
+            "page_id": "page-1",
+            "region_id": "table-thermal",
+            "source_geometry": [],
+            "geometry_quality": "exact_region",
+            "content_selector": {
+              "kind": "table_cell",
+              "table_region_id": "table-thermal",
+              "row": 1,
+              "column": 2
+            }
+          },
+          {
+            "schema_version": "evidence-anchor/2",
+            "source_pdf_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+            "document_state_id": "document-state:synthetic-fdx2-v1",
+            "document_ir_logical_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+            "evidence_ids": [
               "th-13"
             ],
             "page_id": "page-1",

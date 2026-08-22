@@ -69,6 +69,19 @@ fn frozen_baseline_and_metrics_are_byte_stable() {
 }
 
 #[test]
+fn table_collection_order_does_not_change_baseline_identity_or_output() {
+    let expected = baseline();
+    let mut reordered = document();
+    for page in &mut reordered.pages {
+        page.tables.reverse();
+    }
+    let actual =
+        compile_analog_power_baseline(&reordered, producer(), &vocabulary(), Some("analog_power"))
+            .unwrap();
+    assert_eq!(actual, expected);
+}
+
+#[test]
 fn all_required_regimes_and_value_roles_remain_distinct() {
     let baseline = baseline();
     for regime in [
@@ -127,6 +140,14 @@ fn ambiguous_headers_abstain_and_missing_cells_never_become_zero() {
             .iter()
             .all(|row| row.status == RowExtractionStatus::Unsupported)
     );
+}
+
+#[test]
+fn duplicate_table_regions_refuse_ambiguous_anchor_ownership() {
+    let mut duplicate = document();
+    let table = duplicate.pages[0].tables[0].clone();
+    duplicate.pages[0].tables.push(table);
+    assert!(duplicate.validate().is_err());
 }
 
 #[test]
@@ -279,6 +300,10 @@ fn evaluation_counts_wrong_or_missing_predictions_as_failures() {
 #[test]
 fn schema_snapshots_are_current() {
     let cases = [
+        (
+            include_str!("../../../schemas/fdx2/fdx2-document-v1.schema.json"),
+            serde_json::to_value(schemars::schema_for!(Fdx2Document)).unwrap(),
+        ),
         (
             include_str!("../../../schemas/fdx2/deterministic-baseline-v1.schema.json"),
             serde_json::to_value(schemars::schema_for!(

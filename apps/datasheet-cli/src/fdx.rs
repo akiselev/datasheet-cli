@@ -53,12 +53,13 @@ pub fn run_sketch(args: &SketchArgs) -> Result<()> {
         model_digest: None,
     };
     let sketch = sketch_from_fixture(&fixture, producer).context("fixture did not compile")?;
-    let encoded = serde_json::to_vec_pretty(&sketch)?;
+    let mut encoded = serde_json::to_vec_pretty(&sketch)?;
+    encoded.push(b'\n');
     if let Some(output) = &args.output {
         fs::write(output, encoded)
             .with_context(|| format!("failed to write {}", output.display()))?;
     } else {
-        println!("{}", String::from_utf8(encoded)?);
+        print!("{}", String::from_utf8(encoded)?);
     }
     Ok(())
 }
@@ -105,12 +106,13 @@ pub fn run_baseline(args: &BaselineArgs) -> Result<()> {
     let baseline =
         compile_analog_power_baseline(&document, producer, &vocabulary, Some(&args.category_prior))
             .context("deterministic analog/power baseline refused the input")?;
-    let encoded = serde_json::to_vec_pretty(&baseline)?;
+    let mut encoded = serde_json::to_vec_pretty(&baseline)?;
+    encoded.push(b'\n');
     if let Some(output) = &args.output {
         fs::write(output, encoded)
             .with_context(|| format!("failed to write {}", output.display()))?;
     } else {
-        println!("{}", String::from_utf8(encoded)?);
+        print!("{}", String::from_utf8(encoded)?);
     }
     Ok(())
 }

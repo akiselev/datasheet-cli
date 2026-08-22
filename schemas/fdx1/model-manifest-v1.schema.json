@@ -1,0 +1,62 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ModelManifest",
+  "type": "object",
+  "required": [
+    "base_model_digest",
+    "code_revision",
+    "dataset_manifest_digest",
+    "evaluation_report_digest",
+    "feature_schema_digest",
+    "license_provenance",
+    "ontology_snapshot_digest",
+    "schema_version",
+    "tokenizer_digest",
+    "training_configuration_digest"
+  ],
+  "properties": {
+    "base_model_digest": {
+      "type": "string"
+    },
+    "calibration_digest": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "code_revision": {
+      "type": "string"
+    },
+    "dataset_manifest_digest": {
+      "type": "string"
+    },
+    "evaluation_report_digest": {
+      "type": "string"
+    },
+    "feature_schema_digest": {
+      "type": "string"
+    },
+    "license_provenance": {
+      "type": "string"
+    },
+    "ontology_snapshot_digest": {
+      "type": "string"
+    },
+    "quantized_model_digest": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "schema_version": {
+      "type": "string"
+    },
+    "tokenizer_digest": {
+      "type": "string"
+    },
+    "training_configuration_digest": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false
+}

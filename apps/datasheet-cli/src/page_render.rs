@@ -215,7 +215,7 @@ pub fn render_and_crop(
             f: 0.0,
         };
         let pixmap = page
-            .to_pixmap(&ctm, &mupdf::Colorspace::device_rgb(), 0.0, false)
+            .to_pixmap(&ctm, &mupdf::Colorspace::device_rgb(), false, false)
             .with_context(|| format!("rendering page {}", page_num))?;
 
         let w = pixmap.width() as u32;

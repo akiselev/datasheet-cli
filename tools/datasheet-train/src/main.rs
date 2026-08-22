@@ -17,6 +17,7 @@ struct Args {
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let args = Args::parse();
     let manifest: ModelManifest = serde_json::from_slice(&fs::read(args.manifest)?)?;
+    manifest.validate()?;
     println!("{}", serde_json::to_string_pretty(&manifest)?);
     Ok(())
 }

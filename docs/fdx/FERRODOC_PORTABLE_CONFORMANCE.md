@@ -23,7 +23,7 @@ Conversion preserves:
 - Ferrodoc `DocumentStateId` as every Datasheet anchor's `document_state_id`;
 - optional checkpoint digest as `document_ir_logical_sha256` without treating it as logical state identity;
 - exact evidence IDs and page/region ownership;
-- cell source spans as table-cell anchor evidence;
+- every contributing cell source span as table-cell anchor evidence, including multi-span cells;
 - selected raw titles, headings, conditions, values, and footnotes;
 - honest geometry quality, with PDF point rectangles normalized against the owning page.
 

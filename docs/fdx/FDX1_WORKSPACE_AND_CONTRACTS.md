@@ -23,6 +23,7 @@ Existing GPL application source was moved without relicensing. New reusable crat
 - Sketch identity is SHA-256 over a fixed serialization projection after all candidate collections are sorted. Wall-clock/run/checkpoint lineage and corpus-derived document/template/manufacturer family assignments are absent.
 - Candidate IDs are tagged SHA-256 values over candidate kind, exact raw text, and state-aware anchor. Reordering fixture pages, regions, or evidence leaves IDs and sketch bytes unchanged.
 - Producer identity binds code revision/version, configuration digest, DocumentIR schema, ontology snapshot digest, optional Quantitas registry identity, and optional model digest.
+- The model-manifest inspection shell validates its schema version, every required artifact/configuration/evaluation digest, source revision, and license provenance; it remains a contract-only shell with no model runtime.
 - Predicate terms are vocabulary data. Adding a term does not change the `ClaimBundle` schema.
 - `ClaimBundle` serializes as `claim-bundle/1`, pins the sketch and state, preserves exact selected `QuantityCandidate` records, and fails closed for missing subject/value/condition/package/evidence references, ontology mismatch, or ungrounded claims.
 
@@ -54,6 +55,8 @@ Generate stable JSON Schemas with:
 
 ```text
 cargo run -p datasheet-compiler --example export_fdx1_schemas -- schemas/fdx1
+cargo run -p datasheet-model --example export_schema -- \
+  schemas/fdx1/model-manifest-v1.schema.json
 ```
 
 The core boundary test rejects accidental HTTP, PDF, model-runtime, or Foundry dependencies. CI checks formatting and warning-free FDX crates on Linux, then builds/tests the whole workspace on Linux, macOS, and Windows.

@@ -3,7 +3,7 @@
 use std::fs;
 use std::path::PathBuf;
 
-use datasheet_compiler::baseline::DeterministicBaseline;
+use datasheet_compiler::baseline::{DeterministicBaseline, Fdx2Document};
 use datasheet_compiler::evaluation::BaselineEvaluation;
 use datasheet_compiler::ferrodoc::FerrodocConformanceInput;
 
@@ -14,6 +14,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         .unwrap_or_else(|| PathBuf::from("schemas/fdx2"));
     fs::create_dir_all(&output)?;
     write_schema::<DeterministicBaseline>(&output, "deterministic-baseline-v1.schema.json")?;
+    write_schema::<Fdx2Document>(&output, "fdx2-document-v1.schema.json")?;
     write_schema::<BaselineEvaluation>(&output, "evaluation-v1.schema.json")?;
     write_schema::<FerrodocConformanceInput>(&output, "ferrodoc-conformance-input-v1.schema.json")?;
     Ok(())
