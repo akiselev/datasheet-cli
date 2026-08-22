@@ -22,7 +22,9 @@ The implemented boundaries are documented in
 [FDX2 deterministic baseline](FDX2_DETERMINISTIC_BASELINE.md),
 [portable Ferrodoc conformance](FERRODOC_PORTABLE_CONFORMANCE.md), and the
 [FDX3 supervision foundation](FDX3_DETERMINISTIC_SUPERVISION.md). Production
-FDX3 and FDX4+ remain gated by `/projects/FOUNDRY-PLAN.md`; this repository
+FDX4 protected-corpus contracts are implemented, with all current NASA examples
+truthfully train-only and FDX5 blocked on distinct protected evaluation groups.
+FDX5+ remain gated by `/projects/FOUNDRY-PLAN.md`; this repository
 contains no production corpus, trained model, or claim of production DocumentIR
 extraction.
 

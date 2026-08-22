@@ -6,6 +6,7 @@ pub mod evaluation;
 pub mod ferrodoc;
 pub mod quantity;
 pub mod supervision;
+pub mod corpus;
 
 use std::collections::{BTreeMap, BTreeSet};
 

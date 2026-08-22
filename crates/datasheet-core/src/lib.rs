@@ -2,6 +2,7 @@
 //! Durable, provider-independent contracts for evidence-grounded datasheet extraction.
 
 pub mod supervision;
+pub mod corpus;
 
 use std::collections::{BTreeMap, BTreeSet};
 use std::fmt::Write as _;
