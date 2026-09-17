@@ -8,6 +8,12 @@ use datasheet_compiler::evaluation::{BaselineTruth, evaluate_baseline};
 use datasheet_compiler::quantity::FDX2_REGISTRY_ID;
 use datasheet_core::{PredicateVocabularySnapshot, ProducerIdentity, Sha256Digest};
 
+/// Producer version the FDX2 baseline was frozen at.
+///
+/// Deliberately not `CARGO_PKG_VERSION`: the golden is a frozen artifact that
+/// pins compiler behaviour, so a release version bump must not change its bytes.
+const FROZEN_PRODUCER_VERSION: &str = "0.1.8";
+
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let root = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../..");
     let document: Fdx2Document = serde_json::from_slice(&fs::read(
@@ -18,7 +24,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     )?)?;
     let producer = ProducerIdentity {
         name: "datasheet-compiler".into(),
-        version: env!("CARGO_PKG_VERSION").into(),
+        version: FROZEN_PRODUCER_VERSION.into(),
         code_revision: "fdx2-frozen-baseline-v1".into(),
         configuration_digest: Sha256Digest(
             "4444444444444444444444444444444444444444444444444444444444444444".into(),

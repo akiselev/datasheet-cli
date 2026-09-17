@@ -540,7 +540,7 @@ dependencies = [
 
 [[package]]
 name = "datasheet-cli"
-version = "0.1.8"
+version = "0.1.10"
 dependencies = [
  "anyhow",
  "base64",
@@ -564,7 +564,7 @@ dependencies = [
 
 [[package]]
 name = "datasheet-compiler"
-version = "0.1.8"
+version = "0.1.10"
 dependencies = [
  "datasheet-core",
  "quantitas",
@@ -576,7 +576,7 @@ dependencies = [
 
 [[package]]
 name = "datasheet-core"
-version = "0.1.8"
+version = "0.1.10"
 dependencies = [
  "schemars",
  "serde",
@@ -586,7 +586,7 @@ dependencies = [
 
 [[package]]
 name = "datasheet-model"
-version = "0.1.8"
+version = "0.1.10"
 dependencies = [
  "datasheet-core",
  "schemars",
@@ -596,7 +596,7 @@ dependencies = [
 
 [[package]]
 name = "datasheet-train"
-version = "0.1.8"
+version = "0.1.10"
 dependencies = [
  "clap",
  "datasheet-model",

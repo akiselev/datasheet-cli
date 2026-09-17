@@ -24,10 +24,16 @@ fn vocabulary() -> PredicateVocabularySnapshot {
     serde_json::from_str(VOCABULARY).unwrap()
 }
 
+/// Producer version the FDX2 baseline was frozen at.
+///
+/// Deliberately not `CARGO_PKG_VERSION`: the golden is a frozen artifact that
+/// pins compiler behaviour, so a release version bump must not change its bytes.
+const FROZEN_PRODUCER_VERSION: &str = "0.1.8";
+
 fn producer() -> ProducerIdentity {
     ProducerIdentity {
         name: "datasheet-compiler".into(),
-        version: env!("CARGO_PKG_VERSION").into(),
+        version: FROZEN_PRODUCER_VERSION.into(),
         code_revision: "fdx2-frozen-baseline-v1".into(),
         configuration_digest: Sha256Digest(
             "4444444444444444444444444444444444444444444444444444444444444444".into(),

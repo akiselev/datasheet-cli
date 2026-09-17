@@ -425,7 +425,7 @@ jq -s '.' *_specs.json > comparison.json
 datasheet extract <TASK> <PDF> [OPTIONS]
 
 Options:
-  --model <MODEL>       Gemini model (default: gemini-3-pro-preview)
+  --model <MODEL>       Gemini model (default: gemini-3.8-flash)
   --out <FILE>          Output file (default: stdout)
   -f, --formatted       Pretty-print JSON
   --prompt <TEXT|FILE>  Custom prompt (for 'custom' task)
@@ -455,10 +455,10 @@ That said, this is an LLM - always verify critical dimensions before sending boa
 
 ## Model Selection
 
-The default model is `gemini-3-pro-preview`. You can override with `--model`:
+The default model is `gemini-3.8-flash`. You can override with `--model`:
 
 ```bash
-datasheet extract pinout datasheet.pdf --model gemini-2.0-flash-exp
+datasheet extract pinout datasheet.pdf --model gemini-3.1-pro-preview
 ```
 
 For large datasheets (500+ pages), the newer Gemini models with expanded context windows work best.

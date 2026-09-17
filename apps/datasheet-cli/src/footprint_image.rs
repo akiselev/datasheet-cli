@@ -72,7 +72,7 @@ pub fn run(args: &FootprintImageArgs) -> Result<()> {
 
     let api_key = resolve_api_key(args.provider, args.api_key.clone())?;
     let model = if args.model == __DEFAULT__ {
-        "gemini-3.1-pro-preview".to_string()
+        "gemini-3.8-flash".to_string()
     } else {
         args.model.clone()
     };
